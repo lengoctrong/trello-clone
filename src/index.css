@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .btn {
+    @apply hover:bg-gray-300 py-1 px-4 rounded cursor-pointer;
+  }
+}
