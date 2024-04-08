@@ -6,4 +6,7 @@
   .btn {
     @apply hover:bg-gray-300 py-1 px-4 rounded cursor-pointer;
   }
+  .btn-close {
+    @apply hover:bg-gray-300 py-1 px-2 rounded cursor-pointer;
+  }
 }
