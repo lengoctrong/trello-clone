@@ -1,4 +1,4 @@
-import Header from '~/components/Header/Header'
+import Header from '../components/Header'
 const DefaultLayout = ({ children }) => {
   return (
     <div className="w-screen h-screen ">
