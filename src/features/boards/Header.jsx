@@ -8,7 +8,7 @@ const Header = () => {
         size={6}
         onChange={() => {}}
       />
-      <button className="btn items-center">{moreIcon}</button>
+      <button className="btn items-center bg-white">{moreIcon}</button>
     </div>
   )
 }

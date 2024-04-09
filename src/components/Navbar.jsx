@@ -1,9 +1,9 @@
 import Tippy from '@tippyjs/react'
 import { chevIcon, searchIcon } from '~/icons'
 import Search from './Search'
-const Header = () => {
+const Navbar = () => {
   return (
-    <header className="h-12 flex justify-between items-center px-8 bg-red-50">
+    <header className="h-12 flex justify-between items-center px-8 bg-white">
       <div className="flex gap-12">
         <div className="btn">logo</div>
         <div className="btn flex items-center gap-2">
@@ -39,4 +39,4 @@ const Header = () => {
   )
 }
 
-export default Header
+export default Navbar
