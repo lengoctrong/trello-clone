@@ -1,4 +1,15 @@
 const Button = ({ type, className, children, onClick }) => {
+  if (type === 'outline') {
+    return (
+      <button
+        onClick={onClick}
+        className={`bg-transparent w-full text-start rounded-xl py-1 px-3 my-1 hover:bg-slate-300 cursor-pointer ${className}`}
+      >
+        {children}
+      </button>
+    )
+  }
+
   return (
     <button
       onClick={onClick}

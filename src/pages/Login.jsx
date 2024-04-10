@@ -5,8 +5,8 @@ import { useAuth } from '~/contexts/FakeAuthContext'
 import Button from '../components/Button'
 
 const Login = () => {
-  const [email, setEmail] = useState('jack@example.com')
-  const [password, setPassword] = useState('qwerty')
+  const [email, setEmail] = useState('test@example.com')
+  const [password, setPassword] = useState('abc123')
 
   const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
@@ -22,7 +22,7 @@ const Login = () => {
   }, [isAuthenticated, navigate])
 
   return (
-    <main className="py-10 px-20 bg-[--color-dark--1] min-h-screen">
+    <main className="py-10 px-20 bg-[--color-dark--1] min-h-screen font-semibold text-grey">
       <PageNav />
 
       <form
