@@ -1,3 +1,5 @@
+import { useSortable } from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
@@ -5,12 +7,23 @@ import Button from '~/components/Button'
 import { closeIcon, plusIcon } from '~/icons'
 import { addNewCard } from '../boards/boardSlice'
 import ListCards from '../cards/ListCards'
+
 const Column = ({ column }) => {
   const { _id: columnId, boardId, title, cardOrderIds, cards } = column
+  const dispatch = useDispatch()
+
   const [columnTitle, setColumnTitle] = useState(title)
   const [isAddNewCard, setIsAddNewCard] = useState(false)
   const [cardTitle, setCardTitle] = useState('')
-  const dispatch = useDispatch()
+
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id: columnId, data: { ...column } })
+
+  const dndKitColumnStyles = {
+    transform: CSS.Transform.toString(transform),
+    transition
+  }
+
   const handleAddNewCard = () => {
     if (cardTitle.trim().length === 0) return
     const card = {
@@ -25,7 +38,13 @@ const Column = ({ column }) => {
     setIsAddNewCard(false)
   }
   return (
-    <div className="bg-gray-100 max-w-[272px] max-h-[760px] rounded-xl p-4 h-full">
+    <div
+      ref={setNodeRef}
+      style={dndKitColumnStyles}
+      {...attributes}
+      {...listeners}
+      className="bg-gray-100 max-w-[272px] max-h-[760px] rounded-xl p-4 h-full cursor-pointer"
+    >
       <input
         className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
         value={columnTitle}
