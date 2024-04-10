@@ -3,7 +3,7 @@
     "_id": "board-1",
     "title": "Board Title 1",
     "description": "Board Description 1",
-    "columnOrderIds": ["column-1", "column-2"],
+    "columnOrderIds": ["column-1", "column-2", "column-3"],
     "columns": [
       {
         "_id": "column-1",
