@@ -7,7 +7,6 @@ import Button from '~/components/Button'
 import { closeIcon, plusIcon } from '~/icons'
 import { addNewCard } from '../boards/boardSlice'
 import ListCards from '../cards/ListCards'
-
 const Column = ({ column }) => {
   const { _id: columnId, boardId, title, cardOrderIds, cards } = column
   const dispatch = useDispatch()
@@ -19,7 +18,7 @@ const Column = ({ column }) => {
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: columnId, data: { ...column } })
 
-  const dndKitColumnStyles = {
+  const CSSProperties = {
     transform: CSS.Translate.toString(transform),
     transition
   }
@@ -40,7 +39,7 @@ const Column = ({ column }) => {
   return (
     <div
       ref={setNodeRef}
-      style={dndKitColumnStyles}
+      style={CSSProperties}
       {...attributes}
       {...listeners}
       className="bg-gray-100 max-w-[272px] max-h-[760px] rounded-xl p-4 h-full cursor-pointer"
@@ -50,7 +49,7 @@ const Column = ({ column }) => {
         value={columnTitle}
         onChange={(e) => setColumnTitle(e.target.value)}
       />
-      <ListCards cards={cards} />
+      <ListCards cards={cards} cardOrderIds={column.cardOrderIds} />
 
       {isAddNewCard ? (
         <>
