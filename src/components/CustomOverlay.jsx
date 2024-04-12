@@ -4,16 +4,16 @@ const dropAnimationConfig = {
   sideEffects: defaultDropAnimationSideEffects({
     styles: {
       active: {
-        opacity: '0.4'
+        opacity: 0.4
       }
     }
   })
 }
 
-const CardOverlay = ({ children }) => {
+const CustomOverlay = ({ children }) => {
   return (
     <DragOverlay dropAnimation={dropAnimationConfig}>{children}</DragOverlay>
   )
 }
 
-export default CardOverlay
+export default CustomOverlay
