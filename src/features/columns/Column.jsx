@@ -1,41 +1,60 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import Button from '~/components/Button'
+import { mapOrderedArr } from '~/helpers'
 import { closeIcon, plusIcon } from '~/icons'
 import { addNewCard } from '../boards/boardSlice'
 import ListCards from '../cards/ListCards'
 const Column = ({ column }) => {
-  const { _id: columnId, boardId, title, cardOrderIds, cards } = column
-  const dispatch = useDispatch()
-
+  const { _id: columnId, title, cards, cardOrderIds } = column
+  const [orderedCards, setOrderedCards] = useState(
+    mapOrderedArr(cards, cardOrderIds, '_id')
+  )
   const [columnTitle, setColumnTitle] = useState(title)
-  const [isAddNewCard, setIsAddNewCard] = useState(false)
+  const [adding, setAdding] = useState(false)
   const [cardTitle, setCardTitle] = useState('')
 
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id: columnId, data: { ...column } })
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    setOrderedCards(mapOrderedArr(cards, cardOrderIds, '_id'))
+  }, [cards, cardOrderIds])
+
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging
+  } = useSortable({ id: columnId, data: { ...column } })
 
   const CSSProperties = {
     transform: CSS.Translate.toString(transform),
-    transition
+    transition,
+    opacity: isDragging ? 0.4 : undefined
   }
 
-  const handleAddNewCard = () => {
-    if (cardTitle.trim().length === 0) return
-    const card = {
+  const handleSubmit = (e) => {
+    e.preventDefault()
+
+    if (!cardTitle.trim().length) return
+
+    const newCard = {
       _id: `card-${uuidv4()}`,
       columnId: cards[0].columnId,
       boardId: cards[0].boardId,
       title: cardTitle,
       cover: ''
     }
-    dispatch(addNewCard(card))
+    dispatch(addNewCard(newCard))
     setCardTitle('')
-    setIsAddNewCard(false)
+    setAdding(false)
   }
+
   return (
     <div
       ref={setNodeRef}
@@ -49,10 +68,10 @@ const Column = ({ column }) => {
         value={columnTitle}
         onChange={(e) => setColumnTitle(e.target.value)}
       />
-      <ListCards cards={cards} cardOrderIds={column.cardOrderIds} />
+      <ListCards cards={orderedCards} />
 
-      {isAddNewCard ? (
-        <>
+      {adding ? (
+        <form onSubmit={handleSubmit}>
           <textarea
             value={cardTitle}
             onChange={(e) => setCardTitle(e.target.value)}
@@ -62,19 +81,19 @@ const Column = ({ column }) => {
             placeholder="Nhập tiêu đề cho thẻ này..."
           />
           <div className="flex items-center gap-1">
-            <Button type="primary" onClick={handleAddNewCard}>
+            <Button type="submit" primary>
               Thêm thẻ
             </Button>
             <button
               className="hover:bg-slate-300 p-1"
-              onClick={() => setIsAddNewCard(!isAddNewCard)}
+              onClick={() => setAdding(!adding)}
             >
               {closeIcon}
             </button>
           </div>
-        </>
+        </form>
       ) : (
-        <Button type="outline" onClick={() => setIsAddNewCard(!isAddNewCard)}>
+        <Button type="outline" onClick={() => setAdding(!adding)}>
           <p className="flex gap-1 items-center">
             <span>{plusIcon}</span>
             Thêm thẻ
