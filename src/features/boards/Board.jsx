@@ -100,11 +100,10 @@ const Board = () => {
         (card) => card._id !== activeCardId
       )
 
-      newOverColumn.cards = newOverColumn.cards.toSpliced(
-        newCardIndex,
-        0,
-        active.data.current
-      )
+      newOverColumn.cards = newOverColumn.cards.toSpliced(newCardIndex, 0, {
+        ...active.data.current,
+        columnId: newOverColumn._id
+      })
 
       newOverColumn.cardOrderIds = newOverColumn.cards.map((card) => card._id)
 
@@ -171,6 +170,7 @@ const Board = () => {
       // drag column into the same board
       const { id: activeColumnId } = active
       const { id: overColumnId } = over
+
       setOrderedColumns((prevColumns) => {
         const oldColumnIndex = prevColumns.findIndex(
           (c) => c._id === activeColumnId
@@ -179,8 +179,20 @@ const Board = () => {
           (c) => c._id === overColumnId
         )
 
-        return arrayMove(prevColumns, oldColumnIndex, newColumnIndex)
+        const orderedColumns = arrayMove(
+          prevColumns,
+          oldColumnIndex,
+          newColumnIndex
+        )
+
+        return orderedColumns
       })
+      console.log(
+        'activeColumnId:',
+        activeColumnId,
+        '\noverColumnId:',
+        overColumnId
+      )
     }
   }
 

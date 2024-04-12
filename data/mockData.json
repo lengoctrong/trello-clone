@@ -8,7 +8,7 @@
       {
         "_id": "column-1",
         "boardId": "board-1",
-        "title": "Cần làm",
+        "title": "Cần làm 1",
         "cardOrderIds": ["card-1", "card-2", "card-3"],
         "cards": [
           {
@@ -37,7 +37,7 @@
       {
         "_id": "column-2",
         "boardId": "board-1",
-        "title": "Đang làm",
+        "title": "Đang làm 2",
         "cardOrderIds": ["card-4", "card-5", "card-6"],
         "cards": [
           {
@@ -66,7 +66,7 @@
       {
         "_id": "column-3",
         "boardId": "board-1",
-        "title": "Đang làm",
+        "title": "Đã xong 3",
         "cardOrderIds": ["card-7", "card-8", "card-9"],
         "cards": [
           {
