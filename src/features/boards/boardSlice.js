@@ -19,6 +19,9 @@ const boardSlice = createSlice({
       state.columnOrderIds = action.payload.columnOrderIds
       state.columns = action.payload.columns
     },
+    setBoardTitle: (state, action) => {
+      state.title = action.payload
+    },
     addNewCard: (state, action) => {
       const card = action.payload
       const { _id: cardId, columnId } = card
@@ -31,4 +34,4 @@ const boardSlice = createSlice({
 })
 
 export default boardSlice.reducer
-export const { setBoard, addNewCard } = boardSlice.actions
+export const { setBoard, setBoardTitle, addNewCard } = boardSlice.actions
