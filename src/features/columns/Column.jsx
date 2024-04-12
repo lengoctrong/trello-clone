@@ -66,6 +66,7 @@ const Column = ({ column }) => {
       <input
         className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
         value={columnTitle}
+        size={columnTitle.length}
         onChange={(e) => setColumnTitle(e.target.value)}
       />
       <ListCards cards={orderedCards} />
