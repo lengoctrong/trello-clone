@@ -1,4 +1,5 @@
 import Tippy from '@tippyjs/react'
+import { Link } from 'react-router-dom'
 import { chevIcon, searchIcon } from '~/icons'
 import Search from './Search'
 const Navbar = () => {
@@ -33,7 +34,9 @@ const Navbar = () => {
             <Search addFront={searchIcon} placeholder="Tìm kiếm" />
           </Tippy>
         </div>
-        <div className="btn">avatar</div>
+        <Link to="/login" className="btn">
+          Đăng nhập
+        </Link>
       </div>
     </header>
   )

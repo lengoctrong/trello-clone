@@ -8,6 +8,10 @@ import { mapOrderedArr } from '~/helpers'
 import { closeIcon, plusIcon } from '~/icons'
 import { addNewCard } from '../boards/boardSlice'
 import ListCards from '../cards/ListCards'
+
+const MAX_WIDTH_COLUMN = '272px'
+const MAX_HEIGHT_COLUMN = '760px'
+
 const Column = ({ column }) => {
   const { _id: columnId, title, cards, cardOrderIds } = column
   const [orderedCards, setOrderedCards] = useState(
@@ -18,10 +22,6 @@ const Column = ({ column }) => {
   const [cardTitle, setCardTitle] = useState('')
 
   const dispatch = useDispatch()
-
-  useEffect(() => {
-    setOrderedCards(mapOrderedArr(cards, cardOrderIds, '_id'))
-  }, [cards, cardOrderIds])
 
   const {
     attributes,
@@ -35,8 +35,13 @@ const Column = ({ column }) => {
   const CSSProperties = {
     transform: CSS.Translate.toString(transform),
     transition,
-    opacity: isDragging ? 0.4 : undefined
+    opacity: isDragging ? 0.4 : undefined,
+    overflowY: 'auto'
   }
+
+  useEffect(() => {
+    setOrderedCards(mapOrderedArr(cards, cardOrderIds, '_id'))
+  }, [cards, cardOrderIds])
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -61,7 +66,7 @@ const Column = ({ column }) => {
       style={CSSProperties}
       {...attributes}
       {...listeners}
-      className="bg-gray-100 max-w-[272px] max-h-[760px] rounded-xl p-4 h-full cursor-pointer"
+      className={`bg-gray-100  max-h-[${MAX_HEIGHT_COLUMN}] max-w-[${MAX_WIDTH_COLUMN}] w-[272px] rounded-xl p-4 h-full cursor-pointer`}
     >
       <input
         className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
