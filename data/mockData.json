@@ -2,8 +2,7 @@
   "board": {
     "_id": "board-1",
     "title": "Board Title 1",
-    "description": "Board Description 1",
-    "columnOrderIds": ["column-1", "column-2", "column-3"],
+    "columnOrderIds": ["column-1", "column-2", "column-3", "column-4"],
     "columns": [
       {
         "_id": "column-1",
@@ -89,6 +88,20 @@
             "boardId": "board-1",
             "title": "Card Title 9",
             "cover": "https://source.unsplash.com/random/300x200"
+          }
+        ]
+      },
+      {
+        "_id": "column-4",
+        "boardId": "board-1",
+        "title": "Rỗng 4",
+        "cardOrderIds": ["column-4-placeholder-card"],
+        "cards": [
+          {
+            "_id": "column-4-placeholder-card",
+            "columnId": "column-4",
+            "boardId": "board-1",
+            "fe_placeholderCard": true
           }
         ]
       }

@@ -3,7 +3,6 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
   _id: '',
   title: '',
-  description: '',
   columnOrderIds: [],
   columns: []
 }
@@ -15,7 +14,6 @@ const boardSlice = createSlice({
     setBoard: (state, action) => {
       state._id = action.payload._id
       state.title = action.payload.title
-      state.description = action.payload.description
       state.columnOrderIds = action.payload.columnOrderIds
       state.columns = action.payload.columns
     },
