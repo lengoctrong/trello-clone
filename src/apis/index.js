@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {
+  addNewCard,
   addNewColumn,
   fetchBoardError,
   fetchBoardStart,
@@ -27,10 +28,10 @@ export const createNewColumnAPI = async (columnData, dispatch) => {
   dispatch(addNewColumn(res.data))
 }
 
-export const createNewCardAPI = async (cardData) => {
+export const createNewCardAPI = async (cardData, dispatch) => {
   const res = await axios.post(
     `${API_URL}/${API_VERSION}/${ITEM_TYPES.CARD}`,
     cardData
   )
-  return res.data
+  dispatch(addNewCard(res.data))
 }
