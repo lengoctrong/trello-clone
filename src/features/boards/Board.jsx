@@ -1,16 +1,16 @@
 /* eslint-disable no-console */
-import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
-import { useEffect, useState } from 'react'
-import { moreIcon } from '~/icons'
-import ListColumns from '../columns/ListColumns'
-
+import { DndContext, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
 import CustomOverlay from '~/components/CustomOverlay'
+import { MouseSensor } from '~/customLib'
+import { moreIcon } from '~/icons'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
+import ListColumns from '../columns/ListColumns'
 
 const Board = () => {
   const {
@@ -25,12 +25,8 @@ const Board = () => {
   const [orderedColumns, setOrderedColumns] = useState(
     mapOrderedArr(columns, columnOrderIds, '_id')
   )
-  const pointerSensor = useSensor(PointerSensor, {
-    activationConstraint: {
-      distance: 10
-    }
-  })
-  const sensors = useSensors(pointerSensor)
+
+  const sensors = useSensors(useSensor(MouseSensor))
 
   useEffect(() => {
     setOrderedColumns(mapOrderedArr(columns, columnOrderIds, '_id'))

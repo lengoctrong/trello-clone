@@ -74,6 +74,7 @@ const Column = ({ column }) => {
       <ColumnBase {...ColumnBaseProps}>
         <input
           className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
+          data-no-dnd
           value={columnTitle}
           size={columnTitle?.length}
           onChange={(e) => setColumnTitle(e.target.value)}
