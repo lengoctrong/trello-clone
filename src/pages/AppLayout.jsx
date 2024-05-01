@@ -1,22 +1,17 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { fetchBoardDetailsAPI } from '~/apis'
 import Navbar from '~/components/Navbar'
 import Board from '~/features/boards/Board'
-import { setBoard } from '~/features/boards/boardSlice'
 const AppLayout = () => {
-  const dispatch = useDispatch()
+  const [board, setBoard] = useState(null)
   useEffect(() => {
-    const fetchBoard = async () => {
-      try {
-        const res = await fetch('http://localhost:3001/board')
-        const data = await res.json()
-        dispatch(setBoard(data))
-      } catch (err) {
-        throw new Error(err)
-      }
+    const fetchData = async () => {
+      const id = '662fe23a6c92c95a4bd62125'
+      const board = await fetchBoardDetailsAPI(id)
+      setBoard(board)
     }
-    fetchBoard()
-  }, [dispatch])
+    fetchData()
+  }, [])
 
   return (
     <div
@@ -27,7 +22,7 @@ const AppLayout = () => {
       }}
     >
       <Navbar />
-      <Board />
+      <Board board={board} />
     </div>
   )
 }

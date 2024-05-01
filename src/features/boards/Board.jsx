@@ -7,7 +7,7 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { useDispatch, useSelector } from 'react-redux'
 import CustomOverlay from '~/components/CustomOverlay'
-import { generatePlaceholderCard, mapOrderedArr } from '~/helpers'
+import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 import CardItem from '../cards/CardItem'
 import Column from '../columns/Column'
 import { setBoardTitle } from './boardSlice'
@@ -17,7 +17,7 @@ const ACTIVE_TYPE = {
   COLUMN: 'column'
 }
 
-const Board = () => {
+const Board = ({ board }) => {
   const {
     _id: boardId,
     columns,
