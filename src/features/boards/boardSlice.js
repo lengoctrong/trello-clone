@@ -37,13 +37,7 @@ const boardSlice = createSlice({
       state.columnOrderIds = [...state.columnOrderIds, action.payload._id]
     },
 
-    addNewCard: (state, action) => {
-      const column = state.columns.find(
-        (column) => column._id === action.payload.columnId
-      )
-      column.cards = [...column.cards, action.payload]
-      column.cardOrderIds = [...column.cardOrderIds, action.payload._id]
-    }
+    addNewCard: (state, action) => {}
   }
 })
 

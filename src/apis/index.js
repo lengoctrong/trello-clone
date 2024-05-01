@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { isEmpty } from 'lodash'
 import {
   addNewCard,
   addNewColumn,
@@ -7,6 +8,7 @@ import {
   fetchBoardSuccess
 } from '~/features/boards/boardSlice'
 import { API_URL, API_VERSION, ITEM_TYPES } from '~/utils/constants'
+import { generatePlaceholderCard } from '~/utils/formatters'
 
 export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
   dispatch(fetchBoardStart())
@@ -14,6 +16,14 @@ export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
     const res = await axios.get(
       `${API_URL}/${API_VERSION}/${ITEM_TYPES.BOARD}/${boardId}`
     )
+
+    res.data.columns.forEach((column) => {
+      if (isEmpty(column.cards)) {
+        column.cards = [generatePlaceholderCard(column)]
+        column.cardOrderIds = [generatePlaceholderCard(column)._id]
+      }
+    })
+
     dispatch(fetchBoardSuccess(res.data))
   } catch (err) {
     dispatch(fetchBoardError())

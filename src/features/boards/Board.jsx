@@ -69,6 +69,9 @@ const Board = () => {
       // check if the old column has only one card
       if (isEmpty(newActiveColumn.cards)) {
         newActiveColumn.cards = [generatePlaceholderCard(newActiveColumn)]
+        newActiveColumn.cardOrderIds = [
+          generatePlaceholderCard(newActiveColumn)._id
+        ]
       }
 
       const newOverColumn = newColumns.find((c) => c._id === overColumn._id)
@@ -92,6 +95,10 @@ const Board = () => {
 
       // delete placeholder card if exists
       newOverColumn.cards = newOverColumn.cards.filter(
+        (card) => !card.fe_placeholderCard
+      )
+
+      newOverColumn.cardOrderIds = newOverColumn.cards.filter(
         (card) => !card.fe_placeholderCard
       )
 
