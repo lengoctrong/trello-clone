@@ -1,12 +1,11 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { v4 as uuidv4 } from 'uuid'
+import { useDispatch, useSelector } from 'react-redux'
+import { createNewCardAPI } from '~/apis'
 import Button from '~/components/Button'
 import ColumnBase from '~/components/ColumnBase'
 import FormAddNew from '~/components/FormAddNew'
-import { addNewCard } from '~/features/boards/boardSlice'
 import ListCards from '~/features/cards/ListCards'
 import { plusIcon } from '~/icons'
 import { mapOrderedArr } from '~/utils/formatters'
@@ -19,6 +18,8 @@ const Column = ({ column }) => {
   const [columnTitle, setColumnTitle] = useState(title)
   const [cardTitle, setCardTitle] = useState('')
   const [toggleAddCardForm, setToggleAddCardForm] = useState(false)
+
+  const { _id: boardId } = useSelector((state) => state.board)
   const dispatch = useDispatch()
 
   const {
@@ -40,19 +41,20 @@ const Column = ({ column }) => {
     setOrderedCards(mapOrderedArr(cards, cardOrderIds, '_id'))
   }, [cards, cardOrderIds])
 
-  const handleSubmit = (e) => {
+  const handleAddNewCard = (e) => {
     e.preventDefault()
-
-    if (!cardTitle.trim().length) return
-
-    const newCard = {
-      _id: `card-${uuidv4()}`,
-      columnId: cards[0].columnId,
-      boardId: cards[0].boardId,
-      title: cardTitle,
-      cover: ''
+    if (!cardTitle.trim().length) {
+      setToggleAddCardForm(false)
+      return
     }
-    dispatch(addNewCard(newCard))
+    // add new card
+    const cardData = {
+      title: cardTitle,
+      boardId,
+      columnId
+    }
+    createNewCardAPI(cardData, dispatch)
+    // reset form
     setCardTitle('')
     setToggleAddCardForm(false)
   }
@@ -81,7 +83,7 @@ const Column = ({ column }) => {
         {toggleAddCardForm ? (
           <FormAddNew
             textAreaRows={2}
-            onSubmit={handleSubmit}
+            onSubmit={handleAddNewCard}
             textAreaTitle={cardTitle}
             btnAddTitle="Thêm thẻ"
             setTitle={setCardTitle}

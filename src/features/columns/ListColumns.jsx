@@ -17,19 +17,16 @@ const ListColumn = ({ columns }) => {
 
   const handleAddNewColumn = (e) => {
     e.preventDefault()
-    if (!columnTitle) {
+    if (!columnTitle.trim().length) {
       setToggleAddColumnForm(false)
       return
     }
-
     // add new column
     const columnData = {
       title: columnTitle,
       boardId
     }
-
     createNewColumnAPI(columnData, dispatch)
-
     // reset form
     setColumnTitle('')
     setToggleAddColumnForm(false)
