@@ -16,7 +16,6 @@ const Column = ({ column }) => {
   const [orderedCards, setOrderedCards] = useState(
     mapOrderedArr(cards, cardOrderIds, '_id')
   )
-
   const [columnTitle, setColumnTitle] = useState(title)
   const [cardTitle, setCardTitle] = useState('')
   const [toggleAddCardForm, setToggleAddCardForm] = useState(false)
@@ -59,9 +58,13 @@ const Column = ({ column }) => {
     setToggleAddCardForm(false)
   }
 
+  const ColumnBaseProps = {
+    title
+  }
+
   return (
     <li ref={setNodeRef} style={CSSProperties} {...attributes} {...listeners}>
-      <ColumnBase>
+      <ColumnBase {...ColumnBaseProps}>
         <input
           className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
           value={columnTitle}

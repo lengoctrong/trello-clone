@@ -273,7 +273,9 @@ const Board = () => {
             </CustomOverlay>
             {/* column overlay */}
             <CustomOverlay>
-              {!activeItem?.data.current.columnId && <ColumnBase></ColumnBase>}
+              {!activeItem?.data.current.columnId && (
+                <ColumnBase overlay data={activeItem.data.current}></ColumnBase>
+              )}
             </CustomOverlay>
           </>
         )}
