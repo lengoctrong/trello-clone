@@ -5,26 +5,24 @@ import ListColumns from '../columns/ListColumns'
 
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import CustomOverlay from '~/components/CustomOverlay'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 import CardItem from '../cards/CardItem'
 import Column from '../columns/Column'
-import { setBoardTitle } from './boardSlice'
 
 const ACTIVE_TYPE = {
   CARD: 'card',
   COLUMN: 'column'
 }
 
-const Board = ({ board }) => {
+const Board = () => {
   const {
     _id: boardId,
     columns,
     columnOrderIds,
     title: boardTitle
   } = useSelector((state) => state.board)
-  const dispatch = useDispatch()
 
   const [activeItem, setActiveItem] = useState(null)
   const [originalCol, setOriginalCol] = useState(null)
@@ -250,7 +248,7 @@ const Board = ({ board }) => {
             className=" btn font-medium outline-blue-500"
             value={boardTitle}
             size={boardTitle.length - 5}
-            onChange={(e) => dispatch(setBoardTitle(e.target.value))}
+            onChange={() => {}}
           />
           <button className="btn items-center bg-white">{moreIcon}</button>
         </div>

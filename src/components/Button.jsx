@@ -4,7 +4,7 @@ const Button = ({ type = 'button', primary, className, children, onClick }) => {
       <button
         type={type}
         onClick={onClick}
-        className={`bg-transparent w-full text-start rounded-xl py-1 px-3 my-1 hover:bg-slate-300 cursor-pointer ${className}`}
+        className={`bg-transparent text-start rounded-xl py-1 px-3 my-1 hover:bg-slate-300 cursor-pointer ${className}`}
       >
         {children}
       </button>

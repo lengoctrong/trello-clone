@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import Button from '~/components/Button'
-import { closeIcon, plusIcon } from '~/icons'
+import FormAddNew from '~/components/FormAddNew'
+import { plusIcon } from '~/icons'
 import { mapOrderedArr } from '~/utils/formatters'
 import { addNewCard } from '../boards/boardSlice'
 import ListCards from '../cards/ListCards'
@@ -18,7 +19,7 @@ const Column = ({ column }) => {
     mapOrderedArr(cards, cardOrderIds, '_id')
   )
   const [columnTitle, setColumnTitle] = useState(title)
-  const [adding, setAdding] = useState(false)
+  const [toggleAddCardForm, setToggleAddCardForm] = useState(false)
   const [cardTitle, setCardTitle] = useState('')
 
   const dispatch = useDispatch()
@@ -57,7 +58,7 @@ const Column = ({ column }) => {
     }
     dispatch(addNewCard(newCard))
     setCardTitle('')
-    setAdding(false)
+    setToggleAddCardForm(false)
   }
 
   return (
@@ -76,30 +77,23 @@ const Column = ({ column }) => {
       />
       <ListCards cards={orderedCards} />
 
-      {adding ? (
-        <form onSubmit={handleSubmit}>
-          <textarea
-            value={cardTitle}
-            onChange={(e) => setCardTitle(e.target.value)}
-            autoFocus
-            rows={2}
-            className="w-full p-2 mt-2 bg-white rounded-md resize-none outline-blue-500"
-            placeholder="Nhập tiêu đề cho thẻ này..."
-          />
-          <div className="flex items-center gap-1">
-            <Button type="submit" primary>
-              Thêm thẻ
-            </Button>
-            <button
-              className="hover:bg-slate-300 p-1"
-              onClick={() => setAdding(!adding)}
-            >
-              {closeIcon}
-            </button>
-          </div>
-        </form>
+      {toggleAddCardForm ? (
+        <FormAddNew
+          textAreaRows={2}
+          onSubmit={handleSubmit}
+          textAreaTitle={cardTitle}
+          btnAddTitle="Thêm thẻ"
+          setTitle={setCardTitle}
+          toggleAddForm={toggleAddCardForm}
+          setToggleAddForm={setToggleAddCardForm}
+          placeholder="Nhập tiêu đề cho thẻ này..."
+        />
       ) : (
-        <Button type="outline" onClick={() => setAdding(!adding)}>
+        <Button
+          type="outline"
+          className="w-full"
+          onClick={() => setToggleAddCardForm(!toggleAddCardForm)}
+        >
           <p className="flex gap-1 items-center">
             <span>{plusIcon}</span>
             Thêm thẻ
