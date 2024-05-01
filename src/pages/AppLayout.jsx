@@ -3,16 +3,16 @@ import { useDispatch } from 'react-redux'
 import { fetchBoardDetailsAPI } from '~/apis'
 import Navbar from '~/components/Navbar'
 import Board from '~/features/boards/Board'
-import { setBoard } from '~/features/boards/boardSlice'
+
 const AppLayout = () => {
   const dispatch = useDispatch()
   useEffect(() => {
-    const id = '663259ed926d9659c794fdb1'
-    fetchBoardDetailsAPI(id).then((b) => dispatch(setBoard(b)))
+    const boardId = '663259ed926d9659c794fdb1'
+    fetchBoardDetailsAPI(boardId, dispatch)
   }, [dispatch])
   return (
     <div
-      className="w-screen h-screen"
+      className="h-screen"
       style={{
         backgroundImage: 'url(./background.jpg)',
         backgroundSize: 'cover'

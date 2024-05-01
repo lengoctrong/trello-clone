@@ -33,8 +33,7 @@ const Column = ({ column }) => {
   const CSSProperties = {
     transform: CSS.Translate.toString(transform),
     transition,
-    opacity: isDragging ? 0.4 : undefined,
-    overflowY: 'auto'
+    opacity: isDragging ? 0.4 : undefined
   }
 
   useEffect(() => {
@@ -63,7 +62,13 @@ const Column = ({ column }) => {
   }
 
   return (
-    <li ref={setNodeRef} style={CSSProperties} {...attributes} {...listeners}>
+    <li
+      ref={setNodeRef}
+      style={CSSProperties}
+      {...attributes}
+      {...listeners}
+      className="h-full"
+    >
       <ColumnBase {...ColumnBaseProps}>
         <input
           className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"

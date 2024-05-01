@@ -3,6 +3,8 @@ import {
   horizontalListSortingStrategy
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { createNewColumnAPI } from '~/apis'
 import FormAddNew from '~/components/FormAddNew'
 import { plusIcon } from '~/icons'
 import Column from './Column'
@@ -10,9 +12,27 @@ const ListColumn = ({ columns }) => {
   const [toggleAddColumnForm, setToggleAddColumnForm] = useState(false)
   const [columnTitle, setColumnTitle] = useState('')
 
-  const handleSubmit = (e) => {
-    if (!columnTitle) return
+  const { _id: boardId } = useSelector((state) => state.board)
+  const dispatch = useDispatch()
+
+  const handleAddNewColumn = (e) => {
     e.preventDefault()
+    if (!columnTitle) {
+      setToggleAddColumnForm(false)
+      return
+    }
+
+    // add new column
+    const columnData = {
+      title: columnTitle,
+      boardId
+    }
+
+    createNewColumnAPI(columnData, dispatch)
+
+    // reset form
+    setColumnTitle('')
+    setToggleAddColumnForm(false)
   }
   return (
     <>
@@ -25,10 +45,10 @@ const ListColumn = ({ columns }) => {
             <Column key={column._id} column={column} />
           ))}
           {toggleAddColumnForm ? (
-            <div className={'bg-gray-100 w-[272px] rounded-xl p-2 h-full'}>
+            <div className={'bg-gray-100 min-w-[272px] rounded-xl p-2 h-full'}>
               <FormAddNew
                 textAreaRows={1}
-                onSubmit={handleSubmit}
+                onSubmit={handleAddNewColumn}
                 textAreaTitle={columnTitle}
                 btnAddTitle="Thêm danh sách"
                 setTitle={setColumnTitle}
@@ -41,7 +61,7 @@ const ListColumn = ({ columns }) => {
           ) : (
             <button
               className={
-                'bg-gray-100 bg-opacity-25 text-white w-[272px] rounded-xl p-4 h-full cursor-pointer hover:bg-opacity-30'
+                'bg-gray-100 bg-opacity-25 text-white min-w-[272px] rounded-xl p-4 h-full cursor-pointer hover:bg-opacity-30'
               }
               onClick={() => setToggleAddColumnForm(!toggleAddColumnForm)}
             >

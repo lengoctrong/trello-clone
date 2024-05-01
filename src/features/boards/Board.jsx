@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { useEffect, useState } from 'react'
 import { moreIcon } from '~/icons'
@@ -10,13 +11,6 @@ import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
 import CustomOverlay from '~/components/CustomOverlay'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
-import CardItem from '../cards/CardItem'
-import Column from '../columns/Column'
-
-const ACTIVE_TYPE = {
-  CARD: 'card',
-  COLUMN: 'column'
-}
 
 const Board = () => {
   const {
@@ -133,7 +127,7 @@ const Board = () => {
 
   const handleDragOver = (dragEvent) => {
     const { active, over } = dragEvent
-    if (active.id.startsWith(ACTIVE_TYPE.COLUMN) || !active || !over) return
+    if (!active.data.current.columnId || !active || !over) return
 
     const { id: activeCardId } = active
     const { id: overCardId } = over
@@ -244,7 +238,7 @@ const Board = () => {
   }
 
   return (
-    <div id={boardId} className="h-[calc(100%-48px)] p-3">
+    <div id={boardId} className="h-[calc(100%-48px)] p-3 overflow-x-auto">
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}
@@ -255,7 +249,7 @@ const Board = () => {
           <input
             className=" btn font-medium outline-blue-500"
             value={boardTitle}
-            size={boardTitle.length - 5}
+            size={boardTitle?.length - 5}
             onChange={() => {}}
           />
           <button className="btn items-center bg-white">{moreIcon}</button>
