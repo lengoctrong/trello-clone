@@ -43,7 +43,8 @@ const boardSlice = createSlice({
       )
       column.cards = [...column.cards, action.payload]
       column.cardOrderIds = [...column.cardOrderIds, action.payload._id]
-    }
+    },
+    moveColumn: (state, action) => {}
   }
 })
 
@@ -53,5 +54,6 @@ export const {
   fetchBoardError,
   fetchBoardSuccess,
   addNewCard,
-  addNewColumn
+  addNewColumn,
+  moveColumn
 } = boardSlice.actions

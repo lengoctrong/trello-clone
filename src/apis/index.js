@@ -5,7 +5,8 @@ import {
   addNewColumn,
   fetchBoardError,
   fetchBoardStart,
-  fetchBoardSuccess
+  fetchBoardSuccess,
+  moveColumn
 } from '~/features/boards/boardSlice'
 import { API_URL, API_VERSION, ITEM_TYPES } from '~/utils/constants'
 import { generatePlaceholderCard } from '~/utils/formatters'
@@ -28,6 +29,18 @@ export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
   } catch (err) {
     dispatch(fetchBoardError())
   }
+}
+
+export const updateBoardDetailsAPI = async (
+  boardId,
+  updatedBoard,
+  dispatch
+) => {
+  await axios.put(
+    `${API_URL}/${API_VERSION}/${ITEM_TYPES.BOARD}/${boardId}`,
+    updatedBoard
+  )
+  dispatch(moveColumn(updatedBoard))
 }
 
 export const createNewColumnAPI = async (columnData, dispatch) => {

@@ -3,7 +3,8 @@ import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateBoardDetailsAPI } from '~/apis'
 import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
 import CustomOverlay from '~/components/CustomOverlay'
@@ -20,6 +21,8 @@ const Board = () => {
     title: boardTitle
   } = useSelector((state) => state.board)
 
+  const dispatch = useDispatch()
+
   const [activeItem, setActiveItem] = useState(null)
   const [originalCol, setOriginalCol] = useState(null)
   const [orderedColumns, setOrderedColumns] = useState(
@@ -30,8 +33,7 @@ const Board = () => {
     useSensor(MouseSensor),
     useSensor(PointerSensor, {
       activationConstraint: {
-        delay: 250,
-        tolerance: 5
+        distance: 5
       }
     })
   )
@@ -129,7 +131,7 @@ const Board = () => {
     console.log('[DRAG START]', '\nactive:', active)
     setActiveItem(active)
 
-    // Drag card
+    // [DRAG CARD]
     if (active.data.current.columnId) {
       setOriginalCol(findColumn(active.id))
       console.log('originalCol:', originalCol)
@@ -138,6 +140,8 @@ const Board = () => {
 
   const handleDragOver = (dragEvent) => {
     const { active, over } = dragEvent
+
+    // [DRAG CARD]
     if (!active.data.current.columnId || !active || !over) return
 
     const { id: activeCardId } = active
@@ -148,8 +152,6 @@ const Board = () => {
 
     if (!activeColumn || !overColumn || activeColumn === overColumn) return
     console.log('[DRAG OVER]', '\nactive:', active, '\nover:', over)
-
-    console.log('Kéo thả card qua các column khác')
 
     console.log('activeColumn:', activeColumn, '\noverColumn:', overColumn)
 
@@ -169,6 +171,7 @@ const Board = () => {
     if (!activeItem || !over) return
     console.log('[DRAG END]', '\nactive:', activeItem, '\nover:', over)
 
+    // [DRAG CARD]
     if (activeItem.data.current.columnId) {
       const { id: activeCardId } = activeItem
       const { id: overCardId } = over
@@ -179,8 +182,8 @@ const Board = () => {
 
       if (!originalCol || !overColumn) return
 
+      // drag card to another column
       if (originalCol._id !== overColumn._id) {
-        // drag card to another column
         dragCardToAnotherColumn(
           overColumn,
           overCardId,
@@ -220,9 +223,8 @@ const Board = () => {
       })
     }
 
+    // [DRAG COLUMN]
     if (!activeItem.data.current.columnId) {
-      console.log('Kéo thả column')
-
       // drag column into the same board
       const { id: activeColumnId } = activeItem
       const { id: overColumnId } = over
@@ -239,6 +241,14 @@ const Board = () => {
           prevColumns,
           oldColumnIndex,
           newColumnIndex
+        )
+
+        // call api to update board
+        const orderedColumnOrderIds = orderedColumns.map((column) => column._id)
+        updateBoardDetailsAPI(
+          boardId,
+          { columnOrderIds: orderedColumnOrderIds },
+          dispatch
         )
 
         return orderedColumns
