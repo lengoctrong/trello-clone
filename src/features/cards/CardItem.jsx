@@ -1,5 +1,6 @@
 import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
+import CardBase from '~/components/CardBase'
 
 const CardItem = ({ card }) => {
   const {
@@ -19,20 +20,15 @@ const CardItem = ({ card }) => {
   }
 
   return (
-    <button
+    <li
       ref={setNodeRef}
       style={CSSProperties}
       {...attributes}
       {...listeners}
       type="text"
-      className={
-        card.fe_placeholderCard
-          ? 'p-5'
-          : 'bg-white shadow-sm border-2 w-full text-start rounded-xl py-1 px-3 my-1 hover:border-blue-500'
-      }
     >
-      {card.title ?? ''}
-    </button>
+      <CardBase>{card.title}</CardBase>
+    </li>
   )
 }
 

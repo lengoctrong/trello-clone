@@ -6,6 +6,8 @@ import ListColumns from '../columns/ListColumns'
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { useSelector } from 'react-redux'
+import CardBase from '~/components/CardBase'
+import ColumnBase from '~/components/ColumnBase'
 import CustomOverlay from '~/components/CustomOverlay'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 import CardItem from '../cards/CardItem'
@@ -29,7 +31,6 @@ const Board = () => {
   const [orderedColumns, setOrderedColumns] = useState(
     mapOrderedArr(columns, columnOrderIds, '_id')
   )
-
   const pointerSensor = useSensor(PointerSensor, {
     activationConstraint: {
       distance: 10
@@ -113,6 +114,8 @@ const Board = () => {
         newOverColumn
       )
 
+      console.log('newColumns:', newColumns)
+
       return newColumns
     })
   }
@@ -121,8 +124,10 @@ const Board = () => {
     console.log('[DRAG START]', '\nactive:', active)
     setActiveItem(active)
 
-    if (active.id.startsWith(ACTIVE_TYPE.CARD)) {
+    // Drag card
+    if (active.data.current.columnId) {
       setOriginalCol(findColumn(active.id))
+      console.log('originalCol:', originalCol)
     }
   }
 
@@ -155,16 +160,19 @@ const Board = () => {
 
   const handleDragEnd = (dragEvent) => {
     const { over } = dragEvent
-    if (!activeItem || !over) return
 
-    if (activeItem.id.startsWith(ACTIVE_TYPE.CARD)) {
+    if (!activeItem || !over) return
+    console.log('[DRAG END]', '\nactive:', activeItem, '\nover:', over)
+
+    if (activeItem.data.current.columnId) {
       const { id: activeCardId } = activeItem
       const { id: overCardId } = over
 
       const overColumn = findColumn(overCardId)
 
+      console.log('originalCol:', originalCol, '\noverColumn:', overColumn)
+
       if (!originalCol || !overColumn) return
-      console.log('[DRAG END]', '\nactive:', activeItem, '\nover:', over)
 
       if (originalCol._id !== overColumn._id) {
         // drag card to another column
@@ -205,7 +213,7 @@ const Board = () => {
       })
     }
 
-    if (activeItem.id.startsWith(ACTIVE_TYPE.COLUMN)) {
+    if (!activeItem.data.current.columnId) {
       console.log('Kéo thả column')
 
       // drag column into the same board
@@ -254,15 +262,20 @@ const Board = () => {
         </div>
 
         <ListColumns columns={orderedColumns} />
-        {activeItem?.id.startsWith(ACTIVE_TYPE.CARD) && (
-          <CustomOverlay>
-            <CardItem key={activeItem.id} card={activeItem.data.current} />
-          </CustomOverlay>
-        )}
-        {activeItem?.id.startsWith(ACTIVE_TYPE.COLUMN) && (
-          <CustomOverlay>
-            <Column key={activeItem.id} column={activeItem.data.current} />
-          </CustomOverlay>
+
+        {activeItem && (
+          <>
+            {/* card overlay */}
+            <CustomOverlay>
+              {activeItem?.data.current.columnId && (
+                <CardBase>{activeItem.data.current.title}</CardBase>
+              )}
+            </CustomOverlay>
+            {/* column overlay */}
+            <CustomOverlay>
+              {!activeItem?.data.current.columnId && <ColumnBase></ColumnBase>}
+            </CustomOverlay>
+          </>
         )}
       </DndContext>
     </div>

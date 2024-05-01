@@ -20,7 +20,7 @@ const ListColumn = ({ columns }) => {
         items={columns.map((column) => column._id)}
         strategy={horizontalListSortingStrategy}
       >
-        <div className="flex gap-4 mt-3">
+        <ul className="flex gap-4 mt-3">
           {columns.map((column) => (
             <Column key={column._id} column={column} />
           ))}
@@ -51,7 +51,7 @@ const ListColumn = ({ columns }) => {
               </p>
             </button>
           )}
-        </div>
+        </ul>
       </SortableContext>
     </>
   )

@@ -4,24 +4,22 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import Button from '~/components/Button'
+import ColumnBase from '~/components/ColumnBase'
 import FormAddNew from '~/components/FormAddNew'
+import { addNewCard } from '~/features/boards/boardSlice'
+import ListCards from '~/features/cards/ListCards'
 import { plusIcon } from '~/icons'
 import { mapOrderedArr } from '~/utils/formatters'
-import { addNewCard } from '../boards/boardSlice'
-import ListCards from '../cards/ListCards'
-
-const MAX_WIDTH_COLUMN = '272px'
-const MAX_HEIGHT_COLUMN = '760px'
 
 const Column = ({ column }) => {
   const { _id: columnId, title, cards, cardOrderIds } = column
   const [orderedCards, setOrderedCards] = useState(
     mapOrderedArr(cards, cardOrderIds, '_id')
   )
-  const [columnTitle, setColumnTitle] = useState(title)
-  const [toggleAddCardForm, setToggleAddCardForm] = useState(false)
-  const [cardTitle, setCardTitle] = useState('')
 
+  const [columnTitle, setColumnTitle] = useState(title)
+  const [cardTitle, setCardTitle] = useState('')
+  const [toggleAddCardForm, setToggleAddCardForm] = useState(false)
   const dispatch = useDispatch()
 
   const {
@@ -62,45 +60,41 @@ const Column = ({ column }) => {
   }
 
   return (
-    <div
-      ref={setNodeRef}
-      style={CSSProperties}
-      {...attributes}
-      {...listeners}
-      className={`bg-gray-100  max-h-[${MAX_HEIGHT_COLUMN}] max-w-[${MAX_WIDTH_COLUMN}] w-[272px] rounded-xl p-4 h-full cursor-pointer`}
-    >
-      <input
-        className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
-        value={columnTitle}
-        size={columnTitle.length}
-        onChange={(e) => setColumnTitle(e.target.value)}
-      />
-      <ListCards cards={orderedCards} />
-
-      {toggleAddCardForm ? (
-        <FormAddNew
-          textAreaRows={2}
-          onSubmit={handleSubmit}
-          textAreaTitle={cardTitle}
-          btnAddTitle="Thêm thẻ"
-          setTitle={setCardTitle}
-          toggleAddForm={toggleAddCardForm}
-          setToggleAddForm={setToggleAddCardForm}
-          placeholder="Nhập tiêu đề cho thẻ này..."
+    <li ref={setNodeRef} style={CSSProperties} {...attributes} {...listeners}>
+      <ColumnBase>
+        <input
+          className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
+          value={columnTitle}
+          size={columnTitle?.length}
+          onChange={(e) => setColumnTitle(e.target.value)}
         />
-      ) : (
-        <Button
-          type="outline"
-          className="w-full"
-          onClick={() => setToggleAddCardForm(!toggleAddCardForm)}
-        >
-          <p className="flex gap-1 items-center">
-            <span>{plusIcon}</span>
-            Thêm thẻ
-          </p>
-        </Button>
-      )}
-    </div>
+        <ListCards cards={orderedCards} />
+
+        {toggleAddCardForm ? (
+          <FormAddNew
+            textAreaRows={2}
+            onSubmit={handleSubmit}
+            textAreaTitle={cardTitle}
+            btnAddTitle="Thêm thẻ"
+            setTitle={setCardTitle}
+            toggleAddForm={toggleAddCardForm}
+            setToggleAddForm={setToggleAddCardForm}
+            placeholder="Nhập tiêu đề cho thẻ này..."
+          />
+        ) : (
+          <Button
+            type="outline"
+            className="w-full"
+            onClick={() => setToggleAddCardForm(!toggleAddCardForm)}
+          >
+            <p className="flex gap-1 items-center">
+              <span>{plusIcon}</span>
+              Thêm thẻ
+            </p>
+          </Button>
+        )}
+      </ColumnBase>
+    </li>
   )
 }
 

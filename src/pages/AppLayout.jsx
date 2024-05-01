@@ -7,10 +7,9 @@ import { setBoard } from '~/features/boards/boardSlice'
 const AppLayout = () => {
   const dispatch = useDispatch()
   useEffect(() => {
-    const id = '662fe23a6c92c95a4bd62125'
+    const id = '663259ed926d9659c794fdb1'
     fetchBoardDetailsAPI(id).then((b) => dispatch(setBoard(b)))
   }, [dispatch])
-
   return (
     <div
       className="w-screen h-screen"

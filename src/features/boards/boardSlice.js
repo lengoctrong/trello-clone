@@ -5,7 +5,10 @@ const initialState = {
   title: '',
   slug: '',
   columnOrderIds: [],
-  columns: []
+  columns: [],
+  createdAt: null,
+  updatedAt: null,
+  _destroy: false
 }
 
 const boardSlice = createSlice({
@@ -15,9 +18,7 @@ const boardSlice = createSlice({
     setBoard: (state, action) => {
       return action.payload
     },
-    setBoardTitle: (state, action) => {
-      state.title = action.payload
-    },
+
     addNewCard: (state, action) => {
       const card = action.payload
       const { _id: cardId, columnId } = card
@@ -30,4 +31,4 @@ const boardSlice = createSlice({
 })
 
 export default boardSlice.reducer
-export const { setBoard, setBoardTitle, addNewCard } = boardSlice.actions
+export const { setBoard, addNewCard } = boardSlice.actions

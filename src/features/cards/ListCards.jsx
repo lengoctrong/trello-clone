@@ -1,10 +1,10 @@
-import { SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable'
+import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import CardItem from './CardItem'
 const ListCards = ({ cards }) => {
   return (
     <SortableContext
       items={cards.map((card) => card._id)}
-      strategy={verticalListSortingStrategy}
+      strategy={rectSortingStrategy}
     >
       <ul>
         {cards.map((card) => (
