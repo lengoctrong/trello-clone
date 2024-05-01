@@ -1,5 +1,3 @@
-import React from 'react'
-
 const CardBase = ({ children }) => {
   return (
     <div

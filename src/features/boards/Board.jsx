@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { DndContext, useSensor, useSensors } from '@dnd-kit/core'
+import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
@@ -26,7 +26,15 @@ const Board = () => {
     mapOrderedArr(columns, columnOrderIds, '_id')
   )
 
-  const sensors = useSensors(useSensor(MouseSensor))
+  const sensors = useSensors(
+    useSensor(MouseSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5
+      }
+    })
+  )
 
   useEffect(() => {
     setOrderedColumns(mapOrderedArr(columns, columnOrderIds, '_id'))
@@ -197,6 +205,8 @@ const Board = () => {
       )
 
       setOrderedColumns((prevColumns) => {
+        if (!overColumn) return prevColumns
+
         const newColumns = cloneDeep(prevColumns)
 
         const targetColumn = newColumns.find(

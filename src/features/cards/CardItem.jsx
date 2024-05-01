@@ -13,7 +13,7 @@ const CardItem = ({ card }) => {
   } = useSortable({ id: card._id, data: { ...card } })
 
   const CSSProperties = {
-    opacity: isDragging ? 0.4 : card.fe_placeholderCard ? 0 : undefined,
+    opacity: isDragging ? 0.4 : undefined,
     transform: CSS.Translate.toString(transform),
     transition
   }
@@ -26,7 +26,11 @@ const CardItem = ({ card }) => {
       {...listeners}
       type="text"
     >
-      <CardBase>{card.title}</CardBase>
+      {!card.fe_placeholderCard ? (
+        <CardBase>{card.title}</CardBase>
+      ) : (
+        <div className="p-2"></div>
+      )}
     </li>
   )
 }

@@ -28,7 +28,11 @@ const FormAddNew = ({
         </Button>
         <button
           className="hover:bg-slate-300 p-1"
-          onClick={() => setToggleAddForm(!toggleAddForm)}
+          onClick={() => {
+            setTimeout(() => {
+              setToggleAddForm(!toggleAddForm)
+            }, 0)
+          }}
         >
           {icon}
         </button>
