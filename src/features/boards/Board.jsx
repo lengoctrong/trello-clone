@@ -5,9 +5,9 @@ import { cloneDeep, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  moveCardToDifferentColumnAPI,
   updateBoardDetailsAPI,
-  updateColumnDetailsAPI,
-  updateTwoColumnsAPI
+  updateColumnDetailsAPI
 } from '~/apis'
 import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
@@ -59,6 +59,7 @@ const Board = () => {
     trigger = ''
   ) => {
     const { active, over } = dragEvent
+
     setOrderedColumns((prevColumns) => {
       const overCardIndex = overColumn.cards.findIndex(
         (card) => card._id === overCardId
@@ -127,7 +128,8 @@ const Board = () => {
       console.log('newColumns:', newColumns)
 
       if (trigger === 'handleDragEnd') {
-        updateTwoColumnsAPI(
+        // call api to update two columns when drag card to another column
+        moveCardToDifferentColumnAPI(
           activeCardId,
           activeColumn._id,
           overColumn._id,
@@ -135,7 +137,6 @@ const Board = () => {
           dispatch
         )
       }
-
       return newColumns
     })
   }
