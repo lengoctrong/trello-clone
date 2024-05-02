@@ -6,17 +6,18 @@ import {
   fetchBoardError,
   fetchBoardStart,
   fetchBoardSuccess,
+  moveCardOtherColumn,
   moveCardSameColumn,
   moveColumn
 } from '~/features/boards/boardSlice'
-import { API_URL, API_VERSION, ITEM_TYPES } from '~/utils/constants'
+import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 
 export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
   dispatch(fetchBoardStart())
   try {
     const res = await axios.get(
-      `${API_URL}/${API_VERSION}/${ITEM_TYPES.BOARD}/${boardId}`
+      `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`
     )
     const board = res.data
     board.columns = mapOrderedArr(board.columns, board.columnOrderIds, '_id')
@@ -40,7 +41,7 @@ export const updateBoardDetailsAPI = async (
   dispatch
 ) => {
   await axios.put(
-    `${API_URL}/${API_VERSION}/${ITEM_TYPES.BOARD}/${boardId}`,
+    `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`,
     updatedBoard
   )
   dispatch(moveColumn(updatedBoard))
@@ -48,10 +49,40 @@ export const updateBoardDetailsAPI = async (
 
 export const createNewColumnAPI = async (columnData, dispatch) => {
   const res = await axios.post(
-    `${API_URL}/${API_VERSION}/${ITEM_TYPES.COLUMN}`,
+    `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}`,
     columnData
   )
   dispatch(addNewColumn(res.data))
+}
+
+export const updateTwoColumnsAPI = async (
+  currentCardId,
+  prevColumnId,
+  currentColumnId,
+  updatedColumns,
+  dispatch
+) => {
+  await axios.put(
+    `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/supports/moving_card`,
+    {
+      currentCardId,
+      prevColumnId,
+      prevCardOrderIds: updatedColumns.find((c) => c._id === prevColumnId)
+        .cardOrderIds,
+      currentColumnId,
+      currentCardOrderIds: updatedColumns.find((c) => c._id === currentColumnId)
+        .cardOrderIds
+    }
+  )
+
+  dispatch(
+    moveCardOtherColumn({
+      currentCardId,
+      prevColumnId,
+      currentColumnId,
+      updatedColumns
+    })
+  )
 }
 
 export const updateColumnDetailsAPI = async (
@@ -60,7 +91,7 @@ export const updateColumnDetailsAPI = async (
   dispatch
 ) => {
   await axios.put(
-    `${API_URL}/${API_VERSION}/${ITEM_TYPES.COLUMN}/${columnId}`,
+    `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`,
     updatedColumn
   )
   dispatch(moveCardSameColumn({ columnId, updatedColumn }))
@@ -68,7 +99,7 @@ export const updateColumnDetailsAPI = async (
 
 export const createNewCardAPI = async (cardData, dispatch) => {
   const res = await axios.post(
-    `${API_URL}/${API_VERSION}/${ITEM_TYPES.CARD}`,
+    `${API_URL}/${API_VERSION}/${API_TYPES.CARD}`,
     cardData
   )
   dispatch(addNewCard(res.data))
