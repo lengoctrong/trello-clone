@@ -12,9 +12,7 @@ import { mapOrderedArr } from '~/utils/formatters'
 
 const Column = ({ column }) => {
   const { _id: columnId, title, cards, cardOrderIds } = column
-  const [orderedCards, setOrderedCards] = useState(
-    mapOrderedArr(cards, cardOrderIds, '_id')
-  )
+  const [orderedCards, setOrderedCards] = useState(cards)
   const [columnTitle, setColumnTitle] = useState(title)
   const [cardTitle, setCardTitle] = useState('')
   const [toggleAddCardForm, setToggleAddCardForm] = useState(false)

@@ -4,7 +4,7 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateBoardDetailsAPI } from '~/apis'
+import { updateBoardDetailsAPI, updateColumnDetailsAPI } from '~/apis'
 import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
 import CustomOverlay from '~/components/CustomOverlay'
@@ -25,9 +25,7 @@ const Board = () => {
 
   const [activeItem, setActiveItem] = useState(null)
   const [originalCol, setOriginalCol] = useState(null)
-  const [orderedColumns, setOrderedColumns] = useState(
-    mapOrderedArr(columns, columnOrderIds, '_id')
-  )
+  const [orderedColumns, setOrderedColumns] = useState(columns)
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -206,7 +204,6 @@ const Board = () => {
         oldCardIndex,
         newCardIndex
       )
-
       setOrderedColumns((prevColumns) => {
         if (!overColumn) return prevColumns
 
@@ -218,6 +215,13 @@ const Board = () => {
 
         targetColumn.cards = orderedCards
         targetColumn.cardOrderIds = orderedCards.map((card) => card._id)
+
+        // call api to update column
+        updateColumnDetailsAPI(
+          targetColumn._id,
+          { cards: orderedCards, cardOrderIds: targetColumn.cardOrderIds },
+          dispatch
+        )
 
         return newColumns
       })
@@ -242,7 +246,6 @@ const Board = () => {
           oldColumnIndex,
           newColumnIndex
         )
-
         // call api to update board
         const orderedColumnOrderIds = orderedColumns.map((column) => column._id)
         updateBoardDetailsAPI(
@@ -250,7 +253,6 @@ const Board = () => {
           { columnOrderIds: orderedColumnOrderIds },
           dispatch
         )
-
         return orderedColumns
       })
     }
