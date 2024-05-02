@@ -39,12 +39,21 @@ const boardSlice = createSlice({
 
     addNewCard: (state, action) => {
       const column = state.columns.find(
-        (columnn) => columnn._id === action.payload.columnId
+        (column) => column._id === action.payload.columnId
       )
       column.cards = [...column.cards, action.payload]
       column.cardOrderIds = [...column.cardOrderIds, action.payload._id]
     },
-    moveColumn: (state, action) => {}
+    moveColumn: (state, action) => {
+      state.columnOrderIds = [...action.payload.columnOrderIds]
+    },
+    moveCardSameColumn: (state, action) => {
+      const column = state.columns.find(
+        (column) => column._id === action.payload.columnId
+      )
+      column.cards = [...action.payload.updatedColumn.cards]
+      column.cardOrderIds = [...action.payload.updatedColumn.cardOrderIds]
+    }
   }
 })
 
@@ -55,5 +64,6 @@ export const {
   fetchBoardSuccess,
   addNewCard,
   addNewColumn,
-  moveColumn
+  moveColumn,
+  moveCardSameColumn
 } = boardSlice.actions
