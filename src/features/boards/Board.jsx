@@ -4,7 +4,11 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateBoardDetailsAPI, updateColumnDetailsAPI } from '~/apis'
+import {
+  updateBoardDetailsAPI,
+  updateColumnDetailsAPI,
+  updateTwoColumnsAPI
+} from '~/apis'
 import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
 import CustomOverlay from '~/components/CustomOverlay'
@@ -51,7 +55,8 @@ const Board = () => {
     overCardId,
     dragEvent,
     activeColumn,
-    activeCardId
+    activeCardId,
+    trigger = ''
   ) => {
     const { active, over } = dragEvent
     setOrderedColumns((prevColumns) => {
@@ -121,6 +126,16 @@ const Board = () => {
 
       console.log('newColumns:', newColumns)
 
+      if (trigger === 'handleDragEnd') {
+        updateTwoColumnsAPI(
+          activeCardId,
+          activeColumn._id,
+          overColumn._id,
+          newColumns,
+          dispatch
+        )
+      }
+
       return newColumns
     })
   }
@@ -187,7 +202,8 @@ const Board = () => {
           overCardId,
           dragEvent,
           originalCol,
-          activeCardId
+          activeCardId,
+          'handleDragEnd'
         )
       }
 
@@ -205,8 +221,6 @@ const Board = () => {
         newCardIndex
       )
       setOrderedColumns((prevColumns) => {
-        if (!overColumn) return prevColumns
-
         const newColumns = cloneDeep(prevColumns)
 
         const targetColumn = newColumns.find(

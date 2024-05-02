@@ -53,6 +53,28 @@ const boardSlice = createSlice({
       )
       column.cards = [...action.payload.updatedColumn.cards]
       column.cardOrderIds = [...action.payload.updatedColumn.cardOrderIds]
+    },
+    moveCardOtherColumn: (state, action) => {
+      state.columns.find((c) => c._id === action.payload.prevColumnId).cards =
+        action.payload.updatedColumns.find(
+          (c) => c._id === action.payload.prevColumnId
+        ).cards
+      state.columns.find(
+        (c) => c._id === action.payload.currentColumnId
+      ).cards = action.payload.updatedColumns.find(
+        (c) => c._id === action.payload.currentColumnId
+      ).cards
+
+      state.columns.find(
+        (c) => c._id === action.payload.prevColumnId
+      ).cardOrderIds = action.payload.updatedColumns.find(
+        (c) => c._id === action.payload.prevColumnId
+      ).cardOrderIds
+      state.columns.find(
+        (c) => c._id === action.payload.currentColumnId
+      ).cardOrderIds = action.payload.updatedColumns.find(
+        (c) => c._id === action.payload.currentColumnId
+      ).cardOrderIds
     }
   }
 })
@@ -65,5 +87,6 @@ export const {
   addNewCard,
   addNewColumn,
   moveColumn,
-  moveCardSameColumn
+  moveCardSameColumn,
+  moveCardOtherColumn
 } = boardSlice.actions

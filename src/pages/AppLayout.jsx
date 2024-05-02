@@ -10,7 +10,7 @@ const AppLayout = () => {
   const { isPending } = useSelector((state) => state.board)
 
   useEffect(() => {
-    const boardId = '663259ed926d9659c794fdb1'
+    const boardId = '66339f177074991df3eceaa7'
     fetchBoardDetailsAPI(boardId, dispatch)
   }, [dispatch])
 
