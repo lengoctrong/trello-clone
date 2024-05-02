@@ -38,11 +38,18 @@ const boardSlice = createSlice({
     },
 
     addNewCard: (state, action) => {
+      const newCard = action.payload
+
       const column = state.columns.find(
-        (column) => column._id === action.payload.columnId
+        (column) => column._id === newCard.columnId
       )
-      column.cards = [...column.cards, action.payload]
-      column.cardOrderIds = [...column.cardOrderIds, action.payload._id]
+      if (column.cards.some((card) => card.fe_placeholderCard)) {
+        column.cards = [newCard]
+        column.cardOrderIds = [newCard._id]
+        return
+      }
+      column.cards.push(newCard)
+      column.cardOrderIds.push(newCard._id)
     },
     moveColumn: (state, action) => {
       state.columnOrderIds = [...action.payload.columnOrderIds]

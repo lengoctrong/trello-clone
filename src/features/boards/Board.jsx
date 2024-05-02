@@ -222,6 +222,7 @@ const Board = () => {
         newCardIndex
       )
       setOrderedColumns((prevColumns) => {
+        if (!orderedCards) return prevColumns
         const newColumns = cloneDeep(prevColumns)
 
         const targetColumn = newColumns.find(
