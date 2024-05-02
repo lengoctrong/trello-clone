@@ -55,20 +55,29 @@ export const createNewColumnAPI = async (columnData, dispatch) => {
   dispatch(addNewColumn(res.data))
 }
 
-export const updateTwoColumnsAPI = async (
+export const moveCardToDifferentColumnAPI = async (
   currentCardId,
   prevColumnId,
   currentColumnId,
   updatedColumns,
   dispatch
 ) => {
+  let prevCardOrderIds =
+    updatedColumns.find((c) => c._id === prevColumnId)?.cardOrderIds || []
+
+  if (
+    prevCardOrderIds.length === 1 &&
+    prevCardOrderIds[0].includes('placeholder-card')
+  ) {
+    prevCardOrderIds = []
+  }
+
   await axios.put(
     `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/supports/moving_card`,
     {
       currentCardId,
       prevColumnId,
-      prevCardOrderIds: updatedColumns.find((c) => c._id === prevColumnId)
-        .cardOrderIds,
+      prevCardOrderIds,
       currentColumnId,
       currentCardOrderIds: updatedColumns.find((c) => c._id === currentColumnId)
         .cardOrderIds
