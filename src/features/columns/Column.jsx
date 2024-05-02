@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { createNewCardAPI } from '~/apis'
 import Button from '~/components/Button'
+import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
 import FormAddNew from '~/components/FormAddNew'
 import ListCards from '~/features/cards/ListCards'
@@ -71,7 +72,7 @@ const Column = ({ column }) => {
     >
       <ColumnBase {...ColumnBaseProps}>
         <input
-          className="bg-transparent font-medium text-gray-500 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
+          className="bg-transparent font-bold text-gray-600 outline-blue-500 rounded-md px-2 w-full focus:bg-white"
           data-no-dnd
           value={columnTitle}
           size={columnTitle?.length}
@@ -91,16 +92,18 @@ const Column = ({ column }) => {
             placeholder="Nhập tiêu đề cho thẻ này..."
           />
         ) : (
-          <Button
+          <div
             type="outline"
             className="w-full"
             onClick={() => setToggleAddCardForm(!toggleAddCardForm)}
           >
-            <p className="flex gap-1 items-center">
-              <span>{plusIcon}</span>
-              Thêm thẻ
-            </p>
-          </Button>
+            <div className="bg-transparent items-center w-full text-start rounded-xl py-1 px-3 my-2 hover:bg-gray-300">
+              <div className="flex gap-2 min-w-full">
+                {plusIcon}
+                <p>Thêm thẻ</p>
+              </div>
+            </div>
+          </div>
         )}
       </ColumnBase>
     </li>
