@@ -19,6 +19,7 @@ const ColumnBase = ({ children, overlay, data = null }) => {
             size={data?.title?.length}
             onChange={() => {}}
           />
+
           <ListCards cards={orderedCards} />
         </>
       ) : (

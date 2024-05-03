@@ -3,9 +3,8 @@ import { isEmpty } from 'lodash'
 import {
   addNewCard,
   addNewColumn,
-  fetchBoardError,
-  fetchBoardStart,
-  fetchBoardSuccess,
+  deleteColumn,
+  fetchBoard,
   moveCardOtherColumn,
   moveCardSameColumn,
   moveColumn
@@ -14,25 +13,20 @@ import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 
 export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
-  dispatch(fetchBoardStart())
-  try {
-    const res = await axios.get(
-      `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`
-    )
-    const board = res.data
-    board.columns = mapOrderedArr(board.columns, board.columnOrderIds, '_id')
-    board.columns.forEach((column) => {
-      if (isEmpty(column.cards)) {
-        column.cards = [generatePlaceholderCard(column)]
-        column.cardOrderIds = [generatePlaceholderCard(column)._id]
-      }
-      column.cards = mapOrderedArr(column.cards, column.cardOrderIds, '_id')
-    })
+  const res = await axios.get(
+    `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`
+  )
+  const board = res.data
+  board.columns = mapOrderedArr(board.columns, board.columnOrderIds, '_id')
+  board.columns.forEach((column) => {
+    if (isEmpty(column.cards)) {
+      column.cards = [generatePlaceholderCard(column)]
+      column.cardOrderIds = [generatePlaceholderCard(column)._id]
+    }
+    column.cards = mapOrderedArr(column.cards, column.cardOrderIds, '_id')
+  })
 
-    dispatch(fetchBoardSuccess(res.data))
-  } catch (err) {
-    dispatch(fetchBoardError())
-  }
+  dispatch(fetchBoard(res.data))
 }
 
 export const updateBoardDetailsAPI = async (
@@ -104,6 +98,14 @@ export const updateColumnDetailsAPI = async (
     updatedColumn
   )
   dispatch(moveCardSameColumn({ columnId, updatedColumn }))
+}
+
+export const deleteColumnDetailsAPI = async (columnId, dispatch) => {
+  dispatch(deleteColumn(columnId))
+
+  return await axios.delete(
+    `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`
+  )
 }
 
 export const createNewCardAPI = async (cardData, dispatch) => {
