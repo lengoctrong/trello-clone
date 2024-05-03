@@ -13,7 +13,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('user')
-    navigate('login')
+    navigate('/login')
   }
   return (
     <header className="h-12 flex justify-between items-center px-8 py-2 bg-white">

@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import { createNewBoardAPI, getAllBoardAPI } from '~/apis'
+import { getAllBoardAPI } from '~/apis'
 import Loader from '~/components/Loader'
 import Navbar from '~/components/Navbar'
+import { BoardForm } from '~/features/boards/BoardForm'
 
 const Homepage = () => {
   const { isPending } = useSelector((state) => state.board)
@@ -13,10 +14,6 @@ const Homepage = () => {
   }, [dispatch])
 
   const boards = useSelector((state) => state.board.boards)
-
-  const handleAddNewBoard = () => {
-    createNewBoardAPI({ title: 'New Board' }, dispatch)
-  }
 
   return isPending ? (
     <Loader />
@@ -52,12 +49,7 @@ const Homepage = () => {
                 <p>{board.title}</p>
               </Link>
             ))}
-            <div
-              onClick={handleAddNewBoard}
-              className="h-[100px] w-[200px] flex justify-center items-center text-black text-2xl rounded-md cursor-pointer bg-gray-200 hover:bg-gray-300"
-            >
-              <p>Tạo bảng mới</p>
-            </div>
+            <BoardForm />
           </div>
         </div>
       </div>

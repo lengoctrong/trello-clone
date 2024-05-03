@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { cloneDeep, debounce, isEmpty, set } from 'lodash'
+import { cloneDeep, debounce, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -304,7 +304,7 @@ const Board = () => {
       >
         <div className="flex justify-between">
           <input
-            style={{ width: '10ch' }}
+            style={{ width: '12ch' }}
             className="btn font-medium outline-blue-500"
             value={title}
             onInput={(e) => {

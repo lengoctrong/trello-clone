@@ -44,12 +44,13 @@ export default function Register() {
       })
       if (res.status === 201) {
         toast.success('Đăng ký tài khoản thành công!')
-        // reset form
-        setPassword('')
-        setConfirmPassword('')
       }
     } catch (err) {
-      toast.error('Đăng ký tài khoản thất bại.')
+      toast.error('Đăng ký tài khoản thất bại!')
+    } finally {
+      // reset form
+      setPassword('')
+      setConfirmPassword('')
     }
   }
 
