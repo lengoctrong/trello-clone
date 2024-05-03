@@ -1,8 +1,6 @@
 import ListCards from '~/features/cards/ListCards'
+import { MAX_HEIGHT_COLUMN, MAX_WIDTH_COLUMN } from '~/utils/constants'
 import { mapOrderedArr } from '~/utils/formatters'
-
-const MAX_WIDTH_COLUMN = '272px'
-const MAX_HEIGHT_COLUMN = '760px'
 
 const ColumnBase = ({ children, overlay, data = null }) => {
   const orderedCards = mapOrderedArr(data?.cards, data?.cardOrderIds, '_id')

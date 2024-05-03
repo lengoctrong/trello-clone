@@ -1,3 +1,15 @@
+export const retrieveSpecificAttr = (obj, key) => {
+  let titles = []
+  for (let i in obj) {
+    if (typeof obj[i] === 'object') {
+      titles = titles.concat(retrieveSpecificAttr(obj[i], key))
+    } else if (i === key) {
+      titles.push(obj[i])
+    }
+  }
+  return titles
+}
+
 export const mapOrderedArr = (originArr, orderArr, key) => {
   if (!Array.isArray(originArr)) originArr = []
 
