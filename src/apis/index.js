@@ -115,3 +115,10 @@ export const createNewCardAPI = async (cardData, dispatch) => {
   )
   dispatch(addNewCard(res.data))
 }
+
+export const createNewUserAPI = async (userData) => {
+  return await axios.post(
+    `${API_URL}/${API_VERSION}/${API_TYPES.USER}`,
+    userData
+  )
+}

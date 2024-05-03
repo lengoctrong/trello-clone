@@ -1,7 +1,6 @@
 import { Spinner } from '@material-tailwind/react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { fetchBoardDetailsAPI } from '~/apis'
 import Navbar from '~/components/Navbar'
@@ -34,7 +33,6 @@ const AppLayout = () => {
     >
       <Navbar />
       <Board />
-      <ToastContainer />
     </div>
   )
 }
