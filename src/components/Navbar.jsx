@@ -1,12 +1,13 @@
 import Tippy from '@tippyjs/react'
 import { Link } from 'react-router-dom'
 import { chevIcon, searchIcon } from '~/icons'
+import Logo from './Logo'
 import Search from './Search'
 const Navbar = () => {
   return (
     <header className="h-12 flex justify-between items-center px-8 bg-white">
       <div className="flex gap-12">
-        <div className="btn">logo</div>
+        <Logo />
         <div className="btn flex items-center gap-2">
           <p>Các không gian làm việc</p>
           {chevIcon}
