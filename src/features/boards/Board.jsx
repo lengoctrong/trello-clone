@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { DndContext, PointerSensor, useSensor, useSensors } from '@dnd-kit/core'
 import { arrayMove } from '@dnd-kit/sortable'
-import { cloneDeep, isEmpty } from 'lodash'
+import { cloneDeep, debounce, isEmpty, set } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
@@ -16,7 +16,6 @@ import { MouseSensor } from '~/customLib'
 import { moreIcon } from '~/icons'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 import ListColumns from '../columns/ListColumns'
-
 const Board = () => {
   const {
     _id: boardId,
@@ -30,6 +29,7 @@ const Board = () => {
   const [activeItem, setActiveItem] = useState(null)
   const [originalCol, setOriginalCol] = useState(null)
   const [orderedColumns, setOrderedColumns] = useState(columns)
+  const [title, setTitle] = useState(boardTitle)
 
   const sensors = useSensors(
     useSensor(MouseSensor),
@@ -43,6 +43,18 @@ const Board = () => {
   useEffect(() => {
     setOrderedColumns(mapOrderedArr(columns, columnOrderIds, '_id'))
   }, [columns, columnOrderIds])
+
+  const increaseWidth = (e) => {
+    let numberOfCharacters = e.target.value.length
+    if (numberOfCharacters > 10) {
+      let length = numberOfCharacters + 'ch'
+      e.target.style.width = length
+    }
+  }
+
+  const handleChangeBoardTitle = async (e) => {
+    updateBoardDetailsAPI(boardId, { title: e.target.value }, 'title', dispatch)
+  }
 
   const findColumn = (cardId) => {
     return orderedColumns.find((column) =>
@@ -267,6 +279,7 @@ const Board = () => {
         updateBoardDetailsAPI(
           boardId,
           { columnOrderIds: orderedColumnOrderIds },
+          'moveColumn',
           dispatch
         )
         return orderedColumns
@@ -279,7 +292,10 @@ const Board = () => {
   }
 
   return (
-    <div id={boardId} className="h-[calc(100%-48px)] p-3 overflow-x-auto">
+    <div
+      id={boardId}
+      className="h-[calc(100%-48px)] p-3 overflow-x-auto bg-[url(/background.jpg)] bg-cover bg-center"
+    >
       <DndContext
         sensors={sensors}
         onDragStart={handleDragStart}
@@ -288,10 +304,14 @@ const Board = () => {
       >
         <div className="flex justify-between">
           <input
-            className=" btn font-medium outline-blue-500"
-            value={boardTitle}
-            size={boardTitle?.length - 5}
-            onChange={() => {}}
+            style={{ width: '10ch' }}
+            className="btn font-medium outline-blue-500"
+            value={title}
+            onInput={(e) => {
+              setTitle(e.target.value)
+              increaseWidth(e)
+            }}
+            onChange={debounce(handleChangeBoardTitle, 1000)}
           />
           <button className="btn items-center bg-white">{moreIcon}</button>
         </div>

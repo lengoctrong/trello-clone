@@ -1,11 +1,22 @@
 import Tippy from '@tippyjs/react'
-import { Link } from 'react-router-dom'
+
+import { Link, useNavigate } from 'react-router-dom'
 import { chevIcon, searchIcon } from '~/icons'
+import AvatarMenu from './AvatarMenu'
+import Button from './Button'
 import Logo from './Logo'
 import Search from './Search'
 const Navbar = () => {
+  const navigate = useNavigate()
+
+  const user = JSON.parse(localStorage.getItem('user'))
+
+  const handleLogout = () => {
+    localStorage.removeItem('user')
+    navigate('login')
+  }
   return (
-    <header className="h-12 flex justify-between items-center px-8 bg-white">
+    <header className="h-12 flex justify-between items-center px-8 py-2 bg-white">
       <div className="flex gap-12">
         <Logo />
         <div className="btn flex items-center gap-2">
@@ -17,9 +28,9 @@ const Navbar = () => {
           <p>gần đây</p>
           {chevIcon}
         </div>
-        <button className="btn">tạo mới</button>
+        <Button primary>tạo mới</Button>
       </div>
-      <div className="flex gap-12">
+      <div className="flex gap-12 my-auto">
         <div>
           <Tippy
             className="bg-[#42526e] text-white"
@@ -35,9 +46,14 @@ const Navbar = () => {
             <Search addFront={searchIcon} placeholder="Tìm kiếm" />
           </Tippy>
         </div>
-        <Link to="/login" className="btn">
-          Đăng nhập
-        </Link>
+
+        {user ? (
+          <AvatarMenu onLogout={handleLogout} />
+        ) : (
+          <Link to="login" className="btn">
+            Đăng nhập
+          </Link>
+        )}
       </div>
     </header>
   )

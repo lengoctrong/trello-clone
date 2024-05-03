@@ -7,9 +7,9 @@ import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis'
 import { AlertDialog } from '~/components/AlertDialog'
 
 import ColumnBase from '~/components/ColumnBase'
-import DropdownMenu from '~/components/DropdownMenu'
 import FormAddNew from '~/components/FormAddNew'
 import ListCards from '~/features/cards/ListCards'
+import DropdownMenu from '~/features/columns/components/DropdownMenu'
 import { plusIcon } from '~/icons'
 import { mapOrderedArr } from '~/utils/formatters'
 

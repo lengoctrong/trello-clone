@@ -24,7 +24,7 @@ const Login = () => {
 
         localStorage.setItem('user', JSON.stringify({ userId, role }))
         toast.success('Đăng nhập thành công')
-        navigate('/board')
+        navigate('/')
       }
     } catch (err) {
       toast.error('Đăng nhập thất bại')

@@ -1,18 +1,39 @@
 import axios from 'axios'
 import { isEmpty } from 'lodash'
 import {
+  addNewBoard,
   addNewCard,
   addNewColumn,
   deleteColumn,
   fetchBoard,
   moveCardOtherColumn,
   moveCardSameColumn,
-  moveColumn
+  moveColumn,
+  retrieveSuccess,
+  setBoardDetails,
+  setBoardList,
+  startRetrieve
 } from '~/features/boards/boardSlice'
 import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 
+export const getAllBoardAPI = async (dispatch) => {
+  dispatch(startRetrieve())
+  const result = await axios.get(`${API_URL}/${API_VERSION}/${API_TYPES.BOARD}`)
+  dispatch(setBoardList(result.data))
+  dispatch(retrieveSuccess())
+}
+
+export const createNewBoardAPI = async (boardData, dispatch) => {
+  const res = await axios.post(
+    `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}`,
+    boardData
+  )
+  dispatch(addNewBoard(res.data))
+}
+
 export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
+  dispatch(startRetrieve())
   const res = await axios.get(
     `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`
   )
@@ -27,18 +48,26 @@ export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
   })
 
   dispatch(fetchBoard(res.data))
+  dispatch(retrieveSuccess())
 }
 
 export const updateBoardDetailsAPI = async (
   boardId,
   updatedBoard,
+  type,
   dispatch
 ) => {
   await axios.put(
     `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`,
     updatedBoard
   )
-  dispatch(moveColumn(updatedBoard))
+  if (type === 'moveColumn') {
+    dispatch(moveColumn(updatedBoard))
+  }
+
+  if (type === 'updateBoard') {
+    dispatch(setBoardDetails(updatedBoard))
+  }
 }
 
 export const createNewColumnAPI = async (columnData, dispatch) => {

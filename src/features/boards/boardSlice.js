@@ -10,21 +10,40 @@ const initialState = {
   updatedAt: null,
   _destroy: false,
   isPending: false,
-  isError: false
+  isSuccess: false,
+  boards: []
 }
 
 const boardSlice = createSlice({
   name: 'board',
   initialState,
   reducers: {
-    fetchBoard: (state, action) => {
-      return {
-        ...action.payload,
-        isPending: false,
-        isError: false
-      }
+    startRetrieve: (state) => {
+      state.isPending = true
+      state.isSuccess = false
     },
+    retrieveSuccess: (state) => {
+      state.isPending = false
+      state.isSuccess = true
+    },
+    fetchBoard: (state, action) => {
+      state = { ...state, ...action.payload }
 
+      if (!state.boards.find((board) => board._id === action.payload._id)) {
+        state.boards = [...state.boards, action.payload]
+      }
+
+      return state
+    },
+    setBoardDetails: (state, action) => {
+      state = { ...state, ...action.payload }
+    },
+    setBoardList: (state, action) => {
+      state.boards = [...action.payload]
+    },
+    addNewBoard: (state, action) => {
+      state.boards = [...state.boards, action.payload]
+    },
     addNewColumn: (state, action) => {
       state.columns = [...state.columns, action.payload]
       state.columnOrderIds = [...state.columnOrderIds, action.payload._id]
@@ -87,7 +106,12 @@ const boardSlice = createSlice({
 
 export default boardSlice.reducer
 export const {
+  startRetrieve,
+  retrieveSuccess,
   fetchBoard,
+  setBoardDetails,
+  setBoardList,
+  addNewBoard,
   addNewCard,
   addNewColumn,
   moveColumn,

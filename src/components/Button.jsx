@@ -16,7 +16,7 @@ const Button = ({ type = 'button', primary, className, children, onClick }) => {
       type={type}
       onClick={onClick}
       className={`px-2 py-1 my-1 rounded-sm ${
-        primary ? 'bg-blue-500 hover:bg-blue-600' : 'bg-gray-500'
+        primary ? 'bg-blue-700 hover:bg-blue-600' : 'bg-gray-500'
       } text-white  ${className}`}
     >
       {children}
