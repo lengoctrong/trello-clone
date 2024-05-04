@@ -1,25 +1,26 @@
 import { Menu, Transition } from '@headlessui/react'
-import { set } from 'lodash'
 import { Fragment } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import { setCurrentBoard } from '~/features/boards/boardSlice'
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
 }
 
-const DropdownMenu = () => {
+const SubMenuMoveColumnForm = () => {
   const { boardId } = useParams()
-  const currBoard = useSelector((state) => state.board.boards).find(
+  const board = useSelector((state) => state.board.boards).find(
     (board) => board._id === boardId
   )
   const boards = useSelector((state) => state.board.boards)
   const dispatch = useDispatch()
+  const currentBoard = useSelector((state) => state.board.currentBoard)
   return (
     <>
       <Menu as="div" className="relative inline-block text-left">
         <div>
           <Menu.Button>
-            <div className="btn">{currBoard.title}</div>
+            <div className="btn">{currentBoard.title ?? board.title}</div>
           </Menu.Button>
         </div>
 
@@ -38,14 +39,14 @@ const DropdownMenu = () => {
                 <Menu.Item key={board._id}>
                   {({ active }) => (
                     <div
-                      onClick={() => {}}
+                      onClick={() => dispatch(setCurrentBoard(board))}
                       className={classNames(
                         active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                         'block px-4 py-2 text-sm cursor-pointer'
                       )}
                     >
                       {board.title}{' '}
-                      {board._id === currBoard._id && '(Hiện tại)'}
+                      {board._id === currentBoard._id && '(Hiện tại)'}
                     </div>
                   )}
                 </Menu.Item>
@@ -58,4 +59,4 @@ const DropdownMenu = () => {
   )
 }
 
-export default DropdownMenu
+export default SubMenuMoveColumnForm

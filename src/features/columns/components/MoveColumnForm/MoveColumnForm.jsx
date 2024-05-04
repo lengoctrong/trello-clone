@@ -6,10 +6,35 @@ import {
   DialogHeader,
   Typography
 } from '@material-tailwind/react'
-import DropdownMenu from '~/components/DropdownMenu'
+import { useDispatch, useSelector } from 'react-redux'
+import { moveColumnAndUpdateCardsAPI } from '~/apis'
+import SubMenuMoveColumnForm from '~/features/columns/components/MoveColumnForm/SubMenuMoveColumnForm'
 
-export function MoveColumnForm({ open, handleOpen, handleCancel }) {
-  const handleMoveColumn = () => {}
+export function MoveColumnForm({ columnId, open, handleOpen, handleCancel }) {
+  const columns = useSelector((state) => state.board.columns)
+  const column = columns.find((column) => column._id === columnId)
+  const oldBoardId = column?.boardId
+  const { currentBoard: newBoard } = useSelector((state) => state.board)
+  const newBoardId = newBoard._id
+  const dispatch = useDispatch()
+
+  const handleMoveColumn = async () => {
+    console.log(
+      'columnId: ',
+      columnId,
+      'oldBoardId: ',
+      oldBoardId,
+      'newBoardId: ',
+      newBoardId
+    )
+    await moveColumnAndUpdateCardsAPI(
+      columnId,
+      oldBoardId,
+      newBoardId,
+      dispatch
+    )
+    handleCancel()
+  }
 
   return (
     <>
@@ -40,7 +65,7 @@ export function MoveColumnForm({ open, handleOpen, handleCancel }) {
             <Typography className="-mb-1" color="blue-gray" variant="h6">
               Bảng
             </Typography>
-            <DropdownMenu />
+            <SubMenuMoveColumnForm />
           </div>
         </DialogBody>
         <DialogFooter className="space-x-2">

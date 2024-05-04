@@ -23,7 +23,7 @@ export function DeleteColumnForm({ columnId, open, handleOpen, handleCancel }) {
     } catch (err) {
       toast.error(err.message, optsToast)
     } finally {
-      handleOpen()
+      handleCancel()
     }
   }
 

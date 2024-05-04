@@ -22,7 +22,7 @@ export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
   const { boardId } = useParams()
 
   const handleAddNewColumn = async () => {
-    await createNewColumnAPI({ boardId, title }, dispatch)
+    await createNewColumnAPI({ title, boardId, type: 'copy' }, dispatch)
     handleOpen(false)
   }
 

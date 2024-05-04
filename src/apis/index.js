@@ -9,6 +9,7 @@ import {
   moveCardOtherColumn,
   moveCardSameColumn,
   moveColumn,
+  moveColumnAndUpdateCards,
   retrieveSuccess,
   setBoardDetails,
   setBoardList,
@@ -123,6 +124,19 @@ export const moveCardToDifferentColumnAPI = async (
       updatedColumns
     })
   )
+}
+
+export const moveColumnAndUpdateCardsAPI = async (
+  columnId,
+  oldBoardId,
+  newBoardId,
+  dispatch
+) => {
+  await axios.put(
+    `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/supports/moving_column`,
+    { columnId, oldBoardId, newBoardId }
+  )
+  dispatch(moveColumnAndUpdateCards({ columnId, oldBoardId, newBoardId }))
 }
 
 export const updateColumnDetailsAPI = async (

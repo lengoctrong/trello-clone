@@ -1,12 +1,9 @@
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Fragment, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { toast } from 'react-toastify'
-import { deleteColumnDetailsAPI } from '~/apis'
 import { CopyColumnForm } from './CopyColumnForm'
 import { DeleteColumnForm } from './DeleteColumnForm'
-import { MoveColumnForm } from './MoveColumnForm'
+import { MoveColumnForm } from './MoveColumnForm/MoveColumnForm'
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
@@ -16,8 +13,6 @@ const ColumnDropdownMenu = ({ columnId }) => {
   const [openDeleteForm, setOpenDeleteForm] = useState(false)
   const [openCopyForm, setOpenCopyForm] = useState(false)
   const [openMoveForm, setOpenMoveForm] = useState(false)
-
-  const dispatch = useDispatch()
 
   return (
     <>

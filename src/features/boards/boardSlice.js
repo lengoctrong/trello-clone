@@ -11,7 +11,8 @@ const initialState = {
   _destroy: false,
   isPending: false,
   isSuccess: false,
-  boards: []
+  boards: [],
+  currentBoard: {}
 }
 
 const boardSlice = createSlice({
@@ -100,6 +101,37 @@ const boardSlice = createSlice({
       state.columnOrderIds = state.columnOrderIds.filter(
         (id) => id !== action.payload
       )
+    },
+    setCurrentBoard: (state, action) => {
+      state.currentBoard = action.payload
+    },
+    moveColumnAndUpdateCards: (state, action) => {
+      // columnId, oldBoardId, newBoardId
+      const oldBoard = state.boards.find(
+        (b) => b._id === action.payload.oldBoardId
+      )
+
+      const oldColumn = oldBoard.columns.find(
+        (c) => c._id === action.payload.columnId
+      )
+
+      oldBoard.columns = oldBoard.columns.filter((c) => c._id !== oldColumn._id)
+
+      oldBoard.columnOrderIds = oldBoard.columnOrderIds.filter(
+        (id) => id !== oldColumn._id
+      )
+
+      const newBoard = state.boards.find(
+        (b) => b._id === action.payload.newBoardId
+      )
+
+      oldColumn.boardId = newBoard._id
+
+      oldColumn.cards.forEach((card) => {
+        card.boardId = newBoard._id
+      })
+
+      newBoard.columns = [...newBoard.columns, oldColumn]
     }
   }
 })
@@ -117,5 +149,7 @@ export const {
   moveColumn,
   moveCardSameColumn,
   moveCardOtherColumn,
-  deleteColumn
+  deleteColumn,
+  setCurrentBoard,
+  moveColumnAndUpdateCards
 } = boardSlice.actions
