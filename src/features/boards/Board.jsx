@@ -12,6 +12,7 @@ import {
 import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
 import CustomOverlay from '~/components/CustomOverlay'
+import { openRightDrawer } from '~/components/RightDrawer/rightDrawerSlice'
 import { MouseSensor } from '~/customLib'
 import { moreIcon } from '~/icons'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
@@ -43,6 +44,10 @@ const Board = () => {
   useEffect(() => {
     setOrderedColumns(mapOrderedArr(columns, columnOrderIds, '_id'))
   }, [columns, columnOrderIds])
+
+  const handleOpenRightDrawer = () => {
+    dispatch(openRightDrawer())
+  }
 
   const increaseWidth = (e) => {
     let numberOfCharacters = e.target.value.length
@@ -313,7 +318,12 @@ const Board = () => {
             }}
             onChange={debounce(handleChangeBoardTitle, 1000)}
           />
-          <button className="btn items-center bg-white">{moreIcon}</button>
+          <button
+            className="btn items-center bg-transparent text-gray-200 hover:gray-50"
+            onClick={handleOpenRightDrawer}
+          >
+            {moreIcon}
+          </button>
         </div>
 
         <ListColumns columns={orderedColumns} />
