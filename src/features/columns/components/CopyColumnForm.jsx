@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { createNewColumnAPI } from '~/apis'
 
-export function CopyColumnForm({ columnId, open, onOpen }) {
+export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
   const column = useSelector((state) => state.board.columns).find(
     (column) => column._id === columnId
   )
@@ -23,12 +23,12 @@ export function CopyColumnForm({ columnId, open, onOpen }) {
 
   const handleAddNewColumn = async () => {
     await createNewColumnAPI({ boardId, title }, dispatch)
-    onOpen(false)
+    handleOpen(false)
   }
 
   return (
     <>
-      <Dialog open={open} size="xs" handler={onOpen}>
+      <Dialog open={open} size="xs" handler={handleOpen}>
         <div className="flex items-center justify-between">
           <DialogHeader className="flex flex-col items-start">
             {' '}
@@ -41,7 +41,7 @@ export function CopyColumnForm({ columnId, open, onOpen }) {
             viewBox="0 0 24 24"
             fill="currentColor"
             className="mr-3 h-5 w-5"
-            onClick={onOpen}
+            onClick={handleCancel}
           >
             <path
               fillRule="evenodd"

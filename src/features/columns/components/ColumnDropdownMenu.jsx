@@ -13,29 +13,11 @@ const classNames = (...classes) => {
 }
 
 const ColumnDropdownMenu = ({ columnId }) => {
-  const [open, setOpen] = useState(false)
   const [openDeleteForm, setOpenDeleteForm] = useState(false)
+  const [openCopyForm, setOpenCopyForm] = useState(false)
+  const [openMoveForm, setOpenMoveForm] = useState(false)
 
   const dispatch = useDispatch()
-
-  const handleOpen = () => {
-    setOpen(!open)
-  }
-
-  const handleConfirmDeleteColumn = async () => {
-    const optsToast = {
-      position: 'bottom-left'
-    }
-    try {
-      const res = await deleteColumnDetailsAPI(columnId, dispatch)
-
-      toast.success(res.data.deleteResult ?? 'Xoá thành công', optsToast)
-    } catch (err) {
-      toast.error(err.message, optsToast)
-    } finally {
-      setOpenDeleteForm(false)
-    }
-  }
 
   return (
     <>
@@ -79,7 +61,7 @@ const ColumnDropdownMenu = ({ columnId }) => {
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm'
                     )}
-                    onClick={handleOpen}
+                    onClick={() => setOpenCopyForm(!openCopyForm)}
                   >
                     Sao chép danh sách
                   </div>
@@ -90,6 +72,7 @@ const ColumnDropdownMenu = ({ columnId }) => {
               <Menu.Item>
                 {({ active }) => (
                   <div
+                    onClick={() => setOpenMoveForm(!openMoveForm)}
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm'
@@ -130,16 +113,22 @@ const ColumnDropdownMenu = ({ columnId }) => {
           </Menu.Items>
         </Transition>
       </Menu>
-      <CopyColumnForm open={open} onOpen={handleOpen} columnId={columnId} />
-      <MoveColumnForm open={open} onOpen={handleOpen} columnId={columnId} />
+      <CopyColumnForm
+        columnId={columnId}
+        open={openCopyForm}
+        handleOpen={() => setOpenCopyForm(!openCopyForm)}
+        handleCancel={() => setOpenCopyForm(false)}
+      />
+      <MoveColumnForm
+        columnId={columnId}
+        open={openMoveForm}
+        handleOpen={() => setOpenMoveForm(!openMoveForm)}
+        handleCancel={() => setOpenMoveForm(false)}
+      />
       <DeleteColumnForm
-        // open={showDialog}
-        // handleOpen={setShowDialog}
-        // handleConfirm={handleConfirmDeleteColumn}
-        // handleCancel={handleCancelDeleteColumn}
+        columnId={columnId}
         open={openDeleteForm}
         handleOpen={() => setOpenDeleteForm(!openDeleteForm)}
-        handleConfirm={handleConfirmDeleteColumn}
         handleCancel={() => setOpenDeleteForm(false)}
       />
     </>

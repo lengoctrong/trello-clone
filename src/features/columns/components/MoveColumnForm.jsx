@@ -4,25 +4,21 @@ import {
   DialogBody,
   DialogFooter,
   DialogHeader,
-  Textarea,
   Typography
 } from '@material-tailwind/react'
-import { useState } from 'react'
+import DropdownMenu from '~/components/DropdownMenu'
 
-export function MoveColumnForm({ open, onOpen }) {
-  const [title, setTitle] = useState('')
+export function MoveColumnForm({ open, handleOpen, handleCancel }) {
+  const handleMoveColumn = () => {}
 
-  const handleMoveColumn = async () => {
-    onOpen(false)
-  }
   return (
     <>
-      <Dialog open={open} size="xs" handler={onOpen}>
+      <Dialog open={open} size="xs" handler={handleOpen}>
         <div className="flex items-center justify-between">
           <DialogHeader className="flex flex-col items-start">
             {' '}
             <Typography className="mb-1" variant="h4">
-              Sao chép danh sách
+              Di chuyển danh sách
             </Typography>
           </DialogHeader>
           <svg
@@ -30,7 +26,7 @@ export function MoveColumnForm({ open, onOpen }) {
             viewBox="0 0 24 24"
             fill="currentColor"
             className="mr-3 h-5 w-5"
-            onClick={onOpen}
+            onClick={handleCancel}
           >
             <path
               fillRule="evenodd"
@@ -42,24 +38,14 @@ export function MoveColumnForm({ open, onOpen }) {
         <DialogBody>
           <div className="grid gap-6">
             <Typography className="-mb-1" color="blue-gray" variant="h6">
-              Tên
+              Bảng
             </Typography>
-
-            <Textarea
-              value={title}
-              color="blue"
-              onChange={(e) => setTitle(e.target.value)}
-            />
+            <DropdownMenu />
           </div>
         </DialogBody>
         <DialogFooter className="space-x-2">
-          <Button
-            disabled={!title}
-            variant="gradient"
-            color="blue"
-            onClick={handleMoveColumn}
-          >
-            Tạo danh sách
+          <Button variant="gradient" color="blue" onClick={handleMoveColumn}>
+            Di chuyển
           </Button>
         </DialogFooter>
       </Dialog>

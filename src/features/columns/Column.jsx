@@ -2,8 +2,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { toast } from 'react-toastify'
-import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis'
+import { createNewCardAPI } from '~/apis'
 
 import ColumnBase from '~/components/ColumnBase'
 import FormAddNew from '~/components/FormAddNew'
@@ -18,7 +17,6 @@ const Column = ({ column }) => {
   const [columnTitle, setColumnTitle] = useState(title)
   const [cardTitle, setCardTitle] = useState('')
   const [toggleAddCardForm, setToggleAddCardForm] = useState(false)
-  const [showDialog, setShowDialog] = useState(false)
 
   const { _id: boardId } = useSelector((state) => state.board)
   const dispatch = useDispatch()
