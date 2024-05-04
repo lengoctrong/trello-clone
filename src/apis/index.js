@@ -78,6 +78,14 @@ export const createNewColumnAPI = async (columnData, dispatch) => {
   dispatch(addNewColumn(res.data))
 }
 
+export const deleteColumnDetailsAPI = async (columnId, dispatch) => {
+  dispatch(deleteColumn(columnId))
+
+  return await axios.delete(
+    `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`
+  )
+}
+
 export const moveCardToDifferentColumnAPI = async (
   currentCardId,
   prevColumnId,
@@ -129,20 +137,25 @@ export const updateColumnDetailsAPI = async (
   dispatch(moveCardSameColumn({ columnId, updatedColumn }))
 }
 
-export const deleteColumnDetailsAPI = async (columnId, dispatch) => {
-  dispatch(deleteColumn(columnId))
-
-  return await axios.delete(
-    `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`
-  )
-}
-
 export const createNewCardAPI = async (cardData, dispatch) => {
   const res = await axios.post(
     `${API_URL}/${API_VERSION}/${API_TYPES.CARD}`,
     cardData
   )
   dispatch(addNewCard(res.data))
+}
+
+export const updateAllCardsColumnIdAPI = async (columnId, updatedData) => {
+  await axios.put(
+    `${API_URL}/${API_VERSION}/${API_TYPES.CARD}?columnId=${columnId}`,
+    updatedData
+  )
+}
+
+export const getAllCardsAPI = async (columnId) => {
+  return await axios.get(
+    `${API_URL}/${API_VERSION}/${API_TYPES.CARD}?columnId=${columnId}`
+  )
 }
 
 export const createNewUserAPI = async (userData) => {

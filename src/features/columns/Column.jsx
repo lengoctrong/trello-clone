@@ -9,7 +9,7 @@ import { AlertDialog } from '~/components/AlertDialog'
 import ColumnBase from '~/components/ColumnBase'
 import FormAddNew from '~/components/FormAddNew'
 import ListCards from '~/features/cards/ListCards'
-import DropdownMenu from '~/features/columns/components/DropdownMenu'
+import DropdownMenu from '~/features/columns/components/ColumnDropdownMenu'
 import { plusIcon } from '~/icons'
 import { mapOrderedArr } from '~/utils/formatters'
 
@@ -19,7 +19,6 @@ const Column = ({ column }) => {
   const [columnTitle, setColumnTitle] = useState(title)
   const [cardTitle, setCardTitle] = useState('')
   const [toggleAddCardForm, setToggleAddCardForm] = useState(false)
-
   const [showDialog, setShowDialog] = useState(false)
 
   const { _id: boardId } = useSelector((state) => state.board)
@@ -84,6 +83,17 @@ const Column = ({ column }) => {
     setShowDialog(false)
   }
 
+  const FormAddNewProps = {
+    textAreaRows: 2,
+    onSubmit: handleAddNewCard,
+    textAreaTitle: cardTitle,
+    btnAddTitle: 'Thêm thẻ',
+    setTitle: setCardTitle,
+    toggleAddForm: toggleAddCardForm,
+    setToggleAddForm: setToggleAddCardForm,
+    placeholder: 'Nhập tiêu đề cho thẻ này...'
+  }
+
   return (
     <>
       <li
@@ -102,22 +112,16 @@ const Column = ({ column }) => {
               size={columnTitle?.length}
               onChange={(e) => setColumnTitle(e.target.value)}
             />
-            <DropdownMenu onDeleteColumn={() => setShowDialog(true)} />
+            <DropdownMenu
+              columnId={columnId}
+              onDeleteColumn={() => setShowDialog(true)}
+            />
           </div>
 
           <ListCards cards={orderedCards} />
 
           {toggleAddCardForm ? (
-            <FormAddNew
-              textAreaRows={2}
-              onSubmit={handleAddNewCard}
-              textAreaTitle={cardTitle}
-              btnAddTitle="Thêm thẻ"
-              setTitle={setCardTitle}
-              toggleAddForm={toggleAddCardForm}
-              setToggleAddForm={setToggleAddCardForm}
-              placeholder="Nhập tiêu đề cho thẻ này..."
-            />
+            <FormAddNew {...FormAddNewProps} />
           ) : (
             <div
               type="outline"
