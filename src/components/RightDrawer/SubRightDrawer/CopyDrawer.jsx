@@ -1,9 +1,9 @@
 import { Drawer, IconButton, Typography } from '@material-tailwind/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { chevronLeftIcon, closeIcon } from '~/icons'
-import { closeAllRightDrawer, closeSubRightDrawer } from './rightDrawerSlice'
+import { closeAllRightDrawer, closeSubRightDrawer } from '../rightDrawerSlice'
 
-export function SubDrawer() {
+export function CopyDrawer() {
   const isShowSubDrawer = useSelector(
     (state) => state.rightDrawer.isShowSubDrawer
   )
@@ -30,7 +30,7 @@ export function SubDrawer() {
         </IconButton>
         <div className="text-center w-full">
           <Typography variant="h5" color="blue-gray">
-            Sub Menu
+            Info
           </Typography>
         </div>
         <IconButton variant="text" color="blue-gray" onClick={handleClose}>

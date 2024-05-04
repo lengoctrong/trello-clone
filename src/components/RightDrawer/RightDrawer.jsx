@@ -1,4 +1,5 @@
 import { Drawer, IconButton, Typography } from '@material-tailwind/react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   archiveBoxIcon,
@@ -11,17 +12,22 @@ import {
   photoIcon,
   settingsIcon
 } from '~/icons'
+import { RIGHT_DRAWER_TYPES } from '~/utils/constants'
+import { SubRightDrawer } from './SubRightDrawer/SubRightDrawer'
 import { closeRightDrawer, openSubRightDrawer } from './rightDrawerSlice'
-import { SubDrawer } from './subRightDrawer'
+
 export function RightDrawer() {
   const open = useSelector((state) => state.rightDrawer.open)
   const dispatch = useDispatch()
+
+  const [type, setType] = useState(RIGHT_DRAWER_TYPES.INFO)
 
   const handleClose = () => {
     dispatch(closeRightDrawer())
   }
 
-  const handleOpenRightSubDrawer = () => {
+  const handleOpenRightSubDrawer = (e) => {
+    setType(e.target.dataset.type)
     dispatch(openSubRightDrawer())
   }
 
@@ -46,6 +52,7 @@ export function RightDrawer() {
 
         <div className="py-1 border-t-2">
           <button
+            data-type={RIGHT_DRAWER_TYPES.INFO}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
@@ -53,6 +60,7 @@ export function RightDrawer() {
             Về bảng này
           </button>
           <button
+            data-type={RIGHT_DRAWER_TYPES.ACTIVITY}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
@@ -60,16 +68,15 @@ export function RightDrawer() {
             Hoạt động
           </button>
           <button
+            data-type={RIGHT_DRAWER_TYPES.ARCHIVE}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
             {archiveBoxIcon}
             Mục đã lưu trữ
           </button>
-        </div>
-
-        <div className="py-1 border-t-2">
           <button
+            data-type={RIGHT_DRAWER_TYPES.SETTINGS}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
@@ -77,6 +84,7 @@ export function RightDrawer() {
             Cài đặt
           </button>
           <button
+            data-type={RIGHT_DRAWER_TYPES.CHANGE_BG}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
@@ -84,16 +92,15 @@ export function RightDrawer() {
             Thay đổi hình nền
           </button>
           <button
+            data-type={RIGHT_DRAWER_TYPES.TAGS}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
             {archiveBoxIcon}
-            Mục đã lưu trữ
+            Nhãn
           </button>
-        </div>
-
-        <div className="py-1 border-t-2">
           <button
+            data-type={RIGHT_DRAWER_TYPES.FOLLOW}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
@@ -101,6 +108,7 @@ export function RightDrawer() {
             Theo dõi
           </button>
           <button
+            data-type={RIGHT_DRAWER_TYPES.COPY}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
@@ -108,6 +116,7 @@ export function RightDrawer() {
             Sao chép bảng thông tin
           </button>
           <button
+            data-type={RIGHT_DRAWER_TYPES.CLOSE}
             className="btn w-full text-start flex gap-2 my-2"
             onClick={handleOpenRightSubDrawer}
           >
@@ -116,7 +125,7 @@ export function RightDrawer() {
           </button>
         </div>
       </Drawer>
-      <SubDrawer />
+      <SubRightDrawer type={type} />
     </>
   )
 }
