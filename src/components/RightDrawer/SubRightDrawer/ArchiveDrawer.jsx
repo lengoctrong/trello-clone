@@ -30,7 +30,7 @@ export function ArchiveDrawer() {
         </IconButton>
         <div className="text-center w-full">
           <Typography variant="h5" color="blue-gray">
-            Info
+            Lưu trữ
           </Typography>
         </div>
         <IconButton variant="text" color="blue-gray" onClick={handleClose}>

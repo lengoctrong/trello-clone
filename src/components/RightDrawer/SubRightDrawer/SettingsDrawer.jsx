@@ -30,7 +30,7 @@ export function SettingsDrawer() {
         </IconButton>
         <div className="text-center w-full">
           <Typography variant="h5" color="blue-gray">
-            Setting
+            Thiết lập
           </Typography>
         </div>
         <IconButton variant="text" color="blue-gray" onClick={handleClose}>

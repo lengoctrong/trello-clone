@@ -30,7 +30,7 @@ export function ActivityDrawer() {
         </IconButton>
         <div className="text-center w-full">
           <Typography variant="h5" color="blue-gray">
-            Info
+            Hoạt động
           </Typography>
         </div>
         <IconButton variant="text" color="blue-gray" onClick={handleClose}>

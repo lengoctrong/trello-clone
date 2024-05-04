@@ -15,12 +15,9 @@ export const MAX_HEIGHT_COLUMN = '760px'
 // types of right drawer
 export const RIGHT_DRAWER_TYPES = {
   INFO: 'info',
-  SETTINGS: 'settings',
   ACTIVITY: 'activity',
   ARCHIVE: 'archive',
-  FOLLOW: 'follow',
-  COPY: 'copy',
+  SETTINGS: 'settings',
   CHANGE_BG: 'change-bg',
-  TAGS: 'tags',
-  CLOSE: 'close'
+  TAGS: 'tags'
 }

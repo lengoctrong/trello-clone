@@ -31,6 +31,8 @@ export function RightDrawer() {
     dispatch(openSubRightDrawer())
   }
 
+  const handleOpenFormRightDrawer = () => {}
+
   return (
     <>
       <Drawer
@@ -102,7 +104,7 @@ export function RightDrawer() {
           <button
             data-type={RIGHT_DRAWER_TYPES.FOLLOW}
             className="btn w-full text-start flex gap-2 my-2"
-            onClick={handleOpenRightSubDrawer}
+            onClick={handleOpenFormRightDrawer}
           >
             {eyeIcon}
             Theo dõi
@@ -110,7 +112,7 @@ export function RightDrawer() {
           <button
             data-type={RIGHT_DRAWER_TYPES.COPY}
             className="btn w-full text-start flex gap-2 my-2"
-            onClick={handleOpenRightSubDrawer}
+            onClick={handleOpenFormRightDrawer}
           >
             {copyIcon}
             Sao chép bảng thông tin
@@ -118,7 +120,7 @@ export function RightDrawer() {
           <button
             data-type={RIGHT_DRAWER_TYPES.CLOSE}
             className="btn w-full text-start flex gap-2 my-2"
-            onClick={handleOpenRightSubDrawer}
+            onClick={handleOpenFormRightDrawer}
           >
             {minusIcon}
             Đóng bảng thông tin

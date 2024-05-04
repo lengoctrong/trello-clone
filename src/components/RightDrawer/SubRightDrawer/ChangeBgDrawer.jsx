@@ -30,7 +30,7 @@ export function ChangeBgDrawer() {
         </IconButton>
         <div className="text-center w-full">
           <Typography variant="h5" color="blue-gray">
-            Info
+            Thay đổi phông nền
           </Typography>
         </div>
         <IconButton variant="text" color="blue-gray" onClick={handleClose}>

@@ -1,4 +1,5 @@
 import Navbar from '~/components/Navbar'
+import { homeIcon, mailIcon, phoneIcon, userIcon } from '~/icons'
 
 const Profile = () => {
   const user = JSON.parse(localStorage.getItem('user'))
@@ -15,31 +16,33 @@ const Profile = () => {
         <div className="border-t border-gray-200 px-4 py-5 sm:p-0">
           <dl className="sm:divide-y sm:divide-gray-200">
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-                Tên người dùng
+              <dt className="text-sm font-medium text-gray-500 flex gap-2 items-center">
+                {userIcon} Tên người dùng
               </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 {user.name || user.email.split('@')[0]}
               </dd>
             </div>
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-                Địa chỉ email
+              <dt className="text-sm font-medium text-gray-500 flex gap-2 items-center">
+                {mailIcon} Địa chỉ email
               </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 {user.email}
               </dd>
             </div>
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">
-                Số điện thoại
+              <dt className="text-sm font-medium text-gray-500 flex gap-2 items-center">
+                {phoneIcon} Số điện thoại
               </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 {user.phone ?? 'Chưa cập nhật'}
               </dd>
             </div>
             <div className="py-3 sm:py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-              <dt className="text-sm font-medium text-gray-500">Địa chỉ</dt>
+              <dt className="text-sm font-medium text-gray-500 flex gap-2 items-center">
+                {homeIcon} Địa chỉ
+              </dt>
               <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
                 {user.address ?? 'Chưa cập nhật'}
               </dd>
