@@ -38,8 +38,8 @@ const ListColumn = ({ columns }) => {
         strategy={horizontalListSortingStrategy}
       >
         <ul className="flex gap-4 mt-3">
-          {columns.map((column) => (
-            <Column key={column._id} column={column} />
+          {columns.map((column, idx) => (
+            <Column key={`${column._id}${idx}`} column={column} />
           ))}
           {toggleAddColumnForm ? (
             <div className={'bg-gray-100 min-w-[272px] rounded-xl p-2 h-full'}>

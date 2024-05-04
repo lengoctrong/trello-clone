@@ -3,11 +3,11 @@ import CardItem from './CardItem'
 const ListCards = ({ cards }) => {
   return (
     <SortableContext
-      items={cards.map((card) => card._id)}
+      items={cards?.map((card) => card._id)}
       strategy={rectSortingStrategy}
     >
       <ul>
-        {cards.map((card) => (
+        {cards?.map((card) => (
           <CardItem key={card._id} card={card} />
         ))}
       </ul>
