@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { fetchBoardDetailsAPI, getAllBoardAPI } from '~/apis'
 import Loader from '~/components/Loader'
 import Navbar from '~/components/Navbar'
+import { RightDrawer } from '~/components/RightDrawer/RightDrawer'
 import Board from '~/features/boards/Board'
 
 const AppLayout = () => {
@@ -26,6 +27,7 @@ const AppLayout = () => {
     <div className="h-screen">
       <Navbar />
       <Board />
+      <RightDrawer />
     </div>
   )
 }

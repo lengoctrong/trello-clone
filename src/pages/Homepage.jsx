@@ -20,38 +20,43 @@ const Homepage = () => {
   ) : (
     <>
       <Navbar />
-      <div className=" p-4">
-        <div className="my-4">
-          <h1 className="text-gray-700 font-bold text-2xl py-4">
-            Các không gian làm việc của bạn
-          </h1>
-          {boards.length === 0 && (
-            <p>
-              Bạn không phải là thành viên của bất kỳ không gian làm việc nào.{' '}
-              <a className=" font-semibold text-blue-500" href="#">
-                Tạo Không gian làm việc
-              </a>
-            </p>
-          )}
-        </div>
+      <div className="p-4 h-full">
         <div>
-          <div className="flex gap-4 flex-wrap">
-            {boards.map((board) => (
-              <Link
-                to={`/b/${board._id}`}
-                key={board._id}
-                className="h-[100px] w-[200px] flex justify-center items-center text-white text-2xl rounded-md hover:opacity-90 cursor-pointer "
-                style={{
-                  backgroundImage: 'url(./background.jpg)',
-                  backgroundSize: 'cover'
-                }}
-              >
-                <p>{board.title}</p>
-              </Link>
-            ))}
-            <BoardForm />
+          <div className="my-4">
+            <h1 className="text-gray-700 font-bold text-2xl py-4">
+              Các không gian làm việc của bạn
+            </h1>
+            {boards.length === 0 && (
+              <p>
+                Bạn không phải là thành viên của bất kỳ không gian làm việc nào.{' '}
+                <a className=" font-semibold text-blue-500" href="#">
+                  Tạo Không gian làm việc
+                </a>
+              </p>
+            )}
+          </div>
+          <div>
+            <div className="flex gap-4 flex-wrap">
+              {boards.map((board) => (
+                <Link
+                  to={`/b/${board._id}`}
+                  key={board._id}
+                  className="h-[100px] w-[200px] flex justify-center items-center text-white text-2xl rounded-md hover:opacity-90 cursor-pointer "
+                  style={{
+                    backgroundImage: 'url(./background.jpg)',
+                    backgroundSize: 'cover'
+                  }}
+                >
+                  <p>{board.title}</p>
+                </Link>
+              ))}
+              <BoardForm />
+            </div>
           </div>
         </div>
+        <button className="btn mt-4 bg-gray-200 hover:bg-gray-300">
+          Xem tất cả bảng đã đóng
+        </button>
       </div>
     </>
   )
