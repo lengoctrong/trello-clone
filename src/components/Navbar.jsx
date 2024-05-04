@@ -23,16 +23,6 @@ const Navbar = () => {
     <header className="h-12 flex justify-between items-center px-8 py-2 bg-white">
       <div className="flex gap-12">
         <Logo />
-        <div className="btn flex items-center gap-2">
-          <p>Các không gian làm việc</p>
-          {chevIcon}
-        </div>
-
-        <div className="btn flex items-center gap-2">
-          <p>gần đây</p>
-          {chevIcon}
-        </div>
-        <Button primary>tạo mới</Button>
       </div>
       <div className="flex gap-12 my-auto ">
         <div>

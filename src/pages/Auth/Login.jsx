@@ -22,7 +22,10 @@ const Login = () => {
       if (res.data && res.status === 201) {
         const { _id: userId, role } = res.data
 
-        localStorage.setItem('user', JSON.stringify({ userId, role }))
+        localStorage.setItem(
+          'user',
+          JSON.stringify({ userId, role, email, name })
+        )
         toast.success('Đăng nhập thành công')
         navigate('/')
       }
