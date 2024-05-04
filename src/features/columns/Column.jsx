@@ -4,12 +4,11 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify'
 import { createNewCardAPI, deleteColumnDetailsAPI } from '~/apis'
-import { AlertDialog } from '~/components/AlertDialog'
 
 import ColumnBase from '~/components/ColumnBase'
 import FormAddNew from '~/components/FormAddNew'
 import ListCards from '~/features/cards/ListCards'
-import DropdownMenu from '~/features/columns/components/ColumnDropdownMenu'
+import ColumnDropdownMenu from '~/features/columns/components/ColumnDropdownMenu'
 import { plusIcon } from '~/icons'
 import { mapOrderedArr } from '~/utils/formatters'
 
@@ -65,24 +64,6 @@ const Column = ({ column }) => {
     title
   }
 
-  const handleConfirmDeleteColumn = async () => {
-    const optsToast = {
-      position: 'bottom-left'
-    }
-    try {
-      const res = await deleteColumnDetailsAPI(columnId, dispatch)
-
-      toast.success(res.data.deleteResult ?? 'Xoá thành công', optsToast)
-    } catch (err) {
-      toast.error(err.message, optsToast)
-    } finally {
-      setShowDialog(false)
-    }
-  }
-  const handleCancelDeleteColumn = () => {
-    setShowDialog(false)
-  }
-
   const FormAddNewProps = {
     textAreaRows: 2,
     onSubmit: handleAddNewCard,
@@ -112,10 +93,7 @@ const Column = ({ column }) => {
               size={columnTitle?.length}
               onChange={(e) => setColumnTitle(e.target.value)}
             />
-            <DropdownMenu
-              columnId={columnId}
-              onDeleteColumn={() => setShowDialog(true)}
-            />
+            <ColumnDropdownMenu columnId={columnId} />
           </div>
 
           <ListCards cards={orderedCards} />
@@ -138,12 +116,6 @@ const Column = ({ column }) => {
           )}
         </ColumnBase>
       </li>
-      <AlertDialog
-        open={showDialog}
-        handleOpen={setShowDialog}
-        handleConfirm={handleConfirmDeleteColumn}
-        handleCancel={handleCancelDeleteColumn}
-      />
     </>
   )
 }

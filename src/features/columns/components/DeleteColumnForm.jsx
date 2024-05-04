@@ -6,7 +6,12 @@ import {
   DialogHeader
 } from '@material-tailwind/react'
 
-export function AlertDialog({ open, handleOpen, handleConfirm, handleCancel }) {
+export function DeleteColumnForm({
+  open,
+  handleOpen,
+  handleConfirm,
+  handleCancel
+}) {
   return (
     <Dialog open={open} handler={handleOpen}>
       <DialogHeader>Xác nhận xóa</DialogHeader>

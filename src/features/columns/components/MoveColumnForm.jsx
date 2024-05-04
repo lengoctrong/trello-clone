@@ -8,22 +8,13 @@ import {
   Typography
 } from '@material-tailwind/react'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import { createNewColumnAPI } from '~/apis'
-export function ColumnForm({ columnId, open, onOpen }) {
-  const column = useSelector((state) => state.board.columns).find(
-    (column) => column._id === columnId
-  )
-  const columnTitle = column?.title
-  const [title, setTitle] = useState(columnTitle ?? '')
-  const dispatch = useDispatch()
-  const { boardId } = useParams()
-  const handleAddNewColumn = async () => {
-    await createNewColumnAPI({ boardId, title }, dispatch)
+
+export function MoveColumnForm({ open, onOpen }) {
+  const [title, setTitle] = useState('')
+
+  const handleMoveColumn = async () => {
     onOpen(false)
   }
-
   return (
     <>
       <Dialog open={open} size="xs" handler={onOpen}>
@@ -66,7 +57,7 @@ export function ColumnForm({ columnId, open, onOpen }) {
             disabled={!title}
             variant="gradient"
             color="blue"
-            onClick={handleAddNewColumn}
+            onClick={handleMoveColumn}
           >
             Tạo danh sách
           </Button>

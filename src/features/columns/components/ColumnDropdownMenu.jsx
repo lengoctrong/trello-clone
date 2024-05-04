@@ -1,17 +1,40 @@
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Fragment, useState } from 'react'
-import { ColumnForm } from './ColumnForm'
+import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify'
+import { deleteColumnDetailsAPI } from '~/apis'
+import { CopyColumnForm } from './CopyColumnForm'
+import { DeleteColumnForm } from './DeleteColumnForm'
+import { MoveColumnForm } from './MoveColumnForm'
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
 }
 
-const ColumnDropdownMenu = ({ columnId, onDeleteColumn }) => {
+const ColumnDropdownMenu = ({ columnId }) => {
   const [open, setOpen] = useState(false)
+  const [openDeleteForm, setOpenDeleteForm] = useState(false)
+
+  const dispatch = useDispatch()
 
   const handleOpen = () => {
     setOpen(!open)
+  }
+
+  const handleConfirmDeleteColumn = async () => {
+    const optsToast = {
+      position: 'bottom-left'
+    }
+    try {
+      const res = await deleteColumnDetailsAPI(columnId, dispatch)
+
+      toast.success(res.data.deleteResult ?? 'Xoá thành công', optsToast)
+    } catch (err) {
+      toast.error(err.message, optsToast)
+    } finally {
+      setOpenDeleteForm(false)
+    }
   }
 
   return (
@@ -93,7 +116,7 @@ const ColumnDropdownMenu = ({ columnId, onDeleteColumn }) => {
               <Menu.Item>
                 {({ active }) => (
                   <div
-                    onClick={onDeleteColumn}
+                    onClick={() => setOpenDeleteForm(!openDeleteForm)}
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm'
@@ -107,7 +130,18 @@ const ColumnDropdownMenu = ({ columnId, onDeleteColumn }) => {
           </Menu.Items>
         </Transition>
       </Menu>
-      <ColumnForm open={open} onOpen={handleOpen} columnId={columnId} />
+      <CopyColumnForm open={open} onOpen={handleOpen} columnId={columnId} />
+      <MoveColumnForm open={open} onOpen={handleOpen} columnId={columnId} />
+      <DeleteColumnForm
+        // open={showDialog}
+        // handleOpen={setShowDialog}
+        // handleConfirm={handleConfirmDeleteColumn}
+        // handleCancel={handleCancelDeleteColumn}
+        open={openDeleteForm}
+        handleOpen={() => setOpenDeleteForm(!openDeleteForm)}
+        handleConfirm={handleConfirmDeleteColumn}
+        handleCancel={() => setOpenDeleteForm(false)}
+      />
     </>
   )
 }
