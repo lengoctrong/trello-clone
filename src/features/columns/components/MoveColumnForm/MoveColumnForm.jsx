@@ -6,33 +6,12 @@ import {
   DialogHeader,
   Typography
 } from '@material-tailwind/react'
-import { useDispatch, useSelector } from 'react-redux'
-import { moveColumnAndUpdateCardsAPI } from '~/apis'
 import SubMenuMoveColumnForm from '~/features/columns/components/MoveColumnForm/SubMenuMoveColumnForm'
 
 export function MoveColumnForm({ columnId, open, handleOpen, handleCancel }) {
-  const columns = useSelector((state) => state.board.columns)
-  const column = columns.find((column) => column._id === columnId)
-  const oldBoardId = column?.boardId
-  const { currentBoard: newBoard } = useSelector((state) => state.board)
-  const newBoardId = newBoard._id
-  const dispatch = useDispatch()
-
   const handleMoveColumn = async () => {
-    console.log(
-      'columnId: ',
-      columnId,
-      'oldBoardId: ',
-      oldBoardId,
-      'newBoardId: ',
-      newBoardId
-    )
-    await moveColumnAndUpdateCardsAPI(
-      columnId,
-      oldBoardId,
-      newBoardId,
-      dispatch
-    )
+    // call api to move column
+
     handleCancel()
   }
 

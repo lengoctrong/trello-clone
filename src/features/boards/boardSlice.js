@@ -39,7 +39,7 @@ const boardSlice = createSlice({
       return state
     },
     setBoardDetails: (state, action) => {
-      return action.payload
+      return { ...state, ...action.payload }
     },
     setBoardList: (state, action) => {
       state.boards = [...action.payload]
@@ -47,11 +47,7 @@ const boardSlice = createSlice({
     addNewBoard: (state, action) => {
       state.boards = [...state.boards, action.payload]
     },
-    setColumnDetails: (state, action) => {
-      const column = state.columns.find((c) => c._id === action.payload._id)
-      column.cards = action.payload.newColumn.cards
-      column.cardOrderIds = action.payload.newColumn.cardOrderIds
-    },
+
     addNewColumn: (state, action) => {
       const newColumn = action.payload
       newColumn.cards = [generatePlaceholderCard(newColumn)]
@@ -75,10 +71,6 @@ const boardSlice = createSlice({
       column.cards.push(newCard)
       column.cardOrderIds.push(newCard._id)
     },
-    moveColumn: (state, action) => {
-      state.columnOrderIds = action.payload.columnOrderIds
-    },
-
     deleteColumn: (state, action) => {
       state.columns = state.columns.filter((c) => c._id !== action.payload)
       state.columnOrderIds = state.columnOrderIds.filter(
@@ -88,33 +80,26 @@ const boardSlice = createSlice({
     setCurrentBoard: (state, action) => {
       state.currentBoard = action.payload
     },
-    moveColumnAndUpdateCards: (state, action) => {
-      // columnId, oldBoardId, newBoardId
-      const oldBoard = state.boards.find(
-        (b) => b._id === action.payload.oldBoardId
+    moveCardToDifferentColumn: (state, action) => {
+      const prevColumn = state.columns.find(
+        (c) => c._id === action.payload.prevColumnId
+      )
+      const currentColumn = state.columns.find(
+        (c) => c._id === action.payload.currentColumnId
+      )
+      const card = prevColumn.cards.find(
+        (card) => card._id === action.payload.currentCardId
       )
 
-      const oldColumn = oldBoard.columns.find(
-        (c) => c._id === action.payload.columnId
+      prevColumn.cards = prevColumn.cards.filter(
+        (card) => card._id !== action.payload.currentCardId
       )
+      prevColumn.cardOrderIds = action.payload.prevCardOrderIds
 
-      oldBoard.columns = oldBoard.columns.filter((c) => c._id !== oldColumn._id)
+      currentColumn.cards.push(card)
+      currentColumn.cardOrderIds = action.payload.currentCardOrderIds
 
-      oldBoard.columnOrderIds = oldBoard.columnOrderIds.filter(
-        (id) => id !== oldColumn._id
-      )
-
-      const newBoard = state.boards.find(
-        (b) => b._id === action.payload.newBoardId
-      )
-
-      oldColumn.boardId = newBoard._id
-
-      oldColumn.cards.forEach((card) => {
-        card.boardId = newBoard._id
-      })
-
-      newBoard.columns = [...newBoard.columns, oldColumn]
+      card.columnId = action.payload.currentColumnId
     }
   }
 })
@@ -127,11 +112,9 @@ export const {
   setBoardDetails,
   setBoardList,
   addNewBoard,
-  setColumnDetails,
   addNewCard,
   addNewColumn,
-  moveColumn,
   deleteColumn,
   setCurrentBoard,
-  moveColumnAndUpdateCards
+  moveCardToDifferentColumn
 } = boardSlice.actions

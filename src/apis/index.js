@@ -6,12 +6,10 @@ import {
   addNewColumn,
   deleteColumn,
   fetchBoard,
-  moveColumn,
-  moveColumnAndUpdateCards,
+  moveCardToDifferentColumn,
   retrieveSuccess,
   setBoardDetails,
   setBoardList,
-  setColumnDetails,
   startRetrieve
 } from '~/features/boards/boardSlice'
 import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
@@ -61,13 +59,7 @@ export const updateBoardDetailsAPI = async (
     `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`,
     updatedBoard
   )
-  if (type === 'moveColumn') {
-    dispatch(moveColumn(updatedBoard))
-  }
-
-  if (type === 'updateBoard') {
-    dispatch(setBoardDetails(updatedBoard))
-  }
+  dispatch(setBoardDetails(updatedBoard))
 }
 
 export const createNewColumnAPI = async (columnData, dispatch) => {
@@ -86,58 +78,19 @@ export const deleteColumnDetailsAPI = async (columnId, dispatch) => {
   )
 }
 
-export const moveCardToDifferentColumnAPI = async (
-  currentCardId,
-  prevColumnId,
-  currentColumnId,
-  updatedColumns
-) => {
-  let prevCardOrderIds =
-    updatedColumns.find((c) => c._id === prevColumnId)?.cardOrderIds || []
-
-  if (
-    prevCardOrderIds.length === 1 &&
-    prevCardOrderIds[0].includes('placeholder-card')
-  ) {
-    prevCardOrderIds = []
-  }
-
-  await axios.put(
-    `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/supports/moving_card`,
-    {
-      currentCardId,
-      prevColumnId,
-      prevCardOrderIds,
-      currentColumnId,
-      currentCardOrderIds: updatedColumns.find((c) => c._id === currentColumnId)
-        .cardOrderIds
-    }
-  )
-}
-
-export const moveColumnAndUpdateCardsAPI = async (
-  columnId,
-  oldBoardId,
-  newBoardId,
-  dispatch
-) => {
-  await axios.put(
-    `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/supports/moving_column`,
-    { columnId, oldBoardId, newBoardId }
-  )
-  dispatch(moveColumnAndUpdateCards({ columnId, oldBoardId, newBoardId }))
-}
-
-export const updateColumnDetailsAPI = async (
-  columnId,
-  updatedColumn,
-  dispatch
-) => {
+export const moveCardToSameColumnAPI = async (columnId, updatedData) => {
   await axios.put(
     `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`,
-    updatedColumn
+    updatedData
   )
-  // dispatch(setColumnDetails({ columnId, newColumn: updatedColumn }))
+}
+
+export const moveCardToDifferentColumnAPI = async (updatedData, dispatch) => {
+  await axios.put(
+    `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/supports/moving_card`,
+    updatedData
+  )
+  dispatch(moveCardToDifferentColumn(updatedData))
 }
 
 export const createNewCardAPI = async (cardData, dispatch) => {

@@ -8,21 +8,12 @@ import {
   Typography
 } from '@material-tailwind/react'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
-import { createNewColumnAPI } from '~/apis'
 
 export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
-  const column = useSelector((state) => state.board.columns).find(
-    (column) => column._id === columnId
-  )
-  const columnTitle = column?.title
-  const [title, setTitle] = useState(columnTitle ?? '')
-  const dispatch = useDispatch()
-  const { boardId } = useParams()
+  const [title, setTitle] = useState('')
 
   const handleAddNewColumn = async () => {
-    await createNewColumnAPI({ title, boardId, type: 'copy' }, dispatch)
+    // call api
     handleOpen(false)
   }
 

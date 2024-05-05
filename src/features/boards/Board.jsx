@@ -6,8 +6,8 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   moveCardToDifferentColumnAPI,
-  updateBoardDetailsAPI,
-  updateColumnDetailsAPI
+  moveCardToSameColumnAPI,
+  updateBoardDetailsAPI
 } from '~/apis'
 import CardBase from '~/components/CardBase'
 import ColumnBase from '~/components/ColumnBase'
@@ -146,13 +146,33 @@ const Board = () => {
 
       if (trigger === 'handleDragEnd') {
         // call api to update two columns when drag card to another column
+        const currentCardId = activeCardId
+        const prevColumnId = activeColumn._id
+        const currentColumnId = overColumn._id
+        const currentCardOrderIds = newColumns.find(
+          (c) => c._id === currentColumnId
+        ).cardOrderIds
+        let prevCardOrderIds =
+          newColumns.find((c) => c._id === prevColumnId)?.cardOrderIds || []
+
+        if (
+          prevCardOrderIds.length === 1 &&
+          prevCardOrderIds[0].includes('placeholder-card')
+        ) {
+          prevCardOrderIds = []
+        }
         moveCardToDifferentColumnAPI(
-          activeCardId,
-          activeColumn._id,
-          overColumn._id,
-          newColumns
+          {
+            currentCardId,
+            prevColumnId,
+            prevCardOrderIds,
+            currentColumnId,
+            currentCardOrderIds
+          },
+          dispatch
         )
       }
+
       return newColumns
     })
   }
@@ -222,6 +242,7 @@ const Board = () => {
           activeCardId,
           'handleDragEnd'
         )
+        return
       }
 
       // drag card within the same column
@@ -254,9 +275,13 @@ const Board = () => {
         targetColumn.cardOrderIds = orderedCards.map((card) => card?._id)
 
         // call api to update column
-        updateColumnDetailsAPI(
+        moveCardToSameColumnAPI(
           targetColumn._id,
-          { cards: orderedCards, cardOrderIds: targetColumn.cardOrderIds },
+          {
+            cards: orderedCards,
+            cardOrderIds: targetColumn.cardOrderIds
+            // columnId: originalCol._id
+          },
           dispatch
         )
 
@@ -271,13 +296,13 @@ const Board = () => {
       const { id: overColumnId } = over
 
       setOrderedColumns((prevColumns) => {
+        if (!activeColumnId || !overColumnId) return prevColumns
         const oldColumnIndex = prevColumns.findIndex(
           (c) => c._id === activeColumnId
         )
         const newColumnIndex = prevColumns.findIndex(
           (c) => c._id === overColumnId
         )
-
         const orderedColumns = arrayMove(
           prevColumns,
           oldColumnIndex,
