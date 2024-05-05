@@ -6,17 +6,20 @@ import {
 } from '@material-tailwind/react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { updateBoardDetailsAPI } from '~/apis'
 import Button from '~/components/Button'
 import { chevronLeftIcon, closeIcon, descriptionIcon, userIcon } from '~/icons'
 import { closeAllRightDrawer, closeSubRightDrawer } from '../rightDrawerSlice'
-
 export function InfoDrawer() {
-  const [desc, setDesc] = useState('')
+  const dispatch = useDispatch()
+  const { description } = useSelector((state) => state.board)
+  const [desc, setDesc] = useState(description ?? '')
   const [showDescForm, setShowDescForm] = useState(false)
   const isShowSubDrawer = useSelector(
     (state) => state.rightDrawer.isShowSubDrawer
   )
-  const dispatch = useDispatch()
+  const { boardId } = useParams()
 
   const handleClose = () => {
     dispatch(closeAllRightDrawer())
@@ -26,7 +29,17 @@ export function InfoDrawer() {
     dispatch(closeSubRightDrawer())
   }
 
-  const handleSaveDescForm = () => {}
+  const handleSaveDescForm = () => {
+    setShowDescForm(false)
+    // Call API to save description
+
+    updateBoardDetailsAPI(
+      boardId,
+      { description: desc },
+      'updateBoard',
+      dispatch
+    )
+  }
 
   return (
     <Drawer
