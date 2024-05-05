@@ -15,7 +15,7 @@ const ListColumn = ({ columns }) => {
   const { _id: boardId } = useSelector((state) => state.board)
   const dispatch = useDispatch()
 
-  const handleAddNewColumn = (e) => {
+  const handleAddNewColumn = async (e) => {
     e.preventDefault()
     if (!columnTitle.trim().length) {
       setToggleAddColumnForm(false)
@@ -26,7 +26,7 @@ const ListColumn = ({ columns }) => {
       title: columnTitle,
       boardId
     }
-    createNewColumnAPI(columnData, dispatch)
+    await createNewColumnAPI(columnData, dispatch)
     // reset form
     setColumnTitle('')
     setToggleAddColumnForm(false)

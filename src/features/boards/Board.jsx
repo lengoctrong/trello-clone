@@ -150,8 +150,7 @@ const Board = () => {
           activeCardId,
           activeColumn._id,
           overColumn._id,
-          newColumns,
-          dispatch
+          newColumns
         )
       }
       return newColumns
@@ -245,9 +244,14 @@ const Board = () => {
         const targetColumn = newColumns.find(
           (column) => column._id === overColumn._id
         )
-
+        console.log(
+          'targetColumn:',
+          targetColumn,
+          '\norderedCards:',
+          orderedCards
+        )
         targetColumn.cards = orderedCards
-        targetColumn.cardOrderIds = orderedCards.map((card) => card._id)
+        targetColumn.cardOrderIds = orderedCards.map((card) => card?._id)
 
         // call api to update column
         updateColumnDetailsAPI(

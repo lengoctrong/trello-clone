@@ -6,13 +6,12 @@ import {
   addNewColumn,
   deleteColumn,
   fetchBoard,
-  moveCardOtherColumn,
-  moveCardSameColumn,
   moveColumn,
   moveColumnAndUpdateCards,
   retrieveSuccess,
   setBoardDetails,
   setBoardList,
+  setColumnDetails,
   startRetrieve
 } from '~/features/boards/boardSlice'
 import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
@@ -91,8 +90,7 @@ export const moveCardToDifferentColumnAPI = async (
   currentCardId,
   prevColumnId,
   currentColumnId,
-  updatedColumns,
-  dispatch
+  updatedColumns
 ) => {
   let prevCardOrderIds =
     updatedColumns.find((c) => c._id === prevColumnId)?.cardOrderIds || []
@@ -114,15 +112,6 @@ export const moveCardToDifferentColumnAPI = async (
       currentCardOrderIds: updatedColumns.find((c) => c._id === currentColumnId)
         .cardOrderIds
     }
-  )
-
-  dispatch(
-    moveCardOtherColumn({
-      currentCardId,
-      prevColumnId,
-      currentColumnId,
-      updatedColumns
-    })
   )
 }
 
@@ -148,7 +137,7 @@ export const updateColumnDetailsAPI = async (
     `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`,
     updatedColumn
   )
-  dispatch(moveCardSameColumn({ columnId, updatedColumn }))
+  // dispatch(setColumnDetails({ columnId, newColumn: updatedColumn }))
 }
 
 export const createNewCardAPI = async (cardData, dispatch) => {

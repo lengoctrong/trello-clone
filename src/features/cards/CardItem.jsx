@@ -17,6 +17,7 @@ const CardItem = ({ card }) => {
     transform: CSS.Translate.toString(transform),
     transition
   }
+  const placeholderClass = card.fe_placeholderCard ? 'invisible' : ''
 
   return (
     <li
@@ -24,13 +25,10 @@ const CardItem = ({ card }) => {
       style={CSSProperties}
       {...attributes}
       {...listeners}
+      className={placeholderClass}
       type="text"
     >
-      {!card.fe_placeholderCard ? (
-        <CardBase>{card.title}</CardBase>
-      ) : (
-        <div className="p-2"></div>
-      )}
+      <CardBase>{card.title}</CardBase>
     </li>
   )
 }
