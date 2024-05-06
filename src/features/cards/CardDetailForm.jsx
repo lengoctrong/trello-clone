@@ -7,7 +7,7 @@ import {
   listBulletIcon
 } from '~/icons'
 
-const CardForm = ({ setIsFormOpen }) => {
+const CardDetailForm = ({ setIsFormOpen }) => {
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50"
@@ -102,4 +102,4 @@ const CardForm = ({ setIsFormOpen }) => {
   )
 }
 
-export default CardForm
+export default CardDetailForm

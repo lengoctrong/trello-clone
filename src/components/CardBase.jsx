@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import CardForm from '~/features/cards/CardForm'
+import CardForm from '~/features/cards/CardDetailForm'
 import { pencilIcon } from '~/icons'
 
 const CardBase = ({ children }) => {

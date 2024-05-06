@@ -2,14 +2,20 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useState } from 'react'
 import { pencilIcon } from '~/icons'
-import CardForm from './CardForm'
+
+import CardActionForm from './CardActionForm'
+import CardDetailForm from './CardDetailForm'
 
 const CardItem = ({ card }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [formType, setFormType] = useState(null)
 
-  const handleEditCard = () => {
-    setIsFormOpen(true)
+  const handleEditCard = (e) => {
+    if (e.target.closest('[data-type]')) {
+      setIsFormOpen(true)
+      setFormType(e.target.dataset.type)
+    }
   }
   const {
     attributes,
@@ -40,21 +46,32 @@ const CardItem = ({ card }) => {
           className={
             'bg-white shadow-sm border-2 w-full text-start rounded-xl py-1 px-3 my-2 hover:border-blue-500 flex justify-between'
           }
+          data-type="detail"
+          onClick={handleEditCard}
           onMouseEnter={() => setIsEdit(true)}
           onMouseLeave={() => setIsEdit(false)}
         >
           {card.title}
           {isEdit && (
             <button
-              className="hover:bg-gray-200 h-6 w-6 rounded-full flex items-center justify-center"
+              data-type="action"
               onClick={handleEditCard}
+              className="hover:bg-gray-200 h-6 w-6 rounded-full flex items-center justify-center"
             >
               <span>{pencilIcon}</span>
             </button>
           )}
         </div>
       </div>
-      {isFormOpen && <CardForm setIsFormOpen={setIsFormOpen} />}
+      {isFormOpen &&
+        (formType === 'detail' ? (
+          <CardDetailForm setIsFormOpen={setIsFormOpen} />
+        ) : (
+          <CardActionForm
+            isFormOpen={isFormOpen}
+            setIsFormOpen={setIsFormOpen}
+          />
+        ))}
     </>
   )
 }
