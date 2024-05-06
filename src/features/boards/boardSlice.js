@@ -99,6 +99,13 @@ const boardSlice = createSlice({
       currentColumn.cardOrderIds = action.payload.currentCardOrderIds
 
       card.columnId = action.payload.currentColumnId
+    },
+    moveCardToSameColumn: (state, action) => {
+      const column = state.columns.find(
+        (c) => c._id === action.payload.columnId
+      )
+      column.cards = action.payload.updatedData.cards
+      column.cardOrderIds = action.payload.updatedData.cardOrderIds
     }
   }
 })
@@ -114,5 +121,6 @@ export const {
   addNewColumn,
   deleteColumn,
   setCurrentBoard,
-  moveCardToDifferentColumn
+  moveCardToDifferentColumn,
+  moveCardToSameColumn
 } = boardSlice.actions

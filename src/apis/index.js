@@ -6,6 +6,7 @@ import {
   addNewColumn,
   deleteColumn,
   moveCardToDifferentColumn,
+  moveCardToSameColumn,
   retrieveSuccess,
   setBoardDetails,
   setBoardList,
@@ -75,11 +76,16 @@ export const deleteColumnDetailsAPI = async (columnId, dispatch) => {
   )
 }
 
-export const moveCardToSameColumnAPI = async (columnId, updatedData) => {
+export const moveCardToSameColumnAPI = async (
+  columnId,
+  updatedData,
+  dispatch
+) => {
   await axios.put(
     `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`,
     updatedData
   )
+  dispatch(moveCardToSameColumn({ columnId, updatedData }))
 }
 
 export const moveCardToDifferentColumnAPI = async (updatedData, dispatch) => {

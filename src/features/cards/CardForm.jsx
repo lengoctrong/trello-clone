@@ -12,7 +12,7 @@ const CardForm = ({ setIsFormOpen }) => {
     <div
       className="fixed inset-0 flex items-center justify-center z-50"
       onClick={(e) => {
-        if (e.target.className.includes('overlay')) setIsFormOpen(false)
+        if (e.target.className?.includes('overlay')) setIsFormOpen(false)
       }}
     >
       <div className="overlay absolute inset-0 bg-black opacity-50"></div>

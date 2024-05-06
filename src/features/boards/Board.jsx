@@ -10,13 +10,13 @@ import {
   moveCardToSameColumnAPI,
   updateBoardDetailsAPI
 } from '~/apis'
-import CardBase from '~/components/CardBase'
-import ColumnBase from '~/components/ColumnBase'
 import CustomOverlay from '~/components/CustomOverlay'
 import { openRightDrawer } from '~/components/RightDrawer/rightDrawerSlice'
 import { MouseSensor } from '~/customLib'
 import { moreIcon } from '~/icons'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
+import CardItem from '../cards/CardItem'
+import Column from '../columns/Column'
 import ListColumns from '../columns/ListColumns'
 const Board = () => {
   const { boardId } = useParams()
@@ -271,12 +271,6 @@ const Board = () => {
         const targetColumn = newColumns.find(
           (column) => column._id === overColumn._id
         )
-        console.log(
-          'targetColumn:',
-          targetColumn,
-          '\norderedCards:',
-          orderedCards
-        )
 
         if (targetColumn.cards.map((c) => c._id.includes('placeholder-card'))) {
           targetColumn.cards = targetColumn.cards.filter(
@@ -287,12 +281,19 @@ const Board = () => {
           )
         }
 
+        console.log(
+          'targetColumn:',
+          targetColumn,
+          '\norderedCards:',
+          orderedCards
+        )
+
         // call api to update column
         moveCardToSameColumnAPI(
           targetColumn._id,
           {
-            cards: targetColumn.cards,
-            cardOrderIds: targetColumn.cardOrderIds
+            cards: orderedCards,
+            cardOrderIds: orderedCards.map((c) => c._id)
           },
           dispatch
         )
@@ -374,13 +375,13 @@ const Board = () => {
             {/* card overlay */}
             <CustomOverlay>
               {activeItem?.data.current.columnId && (
-                <CardBase>{activeItem.data.current.title}</CardBase>
+                <CardItem card={activeItem.data.current} />
               )}
             </CustomOverlay>
             {/* column overlay */}
             <CustomOverlay>
               {!activeItem?.data.current.columnId && (
-                <ColumnBase overlay data={activeItem.data.current}></ColumnBase>
+                <Column column={activeItem.data.current} />
               )}
             </CustomOverlay>
           </>
