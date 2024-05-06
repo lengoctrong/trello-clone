@@ -5,7 +5,6 @@ import {
   addNewCard,
   addNewColumn,
   deleteColumn,
-  fetchBoard,
   moveCardToDifferentColumn,
   retrieveSuccess,
   setBoardDetails,
@@ -19,7 +18,6 @@ export const getAllBoardAPI = async (dispatch) => {
   dispatch(startRetrieve())
   const result = await axios.get(`${API_URL}/${API_VERSION}/${API_TYPES.BOARD}`)
   dispatch(setBoardList(result.data))
-  dispatch(retrieveSuccess())
 }
 
 export const createNewBoardAPI = async (boardData, dispatch) => {
@@ -45,8 +43,7 @@ export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
     column.cards = mapOrderedArr(column.cards, column.cardOrderIds, '_id')
   })
 
-  dispatch(fetchBoard(res.data))
-  dispatch(retrieveSuccess())
+  dispatch(retrieveSuccess(board))
 }
 
 export const updateBoardDetailsAPI = async (

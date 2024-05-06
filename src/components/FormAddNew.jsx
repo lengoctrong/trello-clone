@@ -3,6 +3,7 @@ import Button from './Button'
 const FormAddNew = ({
   textAreaRows = 2,
   onSubmit,
+  onKeyDown,
   textAreaTitle = '',
   btnAddTitle = 'Thêm',
   setTitle,
@@ -17,12 +18,7 @@ const FormAddNew = ({
       <textarea
         value={textAreaTitle}
         onChange={(e) => setTitle(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            e.preventDefault()
-            onSubmit(e)
-          }
-        }}
+        onKeyDown={onKeyDown}
         autoFocus
         rows={textAreaRows}
         className={`w-full p-2 mt-2 bg-white rounded-md resize-none outline-blue-500 ${className}`}

@@ -4,6 +4,7 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, debounce, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import {
   moveCardToDifferentColumnAPI,
   moveCardToSameColumnAPI,
@@ -18,13 +19,13 @@ import { moreIcon } from '~/icons'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 import ListColumns from '../columns/ListColumns'
 const Board = () => {
+  const { boardId } = useParams()
+
   const {
-    _id: boardId,
     columns,
     columnOrderIds,
     title: boardTitle
   } = useSelector((state) => state.board)
-
   const dispatch = useDispatch()
 
   const [activeItem, setActiveItem] = useState(null)
@@ -277,14 +278,20 @@ const Board = () => {
           orderedCards
         )
 
-        if (targetColumn.cards.map((c) => c._id.includes('placeholder-card')))
-          return newColumns
+        if (targetColumn.cards.map((c) => c._id.includes('placeholder-card'))) {
+          targetColumn.cards = targetColumn.cards.filter(
+            (c) => !c._id.includes('placeholder-card')
+          )
+          targetColumn.cardOrderIds = targetColumn.cardOrderIds.filter(
+            (c) => !c.includes('placeholder-card')
+          )
+        }
 
         // call api to update column
         moveCardToSameColumnAPI(
           targetColumn._id,
           {
-            cards: orderedCards,
+            cards: targetColumn.cards,
             cardOrderIds: targetColumn.cardOrderIds
           },
           dispatch

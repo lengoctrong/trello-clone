@@ -58,6 +58,12 @@ const Column = ({ column }) => {
     setToggleAddCardForm(false)
   }
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleAddNewCard(e)
+    }
+  }
+
   const ColumnBaseProps = {
     title
   }
@@ -65,6 +71,7 @@ const Column = ({ column }) => {
   const FormAddNewProps = {
     textAreaRows: 2,
     onSubmit: handleAddNewCard,
+    onKeyDown: handleKeyDown,
     textAreaTitle: cardTitle,
     btnAddTitle: 'Thêm thẻ',
     setTitle: setCardTitle,

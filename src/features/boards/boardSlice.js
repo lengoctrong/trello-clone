@@ -25,24 +25,22 @@ const boardSlice = createSlice({
       state.isPending = true
       state.isSuccess = false
     },
-    retrieveSuccess: (state) => {
-      state.isPending = false
-      state.isSuccess = true
-    },
-    fetchBoard: (state, action) => {
+    retrieveSuccess: (state, action) => {
       state = { ...state, ...action.payload }
 
-      if (!state.boards.find((board) => board._id === action.payload._id)) {
-        state.boards = [...state.boards, action.payload]
-      }
+      state.isPending = false
+      state.isSuccess = true
 
       return state
     },
+
     setBoardDetails: (state, action) => {
       return { ...state, ...action.payload }
     },
     setBoardList: (state, action) => {
-      state.boards = [...action.payload]
+      state.boards = action.payload
+      state.isPending = false
+      state.isSuccess = true
     },
     addNewBoard: (state, action) => {
       state.boards = [...state.boards, action.payload]
@@ -84,6 +82,7 @@ const boardSlice = createSlice({
       const prevColumn = state.columns.find(
         (c) => c._id === action.payload.prevColumnId
       )
+
       const currentColumn = state.columns.find(
         (c) => c._id === action.payload.currentColumnId
       )
@@ -108,7 +107,6 @@ export default boardSlice.reducer
 export const {
   startRetrieve,
   retrieveSuccess,
-  fetchBoard,
   setBoardDetails,
   setBoardList,
   addNewBoard,

@@ -31,6 +31,27 @@ const ListColumn = ({ columns }) => {
     setColumnTitle('')
     setToggleAddColumnForm(false)
   }
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      handleAddNewColumn(e)
+    }
+  }
+
+  const FormAddNewProps = {
+    textAreaRows: 1,
+    onSubmit: handleAddNewColumn,
+    onKeyDown: handleKeyDown,
+    textAreaTitle: columnTitle,
+    btnAddTitle: 'Thêm danh sách',
+    setTitle: setColumnTitle,
+    toggleAddForm: toggleAddColumnForm,
+    setToggleAddForm: setToggleAddColumnForm,
+    placeholder: 'Nhập tiêu đề danh sách...',
+    className: 'py-0'
+  }
+
   return (
     <>
       <SortableContext
@@ -43,17 +64,7 @@ const ListColumn = ({ columns }) => {
           ))}
           {toggleAddColumnForm ? (
             <div className={'bg-gray-100 min-w-[272px] rounded-xl p-2 h-full'}>
-              <FormAddNew
-                textAreaRows={1}
-                onSubmit={handleAddNewColumn}
-                textAreaTitle={columnTitle}
-                btnAddTitle="Thêm danh sách"
-                setTitle={setColumnTitle}
-                toggleAddForm={toggleAddColumnForm}
-                setToggleAddForm={setToggleAddColumnForm}
-                placeholder="Nhập tiêu đề danh sách..."
-                className="py-0"
-              />
+              <FormAddNew {...FormAddNewProps} />
             </div>
           ) : (
             <button
