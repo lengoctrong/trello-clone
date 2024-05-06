@@ -6,7 +6,7 @@ import {
   DialogHeader,
   Typography
 } from '@material-tailwind/react'
-import SubMenuMoveColumnForm from '~/features/columns/components/MoveColumnForm/SubMenuMoveColumnForm'
+import SubMenuMoveColumnForm from './SubMenuMoveColumnForm'
 
 export function MoveColumnForm({ columnId, open, handleOpen, handleCancel }) {
   const handleMoveColumn = async () => {

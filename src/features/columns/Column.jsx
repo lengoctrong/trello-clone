@@ -7,9 +7,10 @@ import { MAX_HEIGHT_COLUMN, MAX_WIDTH_COLUMN } from '~/utils/constants'
 
 import FormAddNew from '~/components/FormAddNew'
 import ListCards from '~/features/cards/ListCards'
-import ColumnDropdownMenu from '~/features/columns/components/ColumnDropdownMenu'
+
 import { plusIcon } from '~/icons'
 import { mapOrderedArr } from '~/utils/formatters'
+import ColumnDropdownMenu from './ColumnDropdownMenu/ColumnDropdownMenu'
 
 const Column = ({ column }) => {
   const { _id: columnId, title, cards, cardOrderIds } = column

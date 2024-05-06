@@ -1,9 +1,9 @@
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Fragment, useState } from 'react'
-import { CopyColumnForm } from './CopyColumnForm'
-import { DeleteColumnForm } from './DeleteColumnForm'
-import { MoveColumnForm } from './MoveColumnForm/MoveColumnForm'
+import { CopyColumnForm } from './components/CopyColumnForm/CopyColumnForm'
+import { DeleteColumnForm } from './components/DeleteColumnForm/DeleteColumnForm'
+import { MoveColumnForm } from './components/MoveColumnForm/MoveColumnForm'
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
