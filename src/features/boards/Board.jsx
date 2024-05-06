@@ -97,6 +97,7 @@ const Board = () => {
       const newColumns = cloneDeep(prevColumns)
 
       const newActiveColumn = newColumns.find((c) => c._id === activeColumn._id)
+
       // check if the old column has only one card
       if (isEmpty(newActiveColumn.cards)) {
         newActiveColumn.cards = [generatePlaceholderCard(newActiveColumn)]
@@ -124,20 +125,11 @@ const Board = () => {
         columnId: newOverColumn._id
       })
 
-      // delete placeholder card if exists
-      newOverColumn.cards = newOverColumn.cards.filter(
-        (card) => !card.fe_placeholderCard
-      )
-
-      newOverColumn.cardOrderIds = newOverColumn.cards.filter(
-        (card) => !card.fe_placeholderCard
-      )
-
-      newOverColumn.cardOrderIds = newOverColumn.cards.map((card) => card._id)
-
       console.log(
         'newActiveColumn:',
         newActiveColumn,
+        '\nnewActiveColumn.cards:',
+        newActiveColumn.cards,
         '\nnewOverColumn:',
         newOverColumn
       )
@@ -145,6 +137,16 @@ const Board = () => {
       console.log('newColumns:', newColumns)
 
       if (trigger === 'handleDragEnd') {
+        // delete placeholder card if exists
+        newOverColumn.cards = newOverColumn.cards.filter(
+          (card) => !card.fe_placeholderCard
+        )
+
+        newOverColumn.cardOrderIds = newOverColumn.cards.filter(
+          (card) => !card.fe_placeholderCard
+        )
+
+        newOverColumn.cardOrderIds = newOverColumn.cards.map((card) => card._id)
         // call api to update two columns when drag card to another column
         const currentCardId = activeCardId
         const prevColumnId = activeColumn._id
@@ -155,6 +157,9 @@ const Board = () => {
         let prevCardOrderIds =
           newColumns.find((c) => c._id === prevColumnId)?.cardOrderIds || []
 
+        prevCardOrderIds = prevCardOrderIds.filter(
+          (cardId) => !cardId.includes('placeholder-card')
+        )
         if (
           prevCardOrderIds.length === 1 &&
           prevCardOrderIds[0].includes('placeholder-card')
@@ -271,8 +276,9 @@ const Board = () => {
           '\norderedCards:',
           orderedCards
         )
-        targetColumn.cards = orderedCards
-        targetColumn.cardOrderIds = orderedCards.map((card) => card?._id)
+
+        if (targetColumn.cards.map((c) => c._id.includes('placeholder-card')))
+          return newColumns
 
         // call api to update column
         moveCardToSameColumnAPI(
@@ -280,7 +286,6 @@ const Board = () => {
           {
             cards: orderedCards,
             cardOrderIds: targetColumn.cardOrderIds
-            // columnId: originalCol._id
           },
           dispatch
         )
