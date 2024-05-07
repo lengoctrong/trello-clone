@@ -327,7 +327,6 @@ const Board = () => {
         updateBoardDetailsAPI(
           boardId,
           { columnOrderIds: orderedColumnOrderIds },
-          'moveColumn',
           dispatch
         )
         return orderedColumns
