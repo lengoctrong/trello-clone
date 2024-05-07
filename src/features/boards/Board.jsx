@@ -17,7 +17,7 @@ import { moreIcon } from '~/icons'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 import CardItem from '../cards/CardItem'
 import Column from '../columns/Column'
-import ListColumns from '../columns/ListColumns'
+import ColumnList from '../columns/ColumnList'
 const Board = () => {
   const { boardId } = useParams()
 
@@ -27,7 +27,6 @@ const Board = () => {
     title: boardTitle
   } = useSelector((state) => state.board)
   const dispatch = useDispatch()
-
   const [activeItem, setActiveItem] = useState(null)
   const [originalCol, setOriginalCol] = useState(null)
   const [orderedColumns, setOrderedColumns] = useState(columns)
@@ -59,7 +58,7 @@ const Board = () => {
   }
 
   const handleChangeBoardTitle = async (e) => {
-    updateBoardDetailsAPI(boardId, { title: e.target.value }, 'title', dispatch)
+    updateBoardDetailsAPI(boardId, { title: e.target.value }, dispatch)
   }
 
   const findColumn = (cardId) => {
@@ -368,7 +367,7 @@ const Board = () => {
           </button>
         </div>
 
-        <ListColumns columns={orderedColumns} />
+        <ColumnList columns={orderedColumns} />
 
         {activeItem && (
           <>

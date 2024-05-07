@@ -6,7 +6,7 @@ import { createNewCardAPI } from '~/apis'
 import { MAX_HEIGHT_COLUMN, MAX_WIDTH_COLUMN } from '~/utils/constants'
 
 import FormAddNew from '~/components/FormAddNew'
-import ListCards from '~/features/cards/ListCards'
+import CardList from '~/features/cards/CardList'
 
 import { plusIcon } from '~/icons'
 import { mapOrderedArr } from '~/utils/formatters'
@@ -99,7 +99,7 @@ const Column = ({ column }) => {
           <ColumnDropdownMenu columnId={columnId} />
         </div>
 
-        <ListCards cards={orderedCards} />
+        <CardList cards={orderedCards} />
 
         {toggleAddCardForm ? (
           <FormAddNew {...FormAddNewProps} />

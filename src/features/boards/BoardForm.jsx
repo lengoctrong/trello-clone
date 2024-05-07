@@ -9,17 +9,29 @@ import {
 } from '@material-tailwind/react'
 import React from 'react'
 import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
 import { createNewBoardAPI } from '~/apis'
+import { ROUTES } from '~/utils/constants'
 
 export function BoardForm() {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState('')
-  const dispatch = useDispatch()
 
-  const handleAddNewBoard = () => {
-    createNewBoardAPI({ title }, dispatch)
-    setTitle('')
-    setOpen(false)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
+  const handleAddNewBoard = async () => {
+    try {
+      const board = await createNewBoardAPI({ title }, dispatch)
+      toast.success('Tạo bảng mới thành công')
+      navigate(`${ROUTES.BOARD}/${board._id}`)
+    } catch (err) {
+      toast.error('Có lỗi xảy ra, vui lòng thử lại sau')
+    } finally {
+      setTitle('')
+      setOpen(false)
+    }
   }
 
   const handleOpen = () => setOpen(!open)

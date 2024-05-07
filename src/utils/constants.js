@@ -1,3 +1,10 @@
+// routes for navigation
+export const ROUTES = {
+  HOME: '/',
+  BOARD: '/b',
+  NOT_FOUND: '/404'
+}
+
 export const API_URL = 'http://localhost:3000'
 
 export const API_VERSION = 'v1'

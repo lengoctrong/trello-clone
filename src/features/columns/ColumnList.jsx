@@ -8,7 +8,7 @@ import { createNewColumnAPI } from '~/apis'
 import FormAddNew from '~/components/FormAddNew'
 import { plusIcon } from '~/icons'
 import Column from './Column'
-const ListColumn = ({ columns }) => {
+const ColumnList = ({ columns }) => {
   const [toggleAddColumnForm, setToggleAddColumnForm] = useState(false)
   const [columnTitle, setColumnTitle] = useState('')
 
@@ -85,4 +85,4 @@ const ListColumn = ({ columns }) => {
   )
 }
 
-export default ListColumn
+export default ColumnList

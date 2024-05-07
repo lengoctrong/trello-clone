@@ -75,6 +75,7 @@ const boardSlice = createSlice({
         (id) => id !== action.payload
       )
     },
+    deleteBoard: (state, action) => {},
     setCurrentBoard: (state, action) => {
       state.currentBoard = action.payload
     },
@@ -117,6 +118,7 @@ export const {
   setBoardDetails,
   setBoardList,
   addNewBoard,
+  deleteBoard,
   addNewCard,
   addNewColumn,
   deleteColumn,

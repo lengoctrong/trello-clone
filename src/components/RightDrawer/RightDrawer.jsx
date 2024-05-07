@@ -1,6 +1,8 @@
 import { Drawer, IconButton, Typography } from '@material-tailwind/react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { deleteBoardDetailsAPI, updateBoardDetailsAPI } from '~/apis'
 import {
   archiveBoxIcon,
   bars3CenterLeftIcon,
@@ -13,16 +15,18 @@ import {
   settingsIcon
 } from '~/icons'
 import { RIGHT_DRAWER_TYPES } from '~/utils/constants'
+import AlertDialog from '../AlertDialog'
 import { SubRightDrawer } from './SubRightDrawer/SubRightDrawer'
 import { closeRightDrawer, openSubRightDrawer } from './rightDrawerSlice'
 
 export function RightDrawer() {
   const open = useSelector((state) => state.rightDrawer.open)
   const dispatch = useDispatch()
-
+  const { boardId } = useParams()
+  const [openDeleteForm, setOpenDeleteForm] = useState(false)
   const [type, setType] = useState(RIGHT_DRAWER_TYPES.INFO)
 
-  const handleClose = () => {
+  const handleCloseRightDrawer = () => {
     dispatch(closeRightDrawer())
   }
 
@@ -31,14 +35,20 @@ export function RightDrawer() {
     dispatch(openSubRightDrawer())
   }
 
-  const handleOpenFormRightDrawer = () => {}
+  const handleDeleteBoardForm = () => {
+    // call api to delete board
+    updateBoardDetailsAPI(boardId, { _destroy: true }, dispatch)
+
+    setOpenDeleteForm(false)
+    handleCloseRightDrawer()
+  }
 
   return (
     <>
       <Drawer
         placement="right"
         open={open}
-        onClose={handleClose}
+        onClose={() => setOpenDeleteForm(false)}
         className="p-4"
       >
         <div className="mb-6 flex items-center justify-between">
@@ -47,7 +57,11 @@ export function RightDrawer() {
               Menu
             </Typography>
           </div>
-          <IconButton variant="text" color="blue-gray" onClick={handleClose}>
+          <IconButton
+            variant="text"
+            color="blue-gray"
+            onClick={handleCloseRightDrawer}
+          >
             {closeIcon}
           </IconButton>
         </div>
@@ -104,7 +118,6 @@ export function RightDrawer() {
           <button
             data-type={RIGHT_DRAWER_TYPES.FOLLOW}
             className="btn w-full text-start flex gap-2 my-2"
-            onClick={handleOpenFormRightDrawer}
           >
             {eyeIcon}
             Theo dõi
@@ -112,7 +125,6 @@ export function RightDrawer() {
           <button
             data-type={RIGHT_DRAWER_TYPES.COPY}
             className="btn w-full text-start flex gap-2 my-2"
-            onClick={handleOpenFormRightDrawer}
           >
             {copyIcon}
             Sao chép bảng thông tin
@@ -120,7 +132,7 @@ export function RightDrawer() {
           <button
             data-type={RIGHT_DRAWER_TYPES.CLOSE}
             className="btn w-full text-start flex gap-2 my-2"
-            onClick={handleOpenFormRightDrawer}
+            onClick={() => setOpenDeleteForm(true)}
           >
             {minusIcon}
             Đóng bảng thông tin
@@ -128,6 +140,15 @@ export function RightDrawer() {
         </div>
       </Drawer>
       <SubRightDrawer type={type} />
+      <AlertDialog
+        open={openDeleteForm}
+        onClose={() => setOpenDeleteForm(false)}
+        onConfirm={handleDeleteBoardForm}
+        dialogHeader="Xác nhận xóa"
+        dialogBody="Hành động này sẽ xóa bảng và tất cả các danh sách và thẻ trong bảng. Bạn có chắc chắn muốn xóa không?"
+        cancelButtonText="Hủy bỏ"
+        confirmButtonText="Xóa"
+      />
     </>
   )
 }

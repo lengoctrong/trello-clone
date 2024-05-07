@@ -4,6 +4,7 @@ import {
   addNewBoard,
   addNewCard,
   addNewColumn,
+  deleteBoard,
   deleteColumn,
   moveCardToDifferentColumn,
   moveCardToSameColumn,
@@ -28,6 +29,7 @@ export const createNewBoardAPI = async (boardData, dispatch) => {
     boardData
   )
   dispatch(addNewBoard(res.data))
+  return res.data
 }
 
 export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
@@ -44,14 +46,12 @@ export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
     }
     column.cards = mapOrderedArr(column.cards, column.cardOrderIds, '_id')
   })
-
   dispatch(retrieveSuccess(board))
 }
 
 export const updateBoardDetailsAPI = async (
   boardId,
   updatedBoard,
-  type,
   dispatch
 ) => {
   await axios.put(
@@ -59,6 +59,12 @@ export const updateBoardDetailsAPI = async (
     updatedBoard
   )
   dispatch(setBoardDetails(updatedBoard))
+}
+
+export const deleteBoardDetailsAPI = async (boardId, dispatch) => {
+  await axios.delete(`${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`)
+
+  dispatch(deleteBoard(boardId))
 }
 
 export const createNewColumnAPI = async (columnData, dispatch) => {

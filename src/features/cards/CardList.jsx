@@ -1,6 +1,6 @@
 import { SortableContext, rectSortingStrategy } from '@dnd-kit/sortable'
 import CardItem from './CardItem'
-const ListCards = ({ cards }) => {
+const CardList = ({ cards }) => {
   return (
     <SortableContext
       items={cards?.map((card) => card._id)}
@@ -15,4 +15,4 @@ const ListCards = ({ cards }) => {
   )
 }
 
-export default ListCards
+export default CardList

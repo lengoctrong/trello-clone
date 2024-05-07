@@ -123,8 +123,8 @@ const ColumnDropdownMenu = ({ columnId }) => {
       <DeleteColumnForm
         columnId={columnId}
         open={openDeleteForm}
-        handleOpen={() => setOpenDeleteForm(!openDeleteForm)}
-        handleCancel={() => setOpenDeleteForm(false)}
+        onConfirm={() => setOpenDeleteForm(!openDeleteForm)}
+        onClose={() => setOpenDeleteForm(false)}
       />
     </>
   )

@@ -33,12 +33,7 @@ export function InfoDrawer() {
     setShowDescForm(false)
     // Call API to save description
 
-    updateBoardDetailsAPI(
-      boardId,
-      { description: desc },
-      'updateBoard',
-      dispatch
-    )
+    updateBoardDetailsAPI(boardId, { description: desc }, dispatch)
   }
 
   return (
