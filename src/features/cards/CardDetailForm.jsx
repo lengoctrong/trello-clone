@@ -1,4 +1,8 @@
 import { Textarea } from '@material-tailwind/react'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateCardDetailsAPI } from '~/apis'
+import Button from '~/components/Button'
 import {
   bars3CenterLeftIcon,
   cardIcon,
@@ -7,12 +11,30 @@ import {
   listBulletIcon
 } from '~/icons'
 
-const CardDetailForm = ({ setIsFormOpen }) => {
+const CardDetailForm = ({ onOpen }) => {
+  const dispatch = useDispatch()
+  const {
+    _id: cardId,
+    title: cardTitle,
+    columnId,
+    description
+  } = useSelector((state) => state.card.card)
+  const { title: columnTitle } = useSelector(
+    (state) => state.board.columns
+  ).find((c) => c._id === columnId)
+  const [desc, setDesc] = useState(description ?? '')
+  const [showDescForm, setShowDescForm] = useState(false)
+
+  const handleSaveDescForm = () => {
+    setShowDescForm(false)
+    // Call API to save description
+    updateCardDetailsAPI(cardId, { description: desc }, dispatch)
+  }
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50"
       onClick={(e) => {
-        if (e.target.className?.includes('overlay')) setIsFormOpen(false)
+        if (e.target.className?.includes('overlay')) onOpen(false)
       }}
     >
       <div className="overlay absolute inset-0 bg-black opacity-50"></div>
@@ -20,11 +42,11 @@ const CardDetailForm = ({ setIsFormOpen }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg relative z-10 w-3/4 max-w-2xl text-gray-700">
         <div className="flex justify-between">
           <div className="flex gap-2 items-center font-bold">
-            {cardIcon} Card Title
+            {cardIcon} {cardTitle}
           </div>
           <button
             className="hover:bg-gray-200 rounded-full p-2"
-            onClick={() => setIsFormOpen(false)}
+            onClick={() => onOpen(false)}
           >
             {closeIcon}
           </button>
@@ -34,7 +56,7 @@ const CardDetailForm = ({ setIsFormOpen }) => {
           <div className="flex flex-col gap-y-8 col-span-2 pr-8">
             <div>
               <p>
-                trong danh sách <span className="underline">Column Title</span>
+                trong danh sách <span className="underline">{columnTitle}</span>
               </p>
             </div>
 
@@ -51,9 +73,27 @@ const CardDetailForm = ({ setIsFormOpen }) => {
               <Textarea
                 color="blue"
                 placeholder="Nhập mô tả..."
-                value={''}
-                onChange={() => {}}
+                value={desc}
+                onClick={() => setShowDescForm(true)}
+                onChange={(e) => setDesc(e.target.value)}
               />
+              {showDescForm && (
+                <div className="flex gap-2 items-center">
+                  <Button
+                    primary
+                    className="w-fit h-fit"
+                    onClick={handleSaveDescForm}
+                  >
+                    Lưu
+                  </Button>
+                  <button
+                    className="btn w-fit h-fit py-1 px-3"
+                    onClick={() => setShowDescForm(false)}
+                  >
+                    Hủy
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="flex justify-between">

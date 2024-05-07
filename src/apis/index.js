@@ -12,6 +12,7 @@ import {
   setBoardList,
   startRetrieve
 } from '~/features/boards/boardSlice'
+import { setCardDetails } from '~/features/cards/cardSlice'
 import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 
@@ -102,6 +103,14 @@ export const createNewCardAPI = async (cardData, dispatch) => {
     cardData
   )
   dispatch(addNewCard(res.data))
+}
+
+export const updateCardDetailsAPI = async (cardId, updatedData, dispatch) => {
+  await axios.put(
+    `${API_URL}/${API_VERSION}/${API_TYPES.CARD}/${cardId}`,
+    updatedData
+  )
+  dispatch(setCardDetails(updatedData))
 }
 
 export const updateAllCardsColumnIdAPI = async (columnId, updatedData) => {

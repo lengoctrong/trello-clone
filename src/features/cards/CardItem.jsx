@@ -3,18 +3,23 @@ import { CSS } from '@dnd-kit/utilities'
 import { useState } from 'react'
 import { pencilIcon } from '~/icons'
 
+import { useDispatch } from 'react-redux'
 import CardActionForm from './CardActionForm'
 import CardDetailForm from './CardDetailForm'
+import { setCardDetails } from './cardSlice'
 
 const CardItem = ({ card }) => {
   const [isEdit, setIsEdit] = useState(false)
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [formType, setFormType] = useState(null)
 
+  const dispatch = useDispatch()
+
   const handleEditCard = (e) => {
     if (e.target.closest('[data-type]')) {
       setIsFormOpen(true)
       setFormType(e.target.dataset.type)
+      dispatch(setCardDetails(card))
     }
   }
   const {
@@ -65,12 +70,9 @@ const CardItem = ({ card }) => {
       </div>
       {isFormOpen &&
         (formType === 'detail' ? (
-          <CardDetailForm setIsFormOpen={setIsFormOpen} />
+          <CardDetailForm onOpen={setIsFormOpen} />
         ) : (
-          <CardActionForm
-            isFormOpen={isFormOpen}
-            setIsFormOpen={setIsFormOpen}
-          />
+          <CardActionForm open={isFormOpen} onOpen={setIsFormOpen} />
         ))}
     </>
   )

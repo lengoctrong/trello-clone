@@ -1,13 +1,13 @@
 import { Dialog, Transition } from '@headlessui/react'
 import { Fragment } from 'react'
 
-const CardActionForm = ({ isFormOpen, setIsFormOpen }) => {
+const CardActionForm = ({ open, onOpen }) => {
   return (
-    <Transition appear show={isFormOpen} as={Fragment}>
+    <Transition appear show={open} as={Fragment}>
       <Dialog
         as="div"
         className="fixed inset-0 z-10 overflow-y-auto"
-        onClose={() => setIsFormOpen(false)}
+        onClose={() => onOpen(false)}
       >
         <div className="min-h-screen px-4 text-center">
           <Dialog.Overlay className="fixed inset-0 bg-black opacity-30" />
