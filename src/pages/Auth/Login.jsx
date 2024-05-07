@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import { createNewUserAPI } from '~/apis'
 import Logo from '~/components/Logo'
+import { ROUTES } from '~/utils/constants'
 
 const Login = () => {
   const navigate = useNavigate()
@@ -113,7 +114,7 @@ const Login = () => {
         <p className="mt-10 text-center text-sm text-gray-500">
           Bạn chưa có tài khoản?{' '}
           <Link
-            to={'/register'}
+            to={ROUTES.REGISTER}
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
           >
             Đăng ký ngay

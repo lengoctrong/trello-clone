@@ -7,7 +7,7 @@ import {
 } from '@material-tailwind/react'
 
 const AlertDialog = ({
-  open = true,
+  open = false,
   onClose,
   onConfirm,
   dialogHeader,
@@ -16,7 +16,7 @@ const AlertDialog = ({
   confirmButtonText
 }) => {
   return (
-    <Dialog open={open} handler={onConfirm}>
+    <Dialog open={open} handler={onClose}>
       <DialogHeader>{dialogHeader}</DialogHeader>
       <DialogBody>{dialogBody}</DialogBody>
       <DialogFooter>

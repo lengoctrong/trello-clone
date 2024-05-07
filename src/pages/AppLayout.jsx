@@ -17,8 +17,6 @@ const AppLayout = () => {
   const dispatch = useDispatch()
   const { boardId } = useParams()
 
-  console.log('_destroy', _destroy)
-
   useEffect(() => {
     fetchBoardDetailsAPI(boardId, dispatch)
   }, [boardId, dispatch])

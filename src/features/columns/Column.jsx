@@ -43,7 +43,7 @@ const Column = ({ column }) => {
 
   const handleAddNewCard = (e) => {
     e.preventDefault()
-    if (!cardTitle.trim().length) {
+    if (!cardTitle) {
       setToggleAddCardForm(false)
       return
     }

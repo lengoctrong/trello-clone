@@ -3,6 +3,7 @@ import { Menu, Transition } from '@headlessui/react'
 import { Avatar } from '@material-tailwind/react'
 import { Fragment } from 'react'
 import { Link } from 'react-router-dom'
+import { ROUTES } from '~/utils/constants'
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
@@ -35,7 +36,7 @@ const AvatarMenu = ({ onLogout }) => {
             <Menu.Item>
               {({ active }) => (
                 <Link
-                  to="/profile"
+                  to={ROUTES.PROFILE}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'

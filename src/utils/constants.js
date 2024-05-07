@@ -2,6 +2,9 @@
 export const ROUTES = {
   HOME: '/',
   BOARD: '/b',
+  LOGIN: '/login',
+  REGISTER: '/register',
+  PROFILE: '/profile',
   NOT_FOUND: '/404'
 }
 

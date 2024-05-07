@@ -26,11 +26,11 @@ export function DeleteColumnForm({ columnId, open, onClose }) {
       open={open}
       onClose={onClose}
       onConfirm={handleDeleteColumn}
-      dialogHeader="Xác nhận xóa"
-      dialogBody="Hành động này sẽ làm xóa cột và tất cả các thẻ trong cột này. Bạn có
+      dialogHeader="Xóa danh sách?"
+      dialogBody="Hành động này sẽ làm xóa danh sách và tất cả các thẻ trong danh sách này. Bạn có
     chắc chắn muốn xóa không?"
-      cancelButtonText={'Hủy bỏ'}
-      confirmButtonText={'Đồng ý'}
+      cancelButtonText="Hủy bỏ"
+      confirmButtonText="Đồng ý"
     />
   )
 }

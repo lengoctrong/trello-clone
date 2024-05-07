@@ -1,11 +1,10 @@
 import Tippy from '@tippyjs/react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { chevIcon, searchIcon } from '~/icons'
-import { MAX_HEIGHT_COLUMN, MAX_WIDTH_COLUMN } from '~/utils/constants'
+import { searchIcon } from '~/icons'
+import { MAX_HEIGHT_COLUMN, MAX_WIDTH_COLUMN, ROUTES } from '~/utils/constants'
 import Search from '../features/searchFilter/Search'
 import AvatarMenu from './AvatarMenu'
-import Button from './Button'
 import Logo from './Logo'
 
 const Navbar = () => {
@@ -53,7 +52,7 @@ const Navbar = () => {
         {user ? (
           <AvatarMenu onLogout={handleLogout} />
         ) : (
-          <Link to="login" className="btn">
+          <Link to={ROUTES.LOGIN} className="btn">
             Đăng nhập
           </Link>
         )}
