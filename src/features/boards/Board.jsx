@@ -125,16 +125,16 @@ const Board = () => {
         columnId: newOverColumn._id
       })
 
+      newOverColumn.cardOrderIds = newOverColumn.cards.map((card) => card._id)
+
       console.log(
         'newActiveColumn:',
         newActiveColumn,
-        '\nnewActiveColumn.cards:',
-        newActiveColumn.cards,
         '\nnewOverColumn:',
-        newOverColumn
+        newOverColumn,
+        '\nnewColumns: ',
+        newColumns
       )
-
-      console.log('newColumns:', newColumns)
 
       if (trigger === 'handleDragEnd') {
         // delete placeholder card if exists
@@ -216,27 +216,29 @@ const Board = () => {
       overCardId,
       dragEvent,
       activeColumn,
-      activeCardId
+      activeCardId,
+      'handleDragOver'
     )
   }
 
   const handleDragEnd = (dragEvent) => {
     const { over } = dragEvent
+    let { active } = dragEvent
 
-    if (!activeItem || !over) return
-    console.log('[DRAG END]', '\nactive:', activeItem, '\nover:', over)
+    active = { ...active, ...activeItem }
+
+    if (!active || !over) return
+    console.log('[DRAG END]', '\nactive:', active, '\nover:', over)
 
     // [DRAG CARD]
-    if (activeItem.data.current.columnId) {
-      const { id: activeCardId } = activeItem
+    if (active.data.current.columnId) {
+      const { id: activeCardId } = active
       const { id: overCardId } = over
 
       const overColumn = findColumn(overCardId)
 
-      console.log('originalCol:', originalCol, '\noverColumn:', overColumn)
-
       if (!originalCol || !overColumn) return
-
+      console.log('originalCol:', originalCol, '\noverColumn:', overColumn)
       // drag card to another column
       if (originalCol._id !== overColumn._id) {
         dragCardToAnotherColumn(

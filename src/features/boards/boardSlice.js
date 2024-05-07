@@ -80,8 +80,6 @@ const boardSlice = createSlice({
       state.currentBoard = action.payload
     },
     moveCardToDifferentColumn: (state, action) => {
-      console.log('action.payload', action.payload)
-
       const prevColumn = state.columns.find(
         (c) => c._id === action.payload.prevColumnId
       )
@@ -89,7 +87,7 @@ const boardSlice = createSlice({
       const currentColumn = state.columns.find(
         (c) => c._id === action.payload.currentColumnId
       )
-      const card = currentColumn.cards.find(
+      const card = prevColumn.cards.find(
         (card) => card._id === action.payload.currentCardId
       )
 
