@@ -45,7 +45,18 @@ const boardSlice = createSlice({
     addNewBoard: (state, action) => {
       state.boards = [...state.boards, action.payload]
     },
+    setColumnDetails: (state, action) => {
+      const updatedColumn = action.payload
+      let column = state.columns.find((c) => c._id === action.payload._id)
+      column = updatedColumn
 
+      if (column._destroy) {
+        state.columns = state.columns.filter((c) => c._id !== column._id)
+        state.columnOrderIds = state.columnOrderIds.filter(
+          (columnId) => columnId !== column._id
+        )
+      }
+    },
     addNewColumn: (state, action) => {
       const newColumn = action.payload
       newColumn.cards = [generatePlaceholderCard(newColumn)]
@@ -68,12 +79,6 @@ const boardSlice = createSlice({
       }
       column.cards.push(newCard)
       column.cardOrderIds.push(newCard._id)
-    },
-    deleteColumn: (state, action) => {
-      state.columns = state.columns.filter((c) => c._id !== action.payload)
-      state.columnOrderIds = state.columnOrderIds.filter(
-        (id) => id !== action.payload
-      )
     },
     deleteBoard: (state, action) => {},
     setCurrentBoard: (state, action) => {
@@ -119,9 +124,9 @@ export const {
   setBoardList,
   addNewBoard,
   deleteBoard,
+  setColumnDetails,
   addNewCard,
   addNewColumn,
-  deleteColumn,
   setCurrentBoard,
   moveCardToDifferentColumn,
   moveCardToSameColumn

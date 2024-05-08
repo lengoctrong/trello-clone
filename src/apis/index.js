@@ -5,16 +5,15 @@ import {
   addNewCard,
   addNewColumn,
   deleteBoard,
-  deleteColumn,
   moveCardToDifferentColumn,
   moveCardToSameColumn,
   retrieveSuccess,
   setBoardDetails,
   setBoardList,
+  setColumnDetails,
   startRetrieve
 } from '~/features/boards/boardSlice'
 import { setCardDetails } from '~/features/cards/cardSlice'
-import { setColumnDetails } from '~/features/columns/columnSlice'
 import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 
@@ -81,19 +80,18 @@ export const updateColumnDetailsAPI = async (
   updatedData,
   dispatch
 ) => {
-  await axios.put(
+  const res = await axios.put(
     `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`,
     updatedData
   )
   dispatch(setColumnDetails(updatedData))
+  return res.data
 }
 
 export const deleteColumnDetailsAPI = async (columnId, dispatch) => {
   await axios.delete(
     `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`
   )
-  dispatch(deleteColumn(columnId))
-  dispatch(setColumnDetails)
 }
 
 export const moveCardToSameColumnAPI = async (

@@ -1,22 +1,23 @@
 import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { updateColumnDetailsAPI } from '~/apis'
+import { fetchBoardDetailsAPI, updateColumnDetailsAPI } from '~/apis'
 import AlertDialog from '~/components/AlertDialog'
-
 export function DeleteColumnForm({ columnId, open, onClose }) {
   const dispatch = useDispatch()
-
+  const { boardId } = useParams()
   const handleDeleteColumn = async () => {
     const optsToast = {
       position: 'bottom-left'
     }
     try {
-      const res = await updateColumnDetailsAPI(
+      const result = await updateColumnDetailsAPI(
         columnId,
         { _destroy: true },
         dispatch
       )
-      toast.success(res.data.deleteResult ?? 'Xoá thành công', optsToast)
+      await fetchBoardDetailsAPI(boardId, dispatch)
+      toast.success(result.deleteResult ?? 'Xoá thành công', optsToast)
     } catch (err) {
       toast.error(err.message, optsToast)
     } finally {

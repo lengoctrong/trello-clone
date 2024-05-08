@@ -50,9 +50,7 @@ export function ArchiveDrawer({ onBack, onClose }) {
         ))}
 
         {storedColumns.length === 0 && (
-          <div className="mt-4 text-center bg-gray-200 py-8">
-            <p>Chưa có bảng nào được đóng</p>
-          </div>
+          <div className="mt-4 text-center bg-gray-200 py-8"></div>
         )}
       </div>
     </>
