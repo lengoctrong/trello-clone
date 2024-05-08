@@ -31,7 +31,7 @@ const Homepage = () => {
   }, [dispatch])
 
   return isPending ? (
-    <Loader />
+    <Loader className="flex items-center justify-center h-screen w-screen gap-4" />
   ) : (
     <>
       <Navbar />

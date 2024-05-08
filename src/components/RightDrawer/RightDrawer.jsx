@@ -2,7 +2,7 @@ import { Drawer, IconButton, Typography } from '@material-tailwind/react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { deleteBoardDetailsAPI, updateBoardDetailsAPI } from '~/apis'
+import { updateBoardDetailsAPI } from '~/apis'
 import {
   archiveBoxIcon,
   bars3CenterLeftIcon,
@@ -33,8 +33,8 @@ export function RightDrawer() {
     dispatch(openSubRightDrawer(e.target.dataset.type))
   }
 
-  const handleDeleteBoardForm = () => {
-    // call api to delete board
+  const handleSoftDeleteBoard = () => {
+    // call api to soft delete board (set _destroy)
     updateBoardDetailsAPI(boardId, { _destroy: true }, dispatch)
 
     setOpenDeleteForm(false)
@@ -144,7 +144,7 @@ export function RightDrawer() {
         size="xs"
         open={openDeleteForm}
         onClose={() => setOpenDeleteForm(false)}
-        onConfirm={handleDeleteBoardForm}
+        onConfirm={handleSoftDeleteBoard}
         dialogHeader="Đóng bảng?"
         dialogBody="Bạn có thể tìm và mở lại các bảng đã đóng trong không gian làm việc của bạn."
         confirmButtonText="Đóng"
