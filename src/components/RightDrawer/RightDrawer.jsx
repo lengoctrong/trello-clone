@@ -46,6 +46,8 @@ export function RightDrawer() {
   return (
     <>
       <Drawer
+        overlay={false}
+        size={350}
         placement="right"
         open={open}
         onClose={() => setOpenDeleteForm(false)}

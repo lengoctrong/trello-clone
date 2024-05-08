@@ -1,50 +1,29 @@
-import {
-  Drawer,
-  IconButton,
-  Textarea,
-  Typography
-} from '@material-tailwind/react'
+import { IconButton, Textarea, Typography } from '@material-tailwind/react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateBoardDetailsAPI } from '~/apis'
 import Button from '~/components/Button'
 import { chevronLeftIcon, closeIcon, descriptionIcon, userIcon } from '~/icons'
-import { closeAllRightDrawer, closeSubRightDrawer } from '../rightDrawerSlice'
-export function InfoDrawer() {
+
+export function InfoDrawer({ onBack, onClose }) {
   const dispatch = useDispatch()
   const { description } = useSelector((state) => state.board)
   const [desc, setDesc] = useState(description ?? '')
   const [showDescForm, setShowDescForm] = useState(false)
-  const isShowSubDrawer = useSelector(
-    (state) => state.rightDrawer.isShowSubDrawer
-  )
+
   const { boardId } = useParams()
-
-  const handleClose = () => {
-    dispatch(closeAllRightDrawer())
-  }
-
-  const handleBack = () => {
-    dispatch(closeSubRightDrawer())
-  }
 
   const handleSaveDescForm = () => {
     setShowDescForm(false)
     // Call API to save description
-
     updateBoardDetailsAPI(boardId, { description: desc }, dispatch)
   }
 
   return (
-    <Drawer
-      placement="right"
-      open={isShowSubDrawer}
-      onClose={handleClose}
-      className="p-4"
-    >
+    <>
       <div className="mb-6 flex items-center justify-between">
-        <IconButton variant="text" color="blue-gray" onClick={handleBack}>
+        <IconButton variant="text" color="blue-gray" onClick={onBack}>
           {chevronLeftIcon}
         </IconButton>
         <div className="text-center w-full">
@@ -52,7 +31,7 @@ export function InfoDrawer() {
             Về bảng này
           </Typography>
         </div>
-        <IconButton variant="text" color="blue-gray" onClick={handleClose}>
+        <IconButton variant="text" color="blue-gray" onClick={onClose}>
           {closeIcon}
         </IconButton>
       </div>
@@ -110,6 +89,6 @@ export function InfoDrawer() {
           </div>
         )}
       </div>
-    </Drawer>
+    </>
   )
 }

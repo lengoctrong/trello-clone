@@ -4,7 +4,6 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { cloneDeep, debounce, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
 import {
   moveCardToDifferentColumnAPI,
   moveCardToSameColumnAPI,
@@ -18,15 +17,16 @@ import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 import CardItem from '../cards/CardItem'
 import Column from '../columns/Column'
 import ColumnList from '../columns/ColumnList'
-const Board = () => {
-  const { boardId } = useParams()
 
+const Board = () => {
   const {
+    boardId,
     columns,
     columnOrderIds,
     title: boardTitle
   } = useSelector((state) => state.board)
   const dispatch = useDispatch()
+
   const [activeItem, setActiveItem] = useState(null)
   const [originalCol, setOriginalCol] = useState(null)
   const [orderedColumns, setOrderedColumns] = useState(columns)

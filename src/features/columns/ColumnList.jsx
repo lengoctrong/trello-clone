@@ -9,11 +9,12 @@ import FormAddNew from '~/components/FormAddNew'
 import { plusIcon } from '~/icons'
 import Column from './Column'
 const ColumnList = ({ columns }) => {
-  const [toggleAddColumnForm, setToggleAddColumnForm] = useState(false)
-  const [columnTitle, setColumnTitle] = useState('')
-
   const { _id: boardId } = useSelector((state) => state.board)
   const dispatch = useDispatch()
+
+  const availableColumns = columns.filter((column) => !column._destroy)
+  const [toggleAddColumnForm, setToggleAddColumnForm] = useState(false)
+  const [columnTitle, setColumnTitle] = useState('')
 
   const handleAddNewColumn = async (e) => {
     e.preventDefault()
@@ -55,11 +56,11 @@ const ColumnList = ({ columns }) => {
   return (
     <>
       <SortableContext
-        items={columns.map((column) => column._id)}
+        items={availableColumns.map((column) => column._id)}
         strategy={horizontalListSortingStrategy}
       >
         <ul className="flex gap-4 mt-3">
-          {columns.map((column, idx) => (
+          {availableColumns.map((column, idx) => (
             <Column key={`${column._id}${idx}`} column={column} />
           ))}
           {toggleAddColumnForm ? (

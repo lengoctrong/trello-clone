@@ -1,4 +1,7 @@
+import { Drawer } from '@material-tailwind/react'
+import { useDispatch, useSelector } from 'react-redux'
 import { RIGHT_DRAWER_TYPES } from '~/utils/constants'
+import { closeAllRightDrawer, closeSubRightDrawer } from '../rightDrawerSlice'
 import { ActivityDrawer } from './ActivityDrawer'
 import { ArchiveDrawer } from './ArchiveDrawer'
 import { ChangeBgDrawer } from './ChangeBgDrawer'
@@ -16,6 +19,28 @@ const drawerComponents = {
 }
 
 export const SubRightDrawer = ({ type }) => {
-  const DrawerComponent = drawerComponents[type] || InfoDrawer
-  return <DrawerComponent />
+  const isShowSubDrawer = useSelector(
+    (state) => state.rightDrawer.isShowSubDrawer
+  )
+  const dispatch = useDispatch()
+
+  const handleClose = () => {
+    dispatch(closeAllRightDrawer())
+  }
+
+  const handleBack = () => {
+    dispatch(closeSubRightDrawer())
+  }
+
+  const Component = drawerComponents[type] || InfoDrawer
+  return (
+    <Drawer
+      placement="right"
+      open={isShowSubDrawer}
+      onClose={handleClose}
+      className="p-4"
+    >
+      <Component onBack={handleBack} onClose={handleClose} />
+    </Drawer>
+  )
 }

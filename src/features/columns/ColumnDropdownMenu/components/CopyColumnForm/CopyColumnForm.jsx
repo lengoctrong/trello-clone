@@ -8,12 +8,23 @@ import {
   Typography
 } from '@material-tailwind/react'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { createNewColumnAPI } from '~/apis'
 
 export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
-  const [title, setTitle] = useState('')
+  const { boardId, title: columnTitle } = useSelector(
+    (state) => state.board.columns
+  ).find((c) => c._id === columnId)
+
+  const [title, setTitle] = useState(columnTitle)
+
+  const dispatch = useDispatch()
 
   const handleAddNewColumn = async () => {
     // call api
+    createNewColumnAPI({ boardId, title }, dispatch)
+    // close form
+    setTitle(columnTitle)
     handleOpen(false)
   }
 
@@ -48,6 +59,7 @@ export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
             </Typography>
 
             <Textarea
+              onFocus={(e) => e.target.select()}
               value={title}
               color="blue"
               onChange={(e) => setTitle(e.target.value)}

@@ -1,31 +1,11 @@
-import { Drawer, IconButton, Typography } from '@material-tailwind/react'
-import { useDispatch, useSelector } from 'react-redux'
+import { IconButton, Typography } from '@material-tailwind/react'
 import { chevronLeftIcon, closeIcon } from '~/icons'
-import { closeAllRightDrawer, closeSubRightDrawer } from '../rightDrawerSlice'
 
-export function ActivityDrawer() {
-  const isShowSubDrawer = useSelector(
-    (state) => state.rightDrawer.isShowSubDrawer
-  )
-  const dispatch = useDispatch()
-
-  const handleClose = () => {
-    dispatch(closeAllRightDrawer())
-  }
-
-  const handleBack = () => {
-    dispatch(closeSubRightDrawer())
-  }
-
+export function ActivityDrawer({ onBack, onClose }) {
   return (
-    <Drawer
-      placement="right"
-      open={isShowSubDrawer}
-      onClose={handleClose}
-      className="p-4"
-    >
+    <>
       <div className="mb-6 flex items-center justify-between">
-        <IconButton variant="text" color="blue-gray" onClick={handleBack}>
+        <IconButton variant="text" color="blue-gray" onClick={onBack}>
           {chevronLeftIcon}
         </IconButton>
         <div className="text-center w-full">
@@ -33,14 +13,13 @@ export function ActivityDrawer() {
             Hoạt động
           </Typography>
         </div>
-        <IconButton variant="text" color="blue-gray" onClick={handleClose}>
+        <IconButton variant="text" color="blue-gray" onClick={onClose}>
           {closeIcon}
         </IconButton>
       </div>
-
       <div className="py-1 border-t-2">
         <p>Content here!</p>
       </div>
-    </Drawer>
+    </>
   )
 }
