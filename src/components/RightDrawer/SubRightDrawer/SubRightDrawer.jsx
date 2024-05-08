@@ -18,10 +18,8 @@ const drawerComponents = {
   [RIGHT_DRAWER_TYPES.CHANGE_BG]: ChangeBgDrawer
 }
 
-export const SubRightDrawer = ({ type }) => {
-  const isShowSubDrawer = useSelector(
-    (state) => state.rightDrawer.isShowSubDrawer
-  )
+export const SubRightDrawer = () => {
+  const { type, isShowSubDrawer } = useSelector((state) => state.rightDrawer)
   const dispatch = useDispatch()
 
   const handleClose = () => {
@@ -29,12 +27,13 @@ export const SubRightDrawer = ({ type }) => {
   }
 
   const handleBack = () => {
-    dispatch(closeSubRightDrawer())
+    dispatch(closeSubRightDrawer(type))
   }
 
   const Component = drawerComponents[type] || InfoDrawer
   return (
     <Drawer
+      overlay={false}
       placement="right"
       open={isShowSubDrawer}
       onClose={handleClose}

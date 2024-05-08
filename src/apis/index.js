@@ -32,7 +32,7 @@ export const createNewBoardAPI = async (boardData, dispatch) => {
   return res.data
 }
 
-export const fetchBoardDetailsAPI = async (boardId, dispatch) => {
+export const getBoardDetailsAPI = async (boardId, dispatch) => {
   dispatch(startRetrieve())
   const res = await axios.get(
     `${API_URL}/${API_VERSION}/${API_TYPES.BOARD}/${boardId}`
@@ -73,6 +73,12 @@ export const createNewColumnAPI = async (columnData, dispatch) => {
     columnData
   )
   dispatch(addNewColumn(res.data))
+}
+
+export const getColumnDetailsAPI = async (columnId) => {
+  return await axios.get(
+    `${API_URL}/${API_VERSION}/${API_TYPES.COLUMN}/${columnId}`
+  )
 }
 
 export const updateColumnDetailsAPI = async (

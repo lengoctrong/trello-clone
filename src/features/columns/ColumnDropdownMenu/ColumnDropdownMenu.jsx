@@ -1,8 +1,11 @@
 import { Menu, Transition } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Fragment, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import { getBoardDetailsAPI, updateColumnDetailsAPI } from '~/apis'
 import { CopyColumnForm } from './components/CopyColumnForm/CopyColumnForm'
-import { DeleteColumnForm } from './components/DeleteColumnForm/DeleteColumnForm'
 import { MoveColumnForm } from './components/MoveColumnForm/MoveColumnForm'
 
 const classNames = (...classes) => {
@@ -10,9 +13,24 @@ const classNames = (...classes) => {
 }
 
 const ColumnDropdownMenu = ({ columnId }) => {
-  const [openDeleteForm, setOpenDeleteForm] = useState(false)
   const [openCopyForm, setOpenCopyForm] = useState(false)
   const [openMoveForm, setOpenMoveForm] = useState(false)
+
+  const dispatch = useDispatch()
+  const { boardId } = useParams()
+
+  const handleStorageColumn = async () => {
+    const optsToast = {
+      position: 'bottom-left'
+    }
+    try {
+      await updateColumnDetailsAPI(columnId, { _destroy: true }, dispatch)
+      await getBoardDetailsAPI(boardId, dispatch)
+      toast.success('Lưu trữ thành công', optsToast)
+    } catch (err) {
+      toast.error(err.message, optsToast)
+    }
+  }
 
   return (
     <>
@@ -94,13 +112,13 @@ const ColumnDropdownMenu = ({ columnId }) => {
               <Menu.Item>
                 {({ active }) => (
                   <div
-                    onClick={() => setOpenDeleteForm(!openDeleteForm)}
+                    onClick={handleStorageColumn}
                     className={classNames(
                       active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                       'block px-4 py-2 text-sm'
                     )}
                   >
-                    Xóa
+                    Lưu trữ danh sách này
                   </div>
                 )}
               </Menu.Item>
@@ -119,11 +137,6 @@ const ColumnDropdownMenu = ({ columnId }) => {
         open={openMoveForm}
         handleOpen={() => setOpenMoveForm(!openMoveForm)}
         handleCancel={() => setOpenMoveForm(false)}
-      />
-      <DeleteColumnForm
-        columnId={columnId}
-        open={openDeleteForm}
-        onClose={() => setOpenDeleteForm(false)}
       />
     </>
   )

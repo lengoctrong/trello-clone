@@ -1,12 +1,19 @@
 import { IconButton, Typography } from '@material-tailwind/react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getBoardDetailsAPI, updateColumnDetailsAPI } from '~/apis'
 import { chevronLeftIcon, closeIcon } from '~/icons'
+import { RIGHT_DRAWER_TYPES } from '~/utils/constants'
+import { openSubRightDrawer } from '../rightDrawerSlice'
 
 export function ArchiveDrawer({ onBack, onClose }) {
   const { columns } = useSelector((state) => state.board)
   const storedColumns = columns.filter((column) => column._destroy)
-
-  const handleRestoreColumn = () => {}
+  const dispatch = useDispatch()
+  const handleRestoreColumn = async (column) => {
+    await updateColumnDetailsAPI(column._id, { _destroy: false }, dispatch)
+    await getBoardDetailsAPI(column.boardId, dispatch)
+    dispatch(openSubRightDrawer(RIGHT_DRAWER_TYPES.ARCHIVE))
+  }
 
   return (
     <>
@@ -39,8 +46,11 @@ export function ArchiveDrawer({ onBack, onClose }) {
           <div key={column._id}>
             <div className="flex justify-between items-center mt-4 flex-wrap gap-2">
               <p>{column.title}</p>
-              <button className="px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300 flex gap-5">
-                <button onClick={handleRestoreColumn}>Hoàn trả vào bảng</button>
+              <button
+                className="px-2 py-1 bg-gray-200 rounded-md hover:bg-gray-300 flex gap-5"
+                onClick={() => handleRestoreColumn(column)}
+              >
+                Hoàn trả vào bảng
               </button>
             </div>
             {storedColumns.length > 1 && (

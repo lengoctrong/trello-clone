@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
-import { fetchBoardDetailsAPI, updateBoardDetailsAPI } from '~/apis'
+import { getBoardDetailsAPI, updateBoardDetailsAPI } from '~/apis'
 import Loader from '~/components/Loader'
 import Navbar from '~/components/Navbar'
 import { RightDrawer } from '~/components/RightDrawer/RightDrawer'
@@ -18,7 +18,7 @@ const AppLayout = () => {
   const { boardId } = useParams()
 
   useEffect(() => {
-    fetchBoardDetailsAPI(boardId, dispatch)
+    getBoardDetailsAPI(boardId, dispatch)
   }, [boardId, dispatch])
 
   const handleRestoreBoard = () => {

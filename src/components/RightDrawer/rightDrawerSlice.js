@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { RIGHT_DRAWER_TYPES } from '~/utils/constants'
 
 const initialState = {
   open: false,
+  type: RIGHT_DRAWER_TYPES.INFO,
   isShowSubDrawer: false
 }
 
@@ -17,11 +19,13 @@ const rightDrawerSlice = createSlice({
       state.open = false
       state.isShowSubDrawer = false
     },
-    openSubRightDrawer: (state) => {
+    openSubRightDrawer: (state, action) => {
+      state.type = action.payload
       state.open = false
       state.isShowSubDrawer = true
     },
-    closeSubRightDrawer: (state) => {
+    closeSubRightDrawer: (state, action) => {
+      state.type = action.payload
       state.open = true
       state.isShowSubDrawer = false
     },

@@ -9,7 +9,7 @@ import {
 } from '@material-tailwind/react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createNewColumnAPI } from '~/apis'
+import { getColumnDetailsAPI } from '~/apis'
 
 export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
   const { boardId, title: columnTitle } = useSelector(
@@ -22,7 +22,7 @@ export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
 
   const handleAddNewColumn = async () => {
     // call api
-    createNewColumnAPI({ boardId, title }, dispatch)
+    getColumnDetailsAPI(columnId)
     // close form
     setTitle(columnTitle)
     handleOpen(false)

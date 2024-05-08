@@ -20,19 +20,17 @@ import { SubRightDrawer } from './SubRightDrawer/SubRightDrawer'
 import { closeRightDrawer, openSubRightDrawer } from './rightDrawerSlice'
 
 export function RightDrawer() {
-  const open = useSelector((state) => state.rightDrawer.open)
+  const { open } = useSelector((state) => state.rightDrawer)
   const dispatch = useDispatch()
   const { boardId } = useParams()
   const [openDeleteForm, setOpenDeleteForm] = useState(false)
-  const [type, setType] = useState(RIGHT_DRAWER_TYPES.INFO)
 
   const handleCloseRightDrawer = () => {
     dispatch(closeRightDrawer())
   }
 
   const handleOpenRightSubDrawer = (e) => {
-    setType(e.target.dataset.type)
-    dispatch(openSubRightDrawer())
+    dispatch(openSubRightDrawer(e.target.dataset.type))
   }
 
   const handleDeleteBoardForm = () => {
@@ -141,7 +139,7 @@ export function RightDrawer() {
           </button>
         </div>
       </Drawer>
-      <SubRightDrawer type={type} />
+      <SubRightDrawer />
       <AlertDialog
         open={openDeleteForm}
         onClose={() => setOpenDeleteForm(false)}
