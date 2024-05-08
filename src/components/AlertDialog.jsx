@@ -13,10 +13,11 @@ const AlertDialog = ({
   dialogHeader,
   dialogBody,
   cancelButtonText,
-  confirmButtonText
+  confirmButtonText,
+  ...dialogProps
 }) => {
   return (
-    <Dialog open={open} handler={onClose}>
+    <Dialog {...dialogProps} open={open} handler={onClose}>
       <DialogHeader>{dialogHeader}</DialogHeader>
       <DialogBody>{dialogBody}</DialogBody>
       <DialogFooter>

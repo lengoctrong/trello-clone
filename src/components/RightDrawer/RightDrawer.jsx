@@ -141,13 +141,14 @@ export function RightDrawer() {
       </Drawer>
       <SubRightDrawer />
       <AlertDialog
+        size="xs"
         open={openDeleteForm}
         onClose={() => setOpenDeleteForm(false)}
         onConfirm={handleDeleteBoardForm}
-        dialogHeader="Xác nhận xóa"
-        dialogBody="Hành động này sẽ xóa bảng và tất cả các danh sách và thẻ trong bảng. Bạn có chắc chắn muốn xóa không?"
-        cancelButtonText="Hủy bỏ"
-        confirmButtonText="Xóa"
+        dialogHeader="Đóng bảng?"
+        dialogBody="Bạn có thể tìm và mở lại các bảng đã đóng trong không gian làm việc của bạn."
+        confirmButtonText="Đóng"
+        cancelButtonText="Hủy"
       />
     </>
   )
