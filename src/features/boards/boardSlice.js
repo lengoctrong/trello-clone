@@ -59,6 +59,14 @@ const boardSlice = createSlice({
     },
     addNewColumn: (state, action) => {
       const newColumn = action.payload
+      console.log('newColumn', newColumn)
+
+      if (newColumn.cards.length > 0 && newColumn.cardOrderIds.length > 0) {
+        state.columns.push(newColumn)
+        state.columnOrderIds.push(newColumn._id)
+        return
+      }
+
       newColumn.cards = [generatePlaceholderCard(newColumn)]
       newColumn.cardOrderIds = [newColumn.cards[0]._id]
 

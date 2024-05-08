@@ -1,4 +1,3 @@
-import { Spinner } from '@material-tailwind/react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -12,7 +11,7 @@ const BoardFormOptions = () => {
 
   const navigate = useNavigate()
 
-  const [isPending, setIsPending] = useState(true)
+  const [isPending, setIsPending] = useState(false)
 
   const handleRestoreBoard = () => {
     updateBoardDetailsAPI(boardId, { _destroy: false }, dispatch)
@@ -24,7 +23,7 @@ const BoardFormOptions = () => {
       await deleteBoardDetailsAPI(boardId, dispatch)
       setIsPending(false)
       navigate(ROUTES.HOME)
-    }, 2000)
+    }, 1000)
   }
 
   return (
