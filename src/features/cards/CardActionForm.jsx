@@ -10,7 +10,7 @@ const CardActionForm = ({ open, onOpen }) => {
         onClose={() => onOpen(false)}
       >
         <div className="min-h-screen px-4 text-center">
-          <Dialog.Overlay className="overlay" />
+          <Dialog.Overlay className="absolute inset-0 bg-black opacity-50" />
           <span
             className="inline-block h-screen align-middle"
             aria-hidden="true"

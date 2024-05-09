@@ -4,11 +4,17 @@ import { useDispatch, useSelector } from 'react-redux'
 import { updateCardDetailsAPI } from '~/apis'
 import Button from '~/components/Button'
 import {
+  archiveBoxIcon,
+  arrowRightIcon,
   bars3CenterLeftIcon,
   cardIcon,
+  clockIcon,
   closeIcon,
+  copyIcon,
   eyeIcon,
-  listBulletIcon
+  listBulletIcon,
+  paperClipIcon,
+  photoIcon
 } from '~/icons'
 
 const CardDetailForm = ({ onOpen }) => {
@@ -38,8 +44,9 @@ const CardDetailForm = ({ onOpen }) => {
       }}
     >
       <div className="overlay absolute inset-0 bg-black opacity-50"></div>
-
       <div className="bg-white p-6 rounded-lg shadow-lg relative z-10 w-3/4 max-w-2xl text-gray-700">
+        <div className="backGround bg-red-200 h-20"></div>
+
         <div className="flex justify-between">
           <div className="flex gap-2 items-center font-bold">
             {cardIcon} {cardTitle}
@@ -52,8 +59,8 @@ const CardDetailForm = ({ onOpen }) => {
           </button>
         </div>
 
-        <div className="grid grid-cols-3">
-          <div className="flex flex-col gap-y-8 col-span-2 pr-8">
+        <div className="grid grid-cols-6">
+          <div className="flex flex-col gap-y-8 col-span-5 pr-8">
             <div>
               <p>
                 trong danh sách <span className="underline">{columnTitle}</span>
@@ -103,37 +110,38 @@ const CardDetailForm = ({ onOpen }) => {
           </div>
 
           <div>
+            <p>Thêm vào thẻ</p>
             <div className="flex items-center mb-2">
-              <span className="material-icons">folder_open</span>
-              <span>Mở thẻ</span>
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex gap-2 text-sm items-center w-full">
+                {clockIcon} Thời gian
+              </button>
             </div>
             <div className="flex items-center mb-2">
-              <span className="material-icons">label</span>
-              <span>Chỉnh sửa nhãn</span>
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex text-sm gap-2 w-full items-center">
+                {paperClipIcon} Đính kém
+              </button>
             </div>
             <div className="flex items-center mb-2">
-              <span className="material-icons">person</span>
-              <span>Thay đổi thành viên</span>
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex items-center w-full gap-2 text-sm">
+                {photoIcon} Ảnh bìa
+              </button>
+            </div>
+
+            <p>Thao tác</p>
+            <div className="flex items-center mb-2">
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex gap-2 text-sm items-center w-full">
+                {arrowRightIcon} Di chuyển
+              </button>
             </div>
             <div className="flex items-center mb-2">
-              <span className="material-icons">image</span>
-              <span>Thay đổi bìa</span>
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex text-sm gap-2 w-full items-center">
+                {copyIcon} Sao chép
+              </button>
             </div>
             <div className="flex items-center mb-2">
-              <span className="material-icons">date_range</span>
-              <span>Chỉnh sửa ngày</span>
-            </div>
-            <div className="flex items-center mb-2">
-              <span className="material-icons">move_to_inbox</span>
-              <span>Di chuyển</span>
-            </div>
-            <div className="flex items-center mb-2">
-              <span className="material-icons">file_copy</span>
-              <span>Sao chép</span>
-            </div>
-            <div className="flex items-center mb-2">
-              <span className="material-icons">archive</span>
-              <span>Lưu trữ</span>
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex items-center w-full gap-2 text-sm">
+                {archiveBoxIcon} Lưu trữ
+              </button>
             </div>
           </div>
         </div>
