@@ -1,4 +1,4 @@
-import { Textarea } from '@material-tailwind/react'
+import { Dialog, Textarea } from '@material-tailwind/react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateCardDetailsAPI } from '~/apis'
@@ -36,6 +36,16 @@ const CardDetailForm = ({ onOpen }) => {
     // Call API to save description
     updateCardDetailsAPI(cardId, { description: desc }, dispatch)
   }
+
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false)
+  const [color, setColor] = useState('#ffffff')
+
+  const colors = ['red', 'green', 'blue']
+
+  const handleColorChange = (e) => {
+    setColor(e.target.value)
+  }
+
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50"
@@ -45,7 +55,10 @@ const CardDetailForm = ({ onOpen }) => {
     >
       <div className="overlay absolute inset-0 bg-black opacity-50"></div>
       <div className="bg-white p-6 rounded-lg shadow-lg relative z-10 w-3/4 max-w-2xl text-gray-700">
-        <div className="backGround bg-red-200 h-20"></div>
+        <div
+          style={{ backgroundColor: color }}
+          className="backGround h-20"
+        ></div>
 
         <div className="flex justify-between">
           <div className="flex gap-2 items-center font-bold">
@@ -122,7 +135,10 @@ const CardDetailForm = ({ onOpen }) => {
               </button>
             </div>
             <div className="flex items-center mb-2">
-              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex items-center w-full gap-2 text-sm">
+              <button
+                className=" bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex items-center w-full gap-2 text-sm"
+                onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
+              >
                 {photoIcon} Ảnh bìa
               </button>
             </div>
