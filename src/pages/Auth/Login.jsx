@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { verifyUserDetailsAPI } from '~/apis'
+import { updateUserDetailsAPI, verifyUserDetailsAPI } from '~/apis'
 import Logo from '~/components/Logo'
 import { AUTH_TYPES, ROUTES } from '~/utils/constants'
 
@@ -51,13 +51,11 @@ const Login = () => {
 
       const isValid = validateUserData(userData)
       if (!isValid) return
-
-      await verifyUserDetailsAPI(
+      const result = await verifyUserDetailsAPI(
         { ...userData, type: AUTH_TYPES.LOGIN },
         dispatch
       )
-      toast.success('Đăng nhập thành công')
-
+      await updateUserDetailsAPI(result._id, { isLogin: true }, dispatch)
       navigate(ROUTES.HOME)
     } catch (err) {
       toast.error(err.message || 'Đăng nhập thất bại')

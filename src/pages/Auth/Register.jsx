@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { verifyUserDetailsAPI } from '~/apis'
+import { updateUserDetailsAPI, verifyUserDetailsAPI } from '~/apis'
 import Logo from '~/components/Logo'
 import { AUTH_TYPES, ROUTES } from '~/utils/constants'
 

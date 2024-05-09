@@ -1,19 +1,31 @@
 import { Input } from '@material-tailwind/react'
+import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUserDetailsAPI } from '~/apis'
 import Navbar from '~/components/Navbar'
 import { homeIcon, mailIcon, phoneIcon, userIcon } from '~/icons'
 
 const Profile = () => {
-  const user = useSelector((state) => state.user)
+  const initUser = useSelector((state) => state.user)
+  const [user, setUser] = useState(initUser)
   const dispatch = useDispatch()
+
+  const timeoutId = useRef(null)
 
   const handleEditProfile = (e) => {
     const updatedData = {
       ...user,
-      [e.target.attributes.name.value]: e.target.value
+      [e.target.attributes.name.value]: e.target.value || ''
     }
-    updateUserDetailsAPI(user._id, updatedData, dispatch)
+
+    if (timeoutId.current) clearTimeout(timeoutId.current)
+
+    setUser(updatedData)
+    timeoutId.current = setTimeout(() => {
+      updateUserDetailsAPI(user._id, updatedData, dispatch)
+
+      return () => clearTimeout(timeoutId.current)
+    }, 2000)
   }
 
   return (

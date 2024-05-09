@@ -2,9 +2,9 @@ import { Menu, Transition } from '@headlessui/react'
 
 import { Avatar } from '@material-tailwind/react'
 import { Fragment } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { logoutUser } from '~/features/users/userSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+import { logoutUserAPI } from '~/apis'
 import { ROUTES } from '~/utils/constants'
 
 const classNames = (...classes) => {
@@ -12,12 +12,12 @@ const classNames = (...classes) => {
 }
 
 const AvatarMenu = () => {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const { _id: userId } = useSelector((state) => state.user)
+
   const handleLogout = () => {
-    dispatch(logoutUser())
-    navigate(ROUTES.LOGIN)
+    logoutUserAPI(userId, { isLogin: false }, dispatch)
   }
   return (
     <Menu as="div" className="relative inline-block text-left cursor-pointer">
@@ -45,7 +45,7 @@ const AvatarMenu = () => {
             <Menu.Item>
               {({ active }) => (
                 <Link
-                  to={ROUTES.PROFILE}
+                  to={`${ROUTES.PROFILE}/${userId}`}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'

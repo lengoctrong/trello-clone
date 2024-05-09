@@ -14,7 +14,7 @@ import {
   startRetrieve
 } from '~/features/boards/boardSlice'
 import { setCardDetails } from '~/features/cards/cardSlice'
-import { setUserDetails } from '~/features/users/userSlice'
+import { logoutUser, setUserDetails } from '~/features/users/userSlice'
 import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 
@@ -128,13 +128,14 @@ export const updateCardDetailsAPI = async (cardId, updatedData, dispatch) => {
   dispatch(setCardDetails(updatedData))
 }
 
-// user
+// [USER]
 export const verifyUserDetailsAPI = async (userData, dispatch) => {
   const res = await axios.post(
     `${API_URL}/${API_VERSION}/${API_TYPES.USER}`,
     userData
   )
   dispatch(setUserDetails(res.data))
+  return res.data
 }
 
 export const updateUserDetailsAPI = async (userId, updatedData, dispatch) => {
@@ -143,5 +144,14 @@ export const updateUserDetailsAPI = async (userId, updatedData, dispatch) => {
     updatedData
   )
   dispatch(setUserDetails(updatedData))
+  return res.data
+}
+
+export const logoutUserAPI = async (userId, updatedData, dispatch) => {
+  const res = await axios.put(
+    `${API_URL}/${API_VERSION}/${API_TYPES.USER}/${userId}`,
+    updatedData
+  )
+  dispatch(logoutUser(updatedData))
   return res.data
 }

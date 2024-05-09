@@ -34,7 +34,8 @@ export const ROUTES = {
 export const PARAMS = {
   BOARD_ID: ':boardId',
   COLUMN_ID: ':columnId',
-  CARD_ID: ':cardId'
+  CARD_ID: ':cardId',
+  PROFILE_ID: ':profileId'
 }
 
 // max width and height for column

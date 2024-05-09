@@ -24,13 +24,13 @@ const userSlice = createSlice({
       delete action.payload.password
       localStorage.setItem(
         LOCAL_STORAGE_KEYS.USER,
-        JSON.stringify(action.payload)
+        JSON.stringify({ ...state, ...action.payload })
       )
-      return { ...action.payload, isLogin: true }
+      return { ...state, ...action.payload }
     },
-    logoutUser: () => {
+    logoutUser: (state, action) => {
       localStorage.removeItem(LOCAL_STORAGE_KEYS.USER)
-      return initialState
+      return { ...state, ...action.payload }
     }
   }
 })
