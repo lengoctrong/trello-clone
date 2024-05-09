@@ -1,12 +1,39 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { LOCAL_STORAGE_KEYS } from '~/utils/constants'
 
-const initialState = {}
+const initialState = JSON.parse(
+  localStorage.getItem(LOCAL_STORAGE_KEYS.USER)
+) ?? {
+  _id: '',
+  name: '',
+  email: '',
+  phone: '',
+  address: '',
+  role: '',
+  createdAt: null,
+  updatedAt: null,
+  _destroy: false,
+  isLogin: false
+}
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {}
+  reducers: {
+    setUserDetails: (state, action) => {
+      delete action.payload.password
+      localStorage.setItem(
+        LOCAL_STORAGE_KEYS.USER,
+        JSON.stringify(action.payload)
+      )
+      return { ...action.payload, isLogin: true }
+    },
+    logoutUser: () => {
+      localStorage.removeItem(LOCAL_STORAGE_KEYS.USER)
+      return initialState
+    }
+  }
 })
 
 export default userSlice.reducer
-// export const {} = userSlice.actions
+export const { setUserDetails, logoutUser } = userSlice.actions

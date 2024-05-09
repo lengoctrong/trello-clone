@@ -1,40 +1,69 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { createNewUserAPI } from '~/apis'
+import { verifyUserDetailsAPI } from '~/apis'
 import Logo from '~/components/Logo'
-import { ROUTES } from '~/utils/constants'
+import { AUTH_TYPES, ROUTES } from '~/utils/constants'
 
 const Login = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const initUserData = {
+    email: '',
+    password: ''
+  }
+  const [userData, setUserData] = useState(initUserData)
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const validateUserData = (userData) => {
+    const { email, password } = userData
+
+    if (!email.trim() || !password.trim()) {
+      toast.warn('Hãy điền đầy đủ thông tin.')
+      return false
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      toast.warn('Email không hợp lệ.')
+      return false
+    }
+
+    if (password.length < 8) {
+      toast.warn('Mật khẩu phải chứa ít nhất 8 ký tự.')
+      return false
+    }
+
+    return true
+  }
+
+  const handleInputUser = (e) => {
+    const updatedUser = {
+      ...userData,
+      [e.target.name]: e.target.value
+    }
+    setUserData(updatedUser)
+  }
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault()
-      const res = await createNewUserAPI({
-        email,
-        password,
-        type: 'login'
-      })
 
-      if (res.data && res.status === 201) {
-        const { _id: userId, role } = res.data
+      const isValid = validateUserData(userData)
+      if (!isValid) return
 
-        localStorage.setItem(
-          'user',
-          JSON.stringify({ userId, role, email, name })
-        )
-        toast.success('Đăng nhập thành công')
-        navigate('/')
-      }
+      await verifyUserDetailsAPI(
+        { ...userData, type: AUTH_TYPES.LOGIN },
+        dispatch
+      )
+      toast.success('Đăng nhập thành công')
+
+      navigate(ROUTES.HOME)
     } catch (err) {
-      toast.error('Đăng nhập thất bại')
+      toast.error(err.message || 'Đăng nhập thất bại')
     } finally {
       // reset form
-      setPassword('')
+      setUserData(initUserData)
     }
   }
 
@@ -64,8 +93,8 @@ const Login = () => {
                 autoComplete="email"
                 required
                 className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userData.email}
+                onChange={handleInputUser}
               />
             </div>
           </div>
@@ -95,8 +124,8 @@ const Login = () => {
                 autoComplete="current-password"
                 required
                 className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={userData.password}
+                onChange={handleInputUser}
               />
             </div>
           </div>

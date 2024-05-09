@@ -59,7 +59,6 @@ const boardSlice = createSlice({
     },
     addNewColumn: (state, action) => {
       const newColumn = action.payload
-      console.log('newColumn', newColumn)
 
       if (newColumn.cards.length > 0 && newColumn.cardOrderIds.length > 0) {
         state.columns.push(newColumn)

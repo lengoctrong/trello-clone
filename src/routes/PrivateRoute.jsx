@@ -1,8 +1,10 @@
+import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
+import { ROUTES } from '~/utils/constants'
 
 const PrivateRoute = ({ children }) => {
-  const user = JSON.parse(localStorage.getItem('user'))
-  return user ? children : <Navigate to="/login" />
+  const { isLogin } = useSelector((state) => state.user)
+  return isLogin ? children : <Navigate to={ROUTES.LOGIN} />
 }
 
 export default PrivateRoute

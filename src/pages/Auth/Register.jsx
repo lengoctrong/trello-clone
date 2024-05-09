@@ -1,56 +1,76 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { createNewUserAPI } from '~/apis'
+import { verifyUserDetailsAPI } from '~/apis'
 import Logo from '~/components/Logo'
+import { AUTH_TYPES, ROUTES } from '~/utils/constants'
 
 export default function Register() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const initUserData = {
+    email: '',
+    password: '',
+    confirmPassword: ''
+  }
+  const [userData, setUserData] = useState(initUserData)
 
-  const validateUserData = (email, password, confirmPassword) => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const validateUserData = (userData) => {
+    const { email, password, confirmPassword } = userData
+
     if (!email.trim() || !password.trim() || !confirmPassword.trim()) {
       toast.warn('Hãy điền đầy đủ thông tin.')
-      return
+      return false
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(email)) {
       toast.warn('Email không hợp lệ.')
-      return
+      return false
     }
 
     if (password.length < 8) {
       toast.warn('Mật khẩu phải chứa ít nhất 8 ký tự.')
-      return
+      return false
     }
 
     if (password !== confirmPassword) {
       toast.warn('Mật khẩu không khớp.')
-      return
+      return false
     }
+
+    return true
+  }
+
+  const handleInputUser = (e) => {
+    const updatedUser = {
+      ...userData,
+      [e.target.name]: e.target.value
+    }
+    setUserData(updatedUser)
   }
 
   const handleSubmit = async (e) => {
     try {
       e.preventDefault()
-      validateUserData(email, password, confirmPassword)
+      const isValid = validateUserData(userData)
+      if (!isValid) return
 
-      const res = await createNewUserAPI({
-        email,
-        password,
-        type: 'register'
-      })
-      if (res.status === 201) {
-        toast.success('Đăng ký tài khoản thành công!')
-      }
+      delete userData.confirmPassword
+
+      await verifyUserDetailsAPI(
+        { ...userData, type: AUTH_TYPES.REGISTER },
+        dispatch
+      )
+      toast.success('Đăng ký tài khoản thành công!')
+      navigate(ROUTES.HOME)
     } catch (err) {
       toast.error('Đăng ký tài khoản thất bại!')
     } finally {
       // reset form
-      setPassword('')
-      setConfirmPassword('')
+      setUserData(initUserData)
     }
   }
 
@@ -80,8 +100,8 @@ export default function Register() {
                 autoComplete="email"
                 required
                 className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userData.email}
+                onChange={handleInputUser}
               />
             </div>
           </div>
@@ -111,8 +131,8 @@ export default function Register() {
                 autoComplete="current-password"
                 required
                 className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={userData.password}
+                onChange={handleInputUser}
               />
             </div>
           </div>
@@ -127,13 +147,13 @@ export default function Register() {
             <div className="mt-2">
               <input
                 id="confirm-password"
-                name="confirm-password"
+                name="confirmPassword"
                 type="password"
                 autoComplete="confirm-password"
                 required
                 className="p-2 block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                value={userData.confirmPassword}
+                onChange={handleInputUser}
               />
             </div>
           </div>
@@ -151,7 +171,7 @@ export default function Register() {
         <p className="mt-10 text-center text-sm text-gray-500">
           Bạn đã có tài khoản?{' '}
           <Link
-            to={'/login'}
+            to={ROUTES.LOGIN}
             className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
           >
             Đăng nhập ngay

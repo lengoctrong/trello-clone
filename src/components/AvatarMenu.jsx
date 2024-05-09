@@ -2,14 +2,23 @@ import { Menu, Transition } from '@headlessui/react'
 
 import { Avatar } from '@material-tailwind/react'
 import { Fragment } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { logoutUser } from '~/features/users/userSlice'
 import { ROUTES } from '~/utils/constants'
 
 const classNames = (...classes) => {
   return classes.filter(Boolean).join(' ')
 }
 
-const AvatarMenu = ({ onLogout }) => {
+const AvatarMenu = () => {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const handleLogout = () => {
+    dispatch(logoutUser())
+    navigate(ROUTES.LOGIN)
+  }
   return (
     <Menu as="div" className="relative inline-block text-left cursor-pointer">
       <div>
@@ -51,7 +60,7 @@ const AvatarMenu = ({ onLogout }) => {
             <Menu.Item>
               {({ active }) => (
                 <div
-                  onClick={onLogout}
+                  onClick={handleLogout}
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'
