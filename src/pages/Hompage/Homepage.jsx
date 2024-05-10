@@ -5,7 +5,7 @@ import { getAllBoardAPI } from '~/apis'
 import Loader from '~/components/Loader'
 import Navbar from '~/components/Navbar'
 import { BoardForm } from '~/features/boards/BoardForm'
-import { ROUTES } from '~/utils/constants'
+import { DOCUMENT_TITLE, ROUTES } from '~/utils/constants'
 import CancelledBoard from './CancelledBoard'
 
 const Homepage = () => {
@@ -26,6 +26,10 @@ const Homepage = () => {
   const handleCloseModal = () => {
     setShowModal(false)
   }
+
+  useEffect(() => {
+    document.title = DOCUMENT_TITLE.HOME
+  }, [])
 
   useEffect(() => {
     getAllBoardAPI(dispatch)

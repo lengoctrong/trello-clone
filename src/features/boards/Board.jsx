@@ -13,6 +13,7 @@ import CustomOverlay from '~/components/CustomOverlay'
 import { openRightDrawer } from '~/components/RightDrawer/rightDrawerSlice'
 import { MouseSensor } from '~/customLib'
 import { moreIcon } from '~/icons'
+import { DOCUMENT_TITLE } from '~/utils/constants'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
 import CardItem from '../cards/CardItem'
 import Column from '../columns/Column'
@@ -40,6 +41,10 @@ const Board = () => {
       }
     })
   )
+
+  useEffect(() => {
+    document.title = `${DOCUMENT_TITLE.BOARD} | ${DOCUMENT_TITLE.HOME}`
+  }, [title])
 
   useEffect(() => {
     setOrderedColumns(mapOrderedArr(columns, columnOrderIds, '_id'))

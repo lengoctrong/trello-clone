@@ -41,9 +41,15 @@ const Column = ({ column }) => {
     setOrderedCards(mapOrderedArr(cards, cardOrderIds, '_id'))
   }, [cards, cardOrderIds])
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleAddNewCard(e)
+    }
+  }
+
   const handleAddNewCard = (e) => {
     e.preventDefault()
-    if (!cardTitle) {
+    if (!cardTitle.trim()) {
       setToggleAddCardForm(false)
       return
     }
@@ -59,22 +65,23 @@ const Column = ({ column }) => {
     setToggleAddCardForm(false)
   }
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleAddNewCard(e)
-    }
+  const handleCardTitleChange = (e) => setCardTitle(e.target.value)
+
+  const handleCloseAddCardForm = (e) => {
+    e.preventDefault()
+    setCardTitle('')
+    setToggleAddCardForm(false)
   }
 
   const FormAddNewProps = {
     textAreaRows: 2,
-    onSubmit: handleAddNewCard,
-    onKeyDown: handleKeyDown,
     textAreaTitle: cardTitle,
     btnAddTitle: 'Thêm thẻ',
-    setTitle: setCardTitle,
-    toggleAddForm: toggleAddCardForm,
-    setToggleAddForm: setToggleAddCardForm,
-    placeholder: 'Nhập tiêu đề cho thẻ này...'
+    placeholder: 'Nhập tiêu đề cho thẻ này...',
+    onKeyDown: handleKeyDown,
+    onChange: handleCardTitleChange,
+    onSubmit: handleAddNewCard,
+    onClose: handleCloseAddCardForm
   }
 
   return (

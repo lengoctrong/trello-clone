@@ -8,6 +8,13 @@ export const API_TYPES = {
   USER: 'users'
 }
 
+// document title
+export const DOCUMENT_TITLE = {
+  HOME: 'Trello',
+  PROFILE: 'Lý lịch',
+  BOARD: 'Bảng'
+}
+
 // auth types
 export const AUTH_TYPES = {
   LOGIN: 'login',

@@ -62,7 +62,14 @@ export function InfoDrawer({ onBack, onClose }) {
             Mô tả
           </div>
           <div></div>
-          <button className="btn p-1">Chỉnh sửa</button>
+          {!showDescForm && (
+            <button
+              className="btn p-1"
+              onClick={() => setShowDescForm(!showDescForm)}
+            >
+              Chỉnh sửa
+            </button>
+          )}
         </div>
         <Textarea
           color="blue"

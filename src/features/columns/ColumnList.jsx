@@ -16,9 +16,11 @@ const ColumnList = ({ columns }) => {
   const [toggleAddColumnForm, setToggleAddColumnForm] = useState(false)
   const [columnTitle, setColumnTitle] = useState('')
 
+  const handleColumnTitleChange = (e) => setColumnTitle(e.target.value)
+
   const handleAddNewColumn = async (e) => {
     e.preventDefault()
-    if (!columnTitle.trim().length) {
+    if (!columnTitle.trim()) {
       setToggleAddColumnForm(false)
       return
     }
@@ -33,6 +35,12 @@ const ColumnList = ({ columns }) => {
     setToggleAddColumnForm(false)
   }
 
+  const handleCloseAddColumnForm = (e) => {
+    e.preventDefault()
+    setColumnTitle('')
+    setToggleAddColumnForm(false)
+  }
+
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       e.preventDefault()
@@ -42,15 +50,14 @@ const ColumnList = ({ columns }) => {
 
   const FormAddNewProps = {
     textAreaRows: 1,
-    onSubmit: handleAddNewColumn,
-    onKeyDown: handleKeyDown,
     textAreaTitle: columnTitle,
     btnAddTitle: 'Thêm danh sách',
-    setTitle: setColumnTitle,
-    toggleAddForm: toggleAddColumnForm,
-    setToggleAddForm: setToggleAddColumnForm,
     placeholder: 'Nhập tiêu đề danh sách...',
-    className: 'py-0'
+    className: 'py-0',
+    onKeyDown: handleKeyDown,
+    onChange: handleColumnTitleChange,
+    onSubmit: handleAddNewColumn,
+    onClose: handleCloseAddColumnForm
   }
 
   return (

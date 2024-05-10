@@ -1,9 +1,10 @@
 import { Input } from '@material-tailwind/react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateUserDetailsAPI } from '~/apis'
 import Navbar from '~/components/Navbar'
 import { homeIcon, mailIcon, phoneIcon, userIcon } from '~/icons'
+import { DOCUMENT_TITLE } from '~/utils/constants'
 
 const Profile = () => {
   const initUser = useSelector((state) => state.user)
@@ -11,6 +12,10 @@ const Profile = () => {
   const dispatch = useDispatch()
 
   const timeoutId = useRef(null)
+
+  useEffect(() => {
+    document.title = `${DOCUMENT_TITLE.PROFILE} | ${DOCUMENT_TITLE.HOME}`
+  }, [])
 
   const handleEditProfile = (e) => {
     const updatedData = {

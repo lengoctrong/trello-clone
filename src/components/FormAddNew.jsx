@@ -6,9 +6,8 @@ const FormAddNew = ({
   onKeyDown,
   textAreaTitle = '',
   btnAddTitle = 'Thêm',
-  setTitle,
-  toggleAddForm,
-  setToggleAddForm,
+  onChange,
+  onClose,
   icon = closeIcon,
   placeholder = '',
   className = ''
@@ -17,7 +16,7 @@ const FormAddNew = ({
     <form onSubmit={onSubmit}>
       <textarea
         value={textAreaTitle}
-        onChange={(e) => setTitle(e.target.value)}
+        onChange={onChange}
         onKeyDown={onKeyDown}
         autoFocus
         rows={textAreaRows}
@@ -29,12 +28,9 @@ const FormAddNew = ({
           {btnAddTitle}
         </Button>
         <button
+          type="submit"
           className="hover:bg-slate-300 p-1"
-          onClick={() => {
-            setTimeout(() => {
-              setToggleAddForm(!toggleAddForm)
-            }, 0)
-          }}
+          onClick={(e) => onClose(e)}
         >
           {icon}
         </button>
