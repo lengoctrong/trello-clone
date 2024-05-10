@@ -17,7 +17,7 @@ import {
   setColumnDetails,
   startRetrieve
 } from '~/features/boards/boardSlice'
-import { setCardDetails } from '~/features/cards/cardSlice'
+import { setAllCards, setCardDetails } from '~/features/cards/cardSlice'
 import { logoutUser, setUserDetails } from '~/features/users/userSlice'
 import { API_TYPES, API_URL, API_VERSION } from '~/utils/constants'
 import { generatePlaceholderCard, mapOrderedArr } from '~/utils/formatters'
@@ -132,6 +132,14 @@ export const updateCardDetailsAPI = async (cardId, updatedData, dispatch) => {
     updatedData
   )
   dispatch(setCardDetails(updatedData))
+}
+
+export const getAllCardByBoardIdAPI = async (boardId, dispatch) => {
+  dispatch(startRetrieve())
+  const result = await axios.get(
+    `${API_URL}/${API_VERSION}/${API_TYPES.CARD}?boardId=${boardId}`
+  )
+  dispatch(setAllCards(result.data))
 }
 
 // [USER]

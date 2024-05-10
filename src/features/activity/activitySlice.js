@@ -1,7 +1,7 @@
 // activitySlice.js
 import { createSlice } from '@reduxjs/toolkit'
 
-const initialState = [{ boardId: '', content: '', createdAt: null }]
+const initialState = [{ boardId: '', type: '', content: '', createdAt: null }]
 const activitySlice = createSlice({
   name: 'activity',
   initialState,

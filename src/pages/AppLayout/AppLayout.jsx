@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
-import { getBoardDetailsAPI } from '~/apis'
+import { getAllCardByBoardIdAPI, getBoardDetailsAPI } from '~/apis'
 import Loader from '~/components/Loader'
 import Navbar from '~/components/Navbar'
 import { RightDrawer } from '~/components/RightDrawer/RightDrawer'
@@ -16,6 +16,7 @@ const AppLayout = () => {
 
   useEffect(() => {
     getBoardDetailsAPI(boardId, dispatch)
+    getAllCardByBoardIdAPI(boardId, dispatch)
   }, [boardId, dispatch])
 
   return isPending ? (

@@ -30,6 +30,7 @@ const App = () => {
             </PrivateRoute>
           }
         />
+
         <Route path={ROUTES.WILDCARD} element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

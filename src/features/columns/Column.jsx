@@ -64,6 +64,8 @@ const Column = ({ column }) => {
     createNewActivityAPI(
       {
         boardId,
+        type: 'card',
+        targetId: card._id,
         content: `${userName} đã thêm thẻ "${card.title}"`,
         createdAt: card.createdAt
       },

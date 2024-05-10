@@ -23,9 +23,12 @@ const cardSlice = createSlice({
       if (!card) state.cards.push(action.payload)
       card = { ...card, ...action.payload }
       state.card = { ...state.card, ...action.payload }
+    },
+    setAllCards: (state, action) => {
+      state.cards = action.payload
     }
   }
 })
 
 export default cardSlice.reducer
-export const { setCardDetails } = cardSlice.actions
+export const { setCardDetails, setAllCards } = cardSlice.actions

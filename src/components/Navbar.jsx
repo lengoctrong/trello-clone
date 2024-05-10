@@ -30,10 +30,10 @@ const Navbar = () => {
                 className={`p-2 flex flex-col gap-1 items-center border-none rounded-md bg-white text-gray-500 w-96 overflow-y-auto max-h-[${MAX_HEIGHT_COLUMN}] overflow-x-hidden shadow-md min-w-[${MAX_WIDTH_COLUMN}]`}
               >
                 {isLogin && filteredSearchArr.length > 0 ? (
-                  filteredSearchArr.map((item, idx) => {
+                  filteredSearchArr.map((item) => {
                     return (
-                      <div key={`${item}${idx}`} className="btn w-full">
-                        {item}
+                      <div key={`${item._id}`} className="btn w-full">
+                        {item.title}
                       </div>
                     )
                   })

@@ -1,8 +1,7 @@
 import { IconButton, Typography } from '@material-tailwind/react'
 import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
-import { getAllActivitiesAPI } from '~/apis'
 import { chevronLeftIcon, closeIcon } from '~/icons'
 import { timeAgo } from '~/utils/formatters'
 export function ActivityDrawer({ onBack, onClose }) {
@@ -10,7 +9,6 @@ export function ActivityDrawer({ onBack, onClose }) {
   const activities = useSelector((state) => state.activity).filter(
     (act) => act.boardId === boardId
   )
-  const dispatch = useDispatch()
 
   const [timeAgoStr, setTimeAgoStr] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -25,10 +23,6 @@ export function ActivityDrawer({ onBack, onClose }) {
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   )
-
-  useEffect(() => {
-    getAllActivitiesAPI(dispatch)
-  }, [dispatch])
 
   useEffect(() => {
     const intervalId = setInterval(() => {

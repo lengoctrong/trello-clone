@@ -5,6 +5,8 @@ import { cloneDeep, debounce, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  getAllActivitiesAPI,
+  getAllCardByBoardIdAPI,
   moveCardToDifferentColumnAPI,
   moveCardToSameColumnAPI,
   updateBoardDetailsAPI
@@ -21,13 +23,12 @@ import ColumnList from '../columns/ColumnList'
 
 const Board = () => {
   const {
-    boardId,
+    _id: boardId,
     columns,
     columnOrderIds,
     title: boardTitle
   } = useSelector((state) => state.board)
   const dispatch = useDispatch()
-
   const [activeItem, setActiveItem] = useState(null)
   const [originalCol, setOriginalCol] = useState(null)
   const [orderedColumns, setOrderedColumns] = useState(columns)
@@ -41,6 +42,10 @@ const Board = () => {
       }
     })
   )
+
+  useEffect(() => {
+    getAllActivitiesAPI(dispatch)
+  }, [dispatch])
 
   useEffect(() => {
     document.title = `${DOCUMENT_TITLE.BOARD} | ${DOCUMENT_TITLE.HOME}`

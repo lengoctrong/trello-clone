@@ -1,6 +1,6 @@
 /* eslint-disable indent */
 import { Input, Textarea } from '@material-tailwind/react'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Datepicker from 'react-tailwindcss-datepicker'
 import { updateCardDetailsAPI } from '~/apis'
@@ -17,6 +17,7 @@ import {
   paperClipIcon,
   photoIcon
 } from '~/icons'
+import { timeAgo } from '~/utils/formatters'
 
 const CardDetailForm = ({ onOpen }) => {
   const dispatch = useDispatch()
@@ -32,7 +33,33 @@ const CardDetailForm = ({ onOpen }) => {
   })
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false)
   const [color, setColor] = useState('#ffffff')
+  const [showActivity, setShowActivity] = useState(false)
+  const activitiesForTargetCard = useSelector((state) => state.activity).filter(
+    (activity) => activity.targetId === initCard._id
+  )
+
+  const [timeAgoStr, setTimeAgoStr] = useState('')
+
+  const activitiesWithTimeAgo = activitiesForTargetCard.map((activity) => ({
+    ...activity,
+    timeAgoStr: timeAgo(activity.createdAt)
+  }))
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      activitiesWithTimeAgo.forEach((activity) => {
+        setTimeAgoStr(timeAgo(activity.createdAt))
+      })
+    }, 1000)
+
+    return () => clearInterval(intervalId)
+  }, [activitiesWithTimeAgo])
+
   const timeoutId = useRef(null)
+
+  const handleShowActivity = () => {
+    setShowActivity(!showActivity)
+  }
 
   const handleSaveDescForm = () => {
     setShowDescForm(false)
@@ -41,7 +68,6 @@ const CardDetailForm = ({ onOpen }) => {
   }
 
   const handleTimerChange = async ({ startDate, endDate }) => {
-    console.log('startDate', startDate, 'endDate', endDate)
     setTimer({ startDate, endDate })
     const now = new Date()
     const formattedStartDate = new Date(startDate)
@@ -220,7 +246,18 @@ const CardDetailForm = ({ onOpen }) => {
 
             <div className="flex justify-between">
               <div className="flex gap-2">{listBulletIcon} Hoạt động</div>
-              <button className="btn bg-gray-200">Hiện chi tiết</button>
+              <button className="btn bg-gray-200" onClick={handleShowActivity}>
+                {showActivity ? 'Ẩn chi tiết' : 'Hiện chi tiết'}
+              </button>
+            </div>
+            <div>
+              {showActivity &&
+                activitiesForTargetCard.map((activity) => (
+                  <div key={activity._id}>
+                    <p>{activity.content}</p>
+                    <small>{timeAgo(activity.createdAt)}</small>
+                  </div>
+                ))}
             </div>
           </div>
 

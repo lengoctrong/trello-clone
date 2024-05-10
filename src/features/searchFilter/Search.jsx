@@ -1,19 +1,23 @@
 import { forwardRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { retrieveSpecificAttr } from '~/utils/formatters'
 import { setFilteredSearchArr, setSearchValue } from './searchFilterSlice'
 const Search = forwardRef(({ addFront, placeholder, className }, ref) => {
-  const board = useSelector((state) => state.board)
+  const { cards } = useSelector((state) => state.card)
   const dispatch = useDispatch()
   const searchValue = useSelector((state) => state.searchFilter.searchValue)
 
-  const handleSearchValue = (e) => {
+  const handleSearchValue = async (e) => {
     dispatch(setSearchValue(e.target.value))
-    const allTitles = retrieveSpecificAttr(board, 'title')
 
-    const matchedSearchValueArr = allTitles.filter((title) =>
-      title.toLowerCase().trim().includes(e.target.value.toLowerCase())
-    )
+    const matchedSearchValueArr = cards.filter((card) => {
+      if (
+        card.title.toLowerCase().trim().includes(e.target.value.toLowerCase())
+      )
+        return {
+          _id: card._id,
+          title: card.title
+        }
+    })
     dispatch(setFilteredSearchArr(matchedSearchValueArr))
   }
 

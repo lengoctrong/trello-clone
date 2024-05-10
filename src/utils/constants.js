@@ -38,6 +38,7 @@ export const LOCAL_STORAGE_KEYS = {
 export const ROUTES = {
   HOME: '/',
   BOARD: '/b',
+  CARD: '/c',
   LOGIN: '/login',
   REGISTER: '/register',
   PROFILE: '/profile',
