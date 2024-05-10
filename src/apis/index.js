@@ -88,6 +88,7 @@ export const createNewColumnAPI = async (columnData, dispatch) => {
     columnData
   )
   dispatch(addNewColumn(res.data))
+  return res.data
 }
 
 export const updateColumnDetailsAPI = async (

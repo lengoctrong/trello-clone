@@ -15,7 +15,7 @@ export function ActivityDrawer({ onBack, onClose }) {
     getAllActivitiesAPI(dispatch)
   }, [dispatch])
 
-  const [timeAgoStr, setTimeAgoStr] = useState('vừa xong')
+  const [timeAgoStr, setTimeAgoStr] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
 

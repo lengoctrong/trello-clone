@@ -9,7 +9,7 @@ import {
 } from '@material-tailwind/react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createNewColumnAPI } from '~/apis'
+import { createNewActivityAPI, createNewColumnAPI } from '~/apis'
 import { closeIcon } from '~/icons'
 
 export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
@@ -21,17 +21,21 @@ export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
   } = useSelector((state) => state.board.columns).find(
     (c) => c._id === columnId
   )
-
+  const { name } = useSelector((state) => state.user)
   const [title, setTitle] = useState(columnTitle)
 
   const dispatch = useDispatch()
 
   const handleAddNewColumn = async () => {
     // call api
-    await createNewColumnAPI(
+    const column = await createNewColumnAPI(
       { _id: columnId, boardId, title, cards, cardOrderIds },
       dispatch
     )
+    createNewActivityAPI({
+      content: `${name} đã thêm danh sách ${column.title} vào bảng này`,
+      createdAt: column.createdAt
+    })
     // close form
     setTitle(columnTitle)
     handleOpen(false)
