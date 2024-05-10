@@ -15,9 +15,7 @@ export function ActivityDrawer({ onBack, onClose }) {
   const [timeAgoStr, setTimeAgoStr] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 10
-
   const totalPages = Math.ceil(activities.length / itemsPerPage)
-
   const activitiesWithTimeAgo = activities.map((activity) => ({
     ...activity,
     timeAgoStr: timeAgo(activity.createdAt)

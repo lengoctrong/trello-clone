@@ -54,15 +54,8 @@ const Board = () => {
     dispatch(openRightDrawer())
   }
 
-  const increaseWidth = (e) => {
-    let numberOfCharacters = e.target.value.length
-    if (numberOfCharacters > 10) {
-      let length = numberOfCharacters + 'ch'
-      e.target.style.width = length
-    }
-  }
-
   const handleChangeBoardTitle = async (e) => {
+    setTitle(e.target.value)
     updateBoardDetailsAPI(boardId, { title: e.target.value }, dispatch)
   }
 
@@ -356,14 +349,11 @@ const Board = () => {
       >
         <div className="flex justify-between">
           <input
-            style={{ width: '12ch' }}
-            className="btn font-medium outline-blue-500"
             value={title}
-            onInput={(e) => {
-              setTitle(e.target.value)
-              increaseWidth(e)
-            }}
+            onInput={handleChangeBoardTitle}
             onChange={debounce(handleChangeBoardTitle, 1000)}
+            onFocus={(e) => e.target.select()}
+            className="font-bold bg-transparent text-white focus:text-black hover:text-white rounded-md px-2 py-1"
           />
           <button
             className="btn items-center bg-transparent text-gray-200 hover:gray-50"
