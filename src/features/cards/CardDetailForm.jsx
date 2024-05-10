@@ -10,7 +10,6 @@ import {
   arrowRightIcon,
   bars3CenterLeftIcon,
   cardIcon,
-  chevronDownIcon,
   closeIcon,
   copyIcon,
   eyeIcon,
@@ -28,9 +27,8 @@ const CardDetailForm = ({ onOpen }) => {
   const [card, setCard] = useState(initCard)
   const [showDescForm, setShowDescForm] = useState(false)
   const [timer, setTimer] = useState({
-    startDate: initCard.taskTimer?.startDate ?? null,
-    endDate: initCard.taskTimer?.endDate ?? null,
-    status: initCard.taskTimer?.status ?? 'normal'
+    startDate: new Date(initCard.taskTimer?.startDate),
+    endDate: new Date(initCard.taskTimer?.endDate)
   })
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false)
   const [color, setColor] = useState('#ffffff')
@@ -43,9 +41,11 @@ const CardDetailForm = ({ onOpen }) => {
   }
 
   const handleTimerChange = async ({ startDate, endDate }) => {
+    console.log('startDate', startDate, 'endDate', endDate)
+    setTimer({ startDate, endDate })
     const now = new Date()
-    const formattedStartDate = new Date(startDate).toLocaleDateString('en-GB')
-    const formattedEndDate = new Date(endDate).toLocaleDateString('en-GB')
+    const formattedStartDate = new Date(startDate)
+    const formattedEndDate = new Date(endDate)
 
     const status = checkTaskTimerStatus(now, endDate)
 
@@ -54,7 +54,6 @@ const CardDetailForm = ({ onOpen }) => {
       endDate: formattedEndDate,
       status
     }
-    setTimer(formattedDate)
 
     await updateCardDetailsAPI(card._id, { taskTimer: formattedDate }, dispatch)
   }
@@ -102,13 +101,13 @@ const CardDetailForm = ({ onOpen }) => {
     switch (status) {
       case 'danger':
         return (
-          <div className="bg-red-500 min-w text-white text-xs px-1 font-bold">
+          <div className="bg-red-700 min-w text-white text-xs px-1 font-bold">
             Quá hạn
           </div>
         )
       case 'warning':
         return (
-          <div className="bg-yellow-500 min-w text-white text-xs px-1 font-bold">
+          <div className="bg-yellow-700 min-w text-gray text-xs px-1 font-bold">
             Sắp hết hạn
           </div>
         )
@@ -173,16 +172,19 @@ const CardDetailForm = ({ onOpen }) => {
                 </div>
               </div>
               <div className="ps-8">
-                <small>Ngày hết hạn</small>
+                <div className="flex gap-2 items-center">
+                  <small className="px-4">Ngày bắt đầu - Ngày hết hạn</small>
+                  {generateTaskTimerStatus(initCard.taskTimer?.status)}
+                </div>
                 <div className="flex gap-2 items-center flex-wrap">
-                  <button className="btn flex gap-2 items-center bg-gray-200">
-                    <div>{timer.endDate}</div>
-                    {/* <div className="bg-red-500 min-w text-white text-xs px-1 font-bold">
-                      Quá hạn
-                    </div> */}
-                    {generateTaskTimerStatus(timer.status)}
-                    <div>{chevronDownIcon}</div>
-                  </button>
+                  <Datepicker
+                    primaryColor="blue"
+                    useRange={false}
+                    displayFormat={'DD/MM/YYYY'}
+                    value={timer}
+                    onChange={handleTimerChange}
+                    containerClassName="w-fit"
+                  />
                 </div>
               </div>
             </div>
@@ -222,25 +224,17 @@ const CardDetailForm = ({ onOpen }) => {
             </div>
           </div>
 
-          <div>
+          <div className="text-xs">
             <p>Thêm vào thẻ</p>
+
             <div className="flex items-center mb-2">
-              <Datepicker
-                primaryColor="blue"
-                useRange={false}
-                displayFormat={'DD/MM/YYYY'}
-                value={timer}
-                onChange={handleTimerChange}
-              />
-            </div>
-            <div className="flex items-center mb-2">
-              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex text-sm gap-2 w-full items-center">
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex gap-2 w-full items-center">
                 {paperClipIcon} Đính kém
               </button>
             </div>
             <div className="flex items-center mb-2">
               <button
-                className=" bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex items-center w-full gap-2 text-sm"
+                className=" bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex items-center w-full gap-2 "
                 onClick={() => setIsColorPickerOpen(!isColorPickerOpen)}
               >
                 {photoIcon} Ảnh bìa
@@ -249,17 +243,17 @@ const CardDetailForm = ({ onOpen }) => {
 
             <p>Thao tác</p>
             <div className="flex items-center mb-2">
-              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex gap-2 text-sm items-center w-full">
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex gap-2  items-center w-full">
                 {arrowRightIcon} Di chuyển
               </button>
             </div>
             <div className="flex items-center mb-2">
-              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex text-sm gap-2 w-full items-center">
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex  gap-2 w-full items-center">
                 {copyIcon} Sao chép
               </button>
             </div>
             <div className="flex items-center mb-2">
-              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex items-center w-full gap-2 text-sm">
+              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex items-center w-full gap-2 ">
                 {archiveBoxIcon} Lưu trữ
               </button>
             </div>
