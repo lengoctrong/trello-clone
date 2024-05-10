@@ -36,7 +36,7 @@ export const SubRightDrawer = () => {
       overlay={false}
       placement="right"
       open={isShowSubDrawer}
-      onClose={handleClose}
+      // onClose={handleClose}
       className="p-4"
     >
       <Component onBack={handleBack} onClose={handleClose} />

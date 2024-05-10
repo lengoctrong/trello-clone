@@ -15,7 +15,7 @@ const ColumnList = ({ columns }) => {
   const availableColumns = columns.filter((column) => !column._destroy)
   const [toggleAddColumnForm, setToggleAddColumnForm] = useState(false)
   const [columnTitle, setColumnTitle] = useState('')
-
+  const { name: userName } = useSelector((state) => state.user)
   const handleColumnTitleChange = (e) => setColumnTitle(e.target.value)
 
   const handleAddNewColumn = async (e) => {
@@ -33,7 +33,7 @@ const ColumnList = ({ columns }) => {
     createNewActivityAPI(
       {
         boardId,
-        content: `Bạn đã thêm danh sách ${columnTitle} vào bảng này`,
+        content: `${userName} đã thêm danh sách ${columnTitle} vào bảng này`,
         createdAt: column.createdAt
       },
       dispatch

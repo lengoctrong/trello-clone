@@ -123,6 +123,7 @@ export const createNewCardAPI = async (cardData, dispatch) => {
     cardData
   )
   dispatch(addNewCard(res.data))
+  return res.data
 }
 
 export const updateCardDetailsAPI = async (cardId, updatedData, dispatch) => {
@@ -134,6 +135,15 @@ export const updateCardDetailsAPI = async (cardId, updatedData, dispatch) => {
 }
 
 // [USER]
+export const getUserDetailsAPI = async (userId, dispatch) => {
+  const res = await axios.get(
+    `${API_URL}/${API_VERSION}/${API_TYPES.USER}/${userId}`
+  )
+
+  dispatch(setUserDetails(res.data))
+  return res.data
+}
+
 export const verifyUserDetailsAPI = async (userData, dispatch) => {
   const res = await axios.post(
     `${API_URL}/${API_VERSION}/${API_TYPES.USER}`,

@@ -2,7 +2,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createNewCardAPI } from '~/apis'
+import { createNewActivityAPI, createNewCardAPI } from '~/apis'
 import { MAX_HEIGHT_COLUMN, MAX_WIDTH_COLUMN } from '~/utils/constants'
 
 import FormAddNew from '~/components/FormAddNew'
@@ -18,6 +18,7 @@ const Column = ({ column }) => {
   const [columnTitle, setColumnTitle] = useState(title)
   const [cardTitle, setCardTitle] = useState('')
   const [toggleAddCardForm, setToggleAddCardForm] = useState(false)
+  const { name: userName } = useSelector((state) => state.user)
 
   const { _id: boardId } = useSelector((state) => state.board)
   const dispatch = useDispatch()
@@ -47,7 +48,7 @@ const Column = ({ column }) => {
     }
   }
 
-  const handleAddNewCard = (e) => {
+  const handleAddNewCard = async (e) => {
     e.preventDefault()
     if (!cardTitle.trim()) {
       setToggleAddCardForm(false)
@@ -59,7 +60,15 @@ const Column = ({ column }) => {
       boardId,
       columnId
     }
-    createNewCardAPI(cardData, dispatch)
+    const card = await createNewCardAPI(cardData, dispatch)
+    createNewActivityAPI(
+      {
+        boardId,
+        content: `${userName} đã thêm thẻ "${card.title}"`,
+        createdAt: card.createdAt
+      },
+      dispatch
+    )
     // reset form
     setCardTitle('')
     setToggleAddCardForm(false)

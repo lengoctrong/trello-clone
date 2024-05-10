@@ -17,7 +17,7 @@ import { ROUTES } from '~/utils/constants'
 export function BoardForm() {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState('')
-  const { name } = useSelector((state) => state.user)
+  const { name: userName } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -25,10 +25,13 @@ export function BoardForm() {
     try {
       const board = await createNewBoardAPI({ title }, dispatch)
       toast.success('Tạo bảng mới thành công')
+
+      // const user = await getUserDetailsAPI(dispatch)
+
       createNewActivityAPI(
         {
           boardId: board._id,
-          content: `${name} đã tạo bảng này`,
+          content: `${userName} đã tạo bảng này`,
           createdAt: board.createdAt
         },
         dispatch
