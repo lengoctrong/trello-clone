@@ -1,7 +1,7 @@
-import { Dialog, Textarea } from '@material-tailwind/react'
-import { useState } from 'react'
+import { Input, Textarea } from '@material-tailwind/react'
+import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { updateCardDetailsAPI } from '~/apis'
+import { getBoardDetailsAPI, updateCardDetailsAPI } from '~/apis'
 import Button from '~/components/Button'
 import {
   archiveBoxIcon,
@@ -19,22 +19,19 @@ import {
 
 const CardDetailForm = ({ onOpen }) => {
   const dispatch = useDispatch()
-  const {
-    _id: cardId,
-    title: cardTitle,
-    columnId,
-    description
-  } = useSelector((state) => state.card.card)
+  const initCard = useSelector((state) => state.card.card)
   const { title: columnTitle } = useSelector(
     (state) => state.board.columns
-  ).find((c) => c._id === columnId)
-  const [desc, setDesc] = useState(description ?? '')
+  ).find((c) => c._id === initCard.columnId)
+  const [card, setCard] = useState(initCard)
   const [showDescForm, setShowDescForm] = useState(false)
+
+  const timeoutId = useRef(null)
 
   const handleSaveDescForm = () => {
     setShowDescForm(false)
     // Call API to save description
-    updateCardDetailsAPI(cardId, { description: desc }, dispatch)
+    updateCardDetailsAPI(card._id, card, dispatch)
   }
 
   const [isColorPickerOpen, setIsColorPickerOpen] = useState(false)
@@ -44,6 +41,30 @@ const CardDetailForm = ({ onOpen }) => {
 
   const handleColorChange = (e) => {
     setColor(e.target.value)
+  }
+
+  const handleCardChange = (e) => {
+    if (e.target.name === 'description') {
+      setCard({
+        ...card,
+        description: e.target.value
+      })
+      return
+    }
+
+    const updatedData = {
+      ...card,
+      [e.target.attributes.name.value]: e.target.value || ''
+    }
+
+    if (timeoutId.current) clearTimeout(timeoutId.current)
+
+    setCard(updatedData)
+    timeoutId.current = setTimeout(() => {
+      updateCardDetailsAPI(card._id, updatedData, dispatch)
+
+      return () => clearTimeout(timeoutId.current)
+    }, 2000)
   }
 
   return (
@@ -61,9 +82,18 @@ const CardDetailForm = ({ onOpen }) => {
         ></div>
 
         <div className="flex justify-between">
-          <div className="flex gap-2 items-center font-bold">
-            {cardIcon} {cardTitle}
+          <div className="flex gap-2 items-center">
+            {cardIcon}
+            <Input
+              name="title"
+              variant="static"
+              color="blue"
+              value={card.title}
+              onChange={handleCardChange}
+              className="flex gap-2 items-center font-bold"
+            />
           </div>
+
           <button
             className="hover:bg-gray-200 rounded-full p-2"
             onClick={() => onOpen(false)}
@@ -91,11 +121,12 @@ const CardDetailForm = ({ onOpen }) => {
             <div>
               <div className="flex gap-2">{bars3CenterLeftIcon}Mô tả</div>
               <Textarea
+                name="description"
                 color="blue"
                 placeholder="Nhập mô tả..."
-                value={desc}
+                value={card.description}
                 onClick={() => setShowDescForm(true)}
-                onChange={(e) => setDesc(e.target.value)}
+                onChange={handleCardChange}
               />
               {showDescForm && (
                 <div className="flex gap-2 items-center">
