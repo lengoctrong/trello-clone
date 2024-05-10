@@ -32,10 +32,14 @@ export function CopyColumnForm({ columnId, open, handleOpen, handleCancel }) {
       { _id: columnId, boardId, title, cards, cardOrderIds },
       dispatch
     )
-    createNewActivityAPI({
-      content: `${name} đã thêm danh sách ${column.title} vào bảng này`,
-      createdAt: column.createdAt
-    })
+    createNewActivityAPI(
+      {
+        boardId: column.boardId,
+        content: `${name} đã thêm danh sách ${column.title} vào bảng này`,
+        createdAt: column.createdAt
+      },
+      dispatch
+    )
     // close form
     setTitle(columnTitle)
     handleOpen(false)

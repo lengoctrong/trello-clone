@@ -30,14 +30,25 @@ export const generatePlaceholderCard = (column) => {
 
 export const timeAgo = (timestamp) => {
   const secondsAgo = Math.floor((new Date() - timestamp) / 1000)
+  const conditions = [
+    { limit: 15, text: 'vừa xong' },
+    { limit: 30, text: '15 giây trước' },
+    { limit: 45, text: '30 giây trước' },
+    { limit: 60, text: '45 giây trước' },
+    { limit: 3600, text: () => `${Math.floor(secondsAgo / 60)} phút trước` },
+    { limit: 86400, text: () => `${Math.floor(secondsAgo / 3600)} giờ trước` },
+    { limit: 86400 * 2, text: 'hôm qua' },
+    {
+      limit: Infinity,
+      text: () => `${Math.floor(secondsAgo / 86400)} ngày trước`
+    }
+  ]
 
-  if (secondsAgo < 60) {
-    return 'vài giây trước'
-  } else if (secondsAgo < 3600) {
-    return `${Math.floor(secondsAgo / 60)} phút trước`
-  } else if (secondsAgo < 86400) {
-    return `${Math.floor(secondsAgo / 3600)} giờ trước`
-  } else {
-    return 'hôm qua'
+  for (let condition of conditions) {
+    if (secondsAgo < condition.limit) {
+      return typeof condition.text === 'function'
+        ? condition.text()
+        : condition.text
+    }
   }
 }

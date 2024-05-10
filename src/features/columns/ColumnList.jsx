@@ -4,7 +4,7 @@ import {
 } from '@dnd-kit/sortable'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { createNewColumnAPI } from '~/apis'
+import { createNewActivityAPI, createNewColumnAPI } from '~/apis'
 import FormAddNew from '~/components/FormAddNew'
 import { plusIcon } from '~/icons'
 import Column from './Column'
@@ -29,7 +29,15 @@ const ColumnList = ({ columns }) => {
       title: columnTitle,
       boardId
     }
-    await createNewColumnAPI(columnData, dispatch)
+    const column = await createNewColumnAPI(columnData, dispatch)
+    createNewActivityAPI(
+      {
+        boardId,
+        content: `Bạn đã thêm danh sách ${columnTitle} vào bảng này`,
+        createdAt: column.createdAt
+      },
+      dispatch
+    )
     // reset form
     setColumnTitle('')
     setToggleAddColumnForm(false)
