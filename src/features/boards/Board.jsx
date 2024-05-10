@@ -5,8 +5,8 @@ import { cloneDeep, debounce, isEmpty } from 'lodash'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
+  createNewActivityAPI,
   getAllActivitiesAPI,
-  getAllCardByBoardIdAPI,
   moveCardToDifferentColumnAPI,
   moveCardToSameColumnAPI,
   updateBoardDetailsAPI
@@ -28,6 +28,7 @@ const Board = () => {
     columnOrderIds,
     title: boardTitle
   } = useSelector((state) => state.board)
+  const { name: userName } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const [activeItem, setActiveItem] = useState(null)
   const [originalCol, setOriginalCol] = useState(null)
@@ -183,6 +184,16 @@ const Board = () => {
 
       return newColumns
     })
+    createNewActivityAPI(
+      {
+        type: 'moveCard',
+        targetId: activeCardId,
+        boardId,
+        createdAt: new Date().getTime(),
+        content: `${userName} đã di chuyển thẻ này từ danh sách ${activeColumn.title} đến danh sách ${overColumn.title}`
+      },
+      dispatch
+    )
   }
 
   const handleDragStart = ({ active }) => {
