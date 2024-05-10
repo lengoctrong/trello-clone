@@ -8,6 +8,13 @@ export const API_TYPES = {
   USER: 'users'
 }
 
+// task timer status
+export const TASK_TIMER_STATUS = {
+  NORMAL: 'normal',
+  WARNING: 'warning',
+  DANGER: 'danger'
+}
+
 // document title
 export const DOCUMENT_TITLE = {
   HOME: 'Trello',

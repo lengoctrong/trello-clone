@@ -1,14 +1,16 @@
+/* eslint-disable indent */
 import { Input, Textarea } from '@material-tailwind/react'
 import { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getBoardDetailsAPI, updateCardDetailsAPI } from '~/apis'
+import Datepicker from 'react-tailwindcss-datepicker'
+import { updateCardDetailsAPI } from '~/apis'
 import Button from '~/components/Button'
 import {
   archiveBoxIcon,
   arrowRightIcon,
   bars3CenterLeftIcon,
   cardIcon,
-  clockIcon,
+  chevronDownIcon,
   closeIcon,
   copyIcon,
   eyeIcon,
@@ -25,7 +27,13 @@ const CardDetailForm = ({ onOpen }) => {
   ).find((c) => c._id === initCard.columnId)
   const [card, setCard] = useState(initCard)
   const [showDescForm, setShowDescForm] = useState(false)
-
+  const [timer, setTimer] = useState({
+    startDate: initCard.taskTimer?.startDate ?? null,
+    endDate: initCard.taskTimer?.endDate ?? null,
+    status: initCard.taskTimer?.status ?? 'normal'
+  })
+  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false)
+  const [color, setColor] = useState('#ffffff')
   const timeoutId = useRef(null)
 
   const handleSaveDescForm = () => {
@@ -34,13 +42,21 @@ const CardDetailForm = ({ onOpen }) => {
     updateCardDetailsAPI(card._id, card, dispatch)
   }
 
-  const [isColorPickerOpen, setIsColorPickerOpen] = useState(false)
-  const [color, setColor] = useState('#ffffff')
+  const handleTimerChange = async ({ startDate, endDate }) => {
+    const now = new Date()
+    const formattedStartDate = new Date(startDate).toLocaleDateString('en-GB')
+    const formattedEndDate = new Date(endDate).toLocaleDateString('en-GB')
 
-  const colors = ['red', 'green', 'blue']
+    const status = checkTaskTimerStatus(now, endDate)
 
-  const handleColorChange = (e) => {
-    setColor(e.target.value)
+    const formattedDate = {
+      startDate: formattedStartDate,
+      endDate: formattedEndDate,
+      status
+    }
+    setTimer(formattedDate)
+
+    await updateCardDetailsAPI(card._id, { taskTimer: formattedDate }, dispatch)
   }
 
   const handleCardChange = (e) => {
@@ -67,11 +83,47 @@ const CardDetailForm = ({ onOpen }) => {
     }, 2000)
   }
 
+  const checkTaskTimerStatus = (nowStr, endDateStr) => {
+    const now = new Date(nowStr).getTime()
+    const oneDay = 24 * 60 * 60 * 1000
+    const endDate = new Date(endDateStr).getTime()
+
+    if (endDate < now) {
+      return 'danger'
+    }
+
+    if (endDate > now && Math.abs(endDate - now) / oneDay <= 1) {
+      return 'warning'
+    }
+    return 'normal'
+  }
+
+  const generateTaskTimerStatus = (status) => {
+    switch (status) {
+      case 'danger':
+        return (
+          <div className="bg-red-500 min-w text-white text-xs px-1 font-bold">
+            Quá hạn
+          </div>
+        )
+      case 'warning':
+        return (
+          <div className="bg-yellow-500 min-w text-white text-xs px-1 font-bold">
+            Sắp hết hạn
+          </div>
+        )
+      default:
+        return ''
+    }
+  }
+
   return (
     <div
       className="fixed inset-0 flex items-center justify-center z-50"
       onClick={(e) => {
-        if (e.target.className?.includes('overlay')) onOpen(false)
+        if (typeof e.target.className !== 'string') return
+        const className = e.target.baseVal ?? e.target.className
+        if (className?.includes('overlay')) onOpen(false)
       }}
     >
       <div className="overlay absolute inset-0 bg-black opacity-50"></div>
@@ -110,12 +162,29 @@ const CardDetailForm = ({ onOpen }) => {
               </p>
             </div>
 
-            <div className="ps-8">
-              <p>Thông báo</p>
-              <button className="btn flex gap-2 bg-gray-200">
-                {' '}
-                {eyeIcon} Theo dõi
-              </button>
+            <div className="ps-8 flex">
+              <div className="">
+                <small>Thông báo</small>
+                <div className="flex gap-2 items-center flex-wrap">
+                  <button className="btn flex gap-2 bg-gray-200">
+                    {' '}
+                    {eyeIcon} Theo dõi
+                  </button>
+                </div>
+              </div>
+              <div className="ps-8">
+                <small>Ngày hết hạn</small>
+                <div className="flex gap-2 items-center flex-wrap">
+                  <button className="btn flex gap-2 items-center bg-gray-200">
+                    <div>{timer.endDate}</div>
+                    {/* <div className="bg-red-500 min-w text-white text-xs px-1 font-bold">
+                      Quá hạn
+                    </div> */}
+                    {generateTaskTimerStatus(timer.status)}
+                    <div>{chevronDownIcon}</div>
+                  </button>
+                </div>
+              </div>
             </div>
 
             <div>
@@ -156,9 +225,13 @@ const CardDetailForm = ({ onOpen }) => {
           <div>
             <p>Thêm vào thẻ</p>
             <div className="flex items-center mb-2">
-              <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex gap-2 text-sm items-center w-full">
-                {clockIcon} Thời gian
-              </button>
+              <Datepicker
+                primaryColor="blue"
+                useRange={false}
+                displayFormat={'DD/MM/YYYY'}
+                value={timer}
+                onChange={handleTimerChange}
+              />
             </div>
             <div className="flex items-center mb-2">
               <button className="bg-gray-200 hover:bg-gray-300 rounded-md px-2 py-1 flex text-sm gap-2 w-full items-center">
