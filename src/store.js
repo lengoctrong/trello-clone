@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import rightDrawerReducer from '~/components/RightDrawer/rightDrawerSlice'
+import activityReducer from './features/activity/activitySlice'
 import boardReducer from './features/boards/boardSlice'
 import cardReducer from './features/cards/cardSlice'
 import columnReducer from './features/columns/columnSlice'
@@ -14,7 +15,8 @@ const store = configureStore({
     card: cardReducer,
     user: userReducer,
     searchFilter: searchFilterReducer,
-    rightDrawer: rightDrawerReducer
+    rightDrawer: rightDrawerReducer,
+    activity: activityReducer
   }
 })
 

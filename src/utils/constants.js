@@ -5,7 +5,8 @@ export const API_TYPES = {
   BOARD: 'boards',
   COLUMN: 'columns',
   CARD: 'cards',
-  USER: 'users'
+  USER: 'users',
+  ACTIVITY: 'activities'
 }
 
 // task timer status

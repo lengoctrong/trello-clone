@@ -27,3 +27,17 @@ export const generatePlaceholderCard = (column) => {
     fe_placeholderCard: true
   }
 }
+
+export const timeAgo = (timestamp) => {
+  const secondsAgo = Math.floor((new Date() - timestamp) / 1000)
+
+  if (secondsAgo < 60) {
+    return 'vài giây trước'
+  } else if (secondsAgo < 3600) {
+    return `${Math.floor(secondsAgo / 60)} phút trước`
+  } else if (secondsAgo < 86400) {
+    return `${Math.floor(secondsAgo / 3600)} giờ trước`
+  } else {
+    return 'hôm qua'
+  }
+}

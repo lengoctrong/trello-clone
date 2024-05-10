@@ -8,16 +8,16 @@ import {
   Typography
 } from '@material-tailwind/react'
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { createNewBoardAPI } from '~/apis'
+import { createNewActivityAPI, createNewBoardAPI } from '~/apis'
 import { ROUTES } from '~/utils/constants'
 
 export function BoardForm() {
   const [open, setOpen] = React.useState(false)
   const [title, setTitle] = React.useState('')
-
+  const { name } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -25,6 +25,14 @@ export function BoardForm() {
     try {
       const board = await createNewBoardAPI({ title }, dispatch)
       toast.success('Tạo bảng mới thành công')
+      createNewActivityAPI(
+        {
+          boardId: board._id,
+          content: `${name} đã tạo bảng này`,
+          createdAt: board.createdAt
+        },
+        dispatch
+      )
       navigate(`${ROUTES.BOARD}/${board._id}`)
     } catch (err) {
       toast.error('Có lỗi xảy ra, vui lòng thử lại sau')

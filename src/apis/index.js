@@ -1,6 +1,10 @@
 import axios from 'axios'
 import { isEmpty } from 'lodash'
 import {
+  addActivity,
+  getAllActivities
+} from '~/features/activity/activitySlice'
+import {
   addNewBoard,
   addNewCard,
   addNewColumn,
@@ -154,4 +158,15 @@ export const logoutUserAPI = async (userId, updatedData, dispatch) => {
   )
   dispatch(logoutUser(updatedData))
   return res.data
+}
+
+// [ACTIVITY]
+export const createNewActivityAPI = async (activity, dispatch) => {
+  await axios.post(`${API_URL}/${API_VERSION}/${API_TYPES.ACTIVITY}`, activity)
+  dispatch(addActivity(activity))
+}
+
+export const getAllActivitiesAPI = async (dispatch) => {
+  const res = await axios.get(`${API_URL}/${API_VERSION}/${API_TYPES.ACTIVITY}`)
+  dispatch(getAllActivities(res.data))
 }
